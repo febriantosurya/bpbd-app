@@ -19,12 +19,3 @@ exports.login = async (req, res) => {
     return res.status(400).json({ message: `failed ${error.message}` })
   }
 }
-
-exports.showAllAdmins = async (req, res) => {
-  try {
-    const admins = await adminRepos.getAdmins()
-    return res.status(200).json({ message: "success", data: admins });
-  } catch (error) {
-    return res.status(400).json({ message: `failed ${error.message}` })
-  }
-}

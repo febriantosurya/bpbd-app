@@ -9,15 +9,3 @@ exports.getAdmin = async (username) => {
     return null
   }
 }
-exports.getAdmins = async () => {
-  const admins = await Admin.findAll()
-  return admins
-}
-
-exports.addAdmin = async (username, password, name) => {
-  await Admin.create({
-    username: username,
-    password: password,
-    name: name
-  })
-}
