@@ -16,10 +16,6 @@ exports.getAdmins = async () => {
   return admins
 }
 
-exports.addAdmin = async (username, password, name) => {
-  await Admin.create({
-    username: username,
-    password: password,
-    name: name
-  })
+exports.addAdmin = async (data) => {
+  await Admin.create(data)
 }

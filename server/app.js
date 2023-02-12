@@ -9,7 +9,7 @@ const adminRoute = require('./routes/admin')
 
 app.use(express.json())
 
-app.use('/api/v1/auth', rootRoute)
+app.use('/api/v1/', rootRoute)
 app.use('/api/v1/auth', adminRoute)
 
 app.listen(5000, async () => {
