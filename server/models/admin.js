@@ -17,12 +17,10 @@ const Admin = sequelize.define('Admin', {
   },
   createdAt: {
     allowNull: true,
-    defaultValue: new Date(),
     type: DataTypes.DATE
   },
   updatedAt: {
     allowNull: true,
-    defaultValue: new Date(),
     type: DataTypes.DATE
   }
 }, {

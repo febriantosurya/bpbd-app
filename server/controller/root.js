@@ -38,8 +38,8 @@ exports.addAdmin = async (req, res) => {
       username: req.body.username,
       password: req.body.password,
       name: req.body.name,
-      createdAt: Date.now(),
-      updatedAt: Date.now()
+      createdAt: new Date(),
+      updatedAt: new Date()
     }
     const username = await adminRepos.getAdmin({ username: data.username })
     if (username !== null) {
@@ -47,6 +47,33 @@ exports.addAdmin = async (req, res) => {
     }
     await rootRepos.addAdmin(data)
     return res.status(200).json({ message: "new admin added" })
+  } catch (error) {
+    return res.status(400).json({ message: `failed ${error.message}` })
+  }
+}
+
+exports.removeAdmin = async (req, res) => {
+  console.log("test")
+  try {
+    const adminData = { id: req.body.id, username: req.body.username }
+    await rootRepos.deleteAdmin(adminData)
+    return res.status(200).json({ message: `${adminData.username} removed` })
+  } catch (error) {
+    return res.status(400).json({ message: `failed ${error.message}` })
+  }
+}
+
+exports.updateAdmin = async (req, res) => {
+  try {
+    const id = req.body.id
+    const adminData = {
+      username: req.body.username,
+      password: req.body.password,
+      name: req.body.name,
+      updatedAt: new Date()
+    }
+    const adminUpdate = await rootRepos.updateAdmin(id, adminData)
+    return res.status(200).json({ message: "update success", data: adminUpdate })
   } catch (error) {
     return res.status(400).json({ message: `failed ${error.message}` })
   }
