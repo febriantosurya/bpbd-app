@@ -19,3 +19,17 @@ exports.getAdmins = async () => {
 exports.addAdmin = async (data) => {
   await Admin.create(data)
 }
+
+exports.deleteAdmin = async (adminData) => {
+  await Admin.destroy({ where: adminData })
+}
+
+exports.updateAdmin = async (id, adminData) => {
+  const admin = await Admin.findOne({ where: {id: id} })
+  admin.username = adminData.username
+  admin.password = adminData.password
+  admin.name = adminData.name
+  admin.updatedAt = adminData.updatedAt
+  admin.save()
+  return admin
+}
