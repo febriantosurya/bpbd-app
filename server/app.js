@@ -1,19 +1,15 @@
 const express = require('express')
-const Admin = require('./models/admin')
-const Root = require('./models/root')
+const User = require('./models/user')
 
 const app = express()
 
-const rootRoute = require('./routes/root')
-const adminRoute = require('./routes/admin')
+const userRoute = require('./routes/user')
 
 app.use(express.json())
 
-app.use('/api/v1/', rootRoute)
-app.use('/api/v1/auth', adminRoute)
+app.use('/api/v1/', userRoute)
 
 app.listen(5000, async () => {
   console.log("App is running on port 5000")
-  await Admin.sync({ alter: true })
-  await Root.sync({ alter: true })
+  await User.sync({ alter: true })
 })
