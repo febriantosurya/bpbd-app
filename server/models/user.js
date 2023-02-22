@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize')
 const sequelize = require('../configs/database')
 
-const Admin = sequelize.define('Admin', {
+const User = sequelize.define('User', {
   username: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -15,6 +15,10 @@ const Admin = sequelize.define('Admin', {
     type: DataTypes.STRING,
     allowNull: false,
   },
+  level: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
   createdAt: {
     allowNull: true,
     type: DataTypes.DATE
@@ -25,8 +29,8 @@ const Admin = sequelize.define('Admin', {
   }
 }, {
   sequelize,
-  tableName: "admins",
-  modelName: "Admin"
+  tableName: "users",
+  modelName: "User"
 })
 
-module.exports = Admin
+module.exports = User
