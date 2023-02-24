@@ -35,6 +35,10 @@ const Inventory = sequelize.define('Inventory', {
     type: DataTypes.STRING,
     allowNull: true
   },
+  year: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
   createdAt: {
     allowNull: true,
     type: DataTypes.DATE
