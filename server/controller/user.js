@@ -18,8 +18,12 @@ exports.login = async (req, res) => {
       }, `${process.env.ROOT_SECRET_KEY}`, { expiresIn: '1h' });
       return res.status(200).json({ message: "success", token: token });
     }
-    else if (user.type === 1) {
-      console.log("admin");
+    else if (user.level === 1) {
+      console.log('test')
+      const token = jwt.sign({
+        data: user
+      }, `${process.env.ADMIN_SECRET_KEY}`, { expiresIn: '1h' });
+      return res.status(200).json({ message: "success", token: token });
     };
   }
   catch (error) {
