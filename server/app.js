@@ -1,12 +1,15 @@
 const express = require('express')
+const swaggerUI = require('swagger-ui-express')
+
 const User = require('./models/user')
+const swaggerDocumentation = require('./documentation/documentation')
 
 const app = express()
 
 const userRoute = require('./routes/user')
 
 app.use(express.json())
-
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocumentation))
 app.use('/api/v1/', userRoute)
 
 app.listen(5000, async () => {

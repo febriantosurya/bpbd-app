@@ -83,7 +83,7 @@ exports.deleteAdmin = async (req, res) => {
     const username = { username: req.body.username }
     user = await userRepo.getUser(username)
     if (!user) {
-      return res.status(401).json({ message: "user not found" })
+      return res.status(404).json({ message: "user not found" })
     }
     else if (user.level == 0) {
       return res.status(403).json({ message: "root cannot be deleted" })
