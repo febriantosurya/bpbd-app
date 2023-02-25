@@ -19,7 +19,6 @@ exports.login = async (req, res) => {
       return res.status(200).json({ message: "success", token: token });
     }
     else if (user.level === 1) {
-      console.log('test')
       const token = jwt.sign({
         data: user
       }, `${process.env.ADMIN_SECRET_KEY}`, { expiresIn: '1h' });
