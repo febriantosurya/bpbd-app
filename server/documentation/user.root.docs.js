@@ -1,47 +1,3 @@
-const rootLogin = {
-  tags: ["Root"],
-  summary: "Login root user",
-  description: "This api is used to login root user, root can do CRUD for user level 1 (admin)",
-  requestBody: {
-    content: {
-      "application/json": {
-        schema: {
-          type: "object",
-          properties: {
-            username: {
-              type: "string",
-              description: "root username",
-              example: "root"
-            },
-            password: {
-              type: "string",
-              description: "password of the root",
-              example: "root"
-            }
-          }
-        }
-      }
-    }
-  },
-  responses: {
-    200: {
-      description: "root login success",
-      content: {
-        "application/json": {
-          type: "object",
-          example: {
-            message: "success",
-            token: "token"
-          }
-        }
-      }
-    },
-    400: {
-      description: "bad request"
-    }
-  }
-}
-
 const showAdmins = {
   tags: ["Root"],
   security: [{ bearerAuth: [] }],
@@ -231,9 +187,6 @@ const deleteAdmin = {
 }
 
 exports.rootDoc = {
-  "/api/v1/auth/root-login": {
-    post: rootLogin
-  },
   "/api/v1/root-add-admin": {
     post: addAdmin
   },
