@@ -41,8 +41,95 @@ const getInventoriesByYear = {
   }
 }
 
+const addInventory = {
+  tags: ["Admin"],
+  security: [{ bearerAuth: [] }],
+  summary: "Add inventory using admin",
+  description: "This API is used to add inventory to warehouse by year",
+  requestBody: {
+    content: {
+      "application/json": {
+        schema: {
+          type: "object",
+          properties: {
+            name: {
+              type: "string",
+              nullable: false,
+              description: "name of inventory to add",
+              example: "perahu"
+            },
+            brand: {
+              type: "string",
+              nullable: true,
+              description: "brand of inventory to add",
+              example: "dolphin"
+            },
+            quantity: {
+              type: "int",
+              nullable: false,
+              description: "quantity of inventory to add",
+              example: 3
+            },
+            unit: {
+              type: "string",
+              nullable: true,
+              description: "unit kind of inventory",
+              example: "pasang"
+            },
+            condition: {
+              type: "string",
+              nullable: true,
+              description: "condition of inventory to add",
+              example: "baik"
+            },
+            note: {
+              type: "string",
+              nullable: true,
+              description: "note for inventory",
+              example: "perahu sedang berada di sarangan"
+            },
+            source: {
+              type: "string",
+              nullable: true,
+              description: "source of inventory",
+              example: "apbd"
+            },
+            year: {
+              type: "int",
+              nullable: false,
+              description: "year of inventory to add",
+              example: 2022
+            }
+          }
+        }
+      }
+    }
+  },
+  responses: {
+    200: {
+      description: "success",
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            example: {
+              message: "data added"
+            }
+          }
+        }
+      }
+    },
+    400: {
+      description: "bad request"
+    }
+  }
+}
+
 exports.invenDoc = {
   "/api/v1/inventory/{year}": {
     get: getInventoriesByYear
+  },
+  "/api/v1/inventory/add": {
+    post: addInventory
   }
 }
