@@ -22,11 +22,34 @@ exports.addInventory = async (req, res) => {
       note: req.body.note,
       source: req.body.source,
       year: req.body.year,
-      createdAt: new Date(),
-      updatedAt: new Date()
+      createdAt: new Date()
     };
-    await inventoryRepo.addInventories(data);
+    await inventoryRepo.addInventory(data);
     return res.status(200).json({ message: "data added" })
+  }
+  catch (error) {
+    return res.status(400).json({ message: `failed ${error.message}` })
+  }
+}
+
+exports.updateInventory = async (req, res) => {
+  try {
+    const id = { id: req.body.id };
+    const data = {
+      name: req.body.name,
+      brand: req.body.brand,
+      quantity: req.body.quantity,
+      unit: req.body.unit,
+      condition: req.body.condition,
+      note: req.body.note,
+      source: req.body.source,
+      year: req.body.year
+    };
+    result = await inventoryRepo.updateInventory(id, data);
+    if (!result) {
+      return res.status(401).json({ message: "inventory not found" })
+    }
+    return res.status(200).json({ message: "update success" });
   }
   catch (error) {
     return res.status(400).json({ message: `failed ${error.message}` })
