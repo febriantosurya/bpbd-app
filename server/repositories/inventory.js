@@ -9,3 +9,7 @@ exports.getInventories = async (year) => {
     return null
   }
 }
+
+exports.addInventories = async (data) => {
+  await Inventory.create(data)
+}

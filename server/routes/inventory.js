@@ -5,5 +5,6 @@ const inventoryController = require('../controller/inventory');
 const router = express.Router();
 
 router.get('/inventory/:year', middlware.checkAdminAuthorization, inventoryController.getInventoryByYear);
+router.post('/inventory/add', middlware.checkAdminAuthorization, inventoryController.addInventory);
 
 module.exports = router;
