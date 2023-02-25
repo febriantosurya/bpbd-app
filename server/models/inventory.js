@@ -11,7 +11,7 @@ const Inventory = sequelize.define('Inventory', {
     allowNull: false,
     unique: true
   },
-  merk: {
+  brand: {
     type: DataTypes.STRING,
     allowNull: true
   },
