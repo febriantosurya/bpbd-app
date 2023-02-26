@@ -30,3 +30,7 @@ exports.updateInventory = async (id, data) => {
   inventory.updatedAt = new Date();
   inventory.save();
 };
+
+exports.deleteInventory = async (id) => {
+  await Inventory.destroy({ where: id });
+}

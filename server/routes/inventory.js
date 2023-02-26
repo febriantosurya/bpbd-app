@@ -7,5 +7,6 @@ const router = express.Router();
 router.get('/inventory/:year', middlware.checkAdminAuthorization, inventoryController.getInventoryByYear);
 router.post('/inventory/add', middlware.checkAdminAuthorization, inventoryController.addInventory);
 router.put('/inventory/update', middlware.checkAdminAuthorization, inventoryController.updateInventory);
+router.delete('/inventory/delete', middlware.checkAdminAuthorization, inventoryController.deleteInventory);
 
 module.exports = router;

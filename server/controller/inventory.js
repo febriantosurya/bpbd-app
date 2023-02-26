@@ -25,7 +25,7 @@ exports.addInventory = async (req, res) => {
       createdAt: new Date()
     };
     await inventoryRepo.addInventory(data);
-    return res.status(200).json({ message: "data added" })
+    return res.status(200).json({ message: "inventory successfully added" })
   }
   catch (error) {
     return res.status(400).json({ message: `failed ${error.message}` })
@@ -53,5 +53,16 @@ exports.updateInventory = async (req, res) => {
   }
   catch (error) {
     return res.status(400).json({ message: `failed ${error.message}` })
+  }
+}
+
+exports.deleteInventory = async (req, res) => {
+  try {
+    const id = { id: req.body.id };
+    await inventoryRepo.deleteInventory(id);
+    return res.status(400).json({ message: "inventory successfully deleted" });
+  }
+  catch (error) {
+    return res.status(400).json({ message: `failed ${error.message}` });
   }
 }
