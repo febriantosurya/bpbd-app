@@ -1,0 +1,224 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
+
+.container-login {
+    display: flex;
+    flex-wrap: wrap;
+    height: 100vh;
+    max-width: 100%;
+    // padding: 15px;/
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    background: #F89C35;
+    background: -webkit-linear-gradient(-135deg, #F89C35, #F86435);
+    background: -o-linear-gradient(-135deg, #F89C35, #F86435);
+    background: -moz-linear-gradient(-135deg, #F89C35, #F86435);
+    background: linear-gradient(-135deg, #F89C35, #F86435);
+}
+
+.wrap-login {
+    width: 70%;
+    height: 80%;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    background: #fff;
+}
+
+.logo {
+    margin-top: auto;
+    margin-bottom: auto;
+    flex: 1;
+
+    .img-logo {
+        max-width: 100%;
+        width: 65%;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+.title-login {
+    font-weight: bold;
+    font-size: 30px;
+    text-align: center;
+    margin: auto;
+    color: #444;
+    text-transform: uppercase;
+    font-family: 'Poppins', sans-serif;
+}
+
+.form-login {
+    // width: 456px;
+    flex: 1;
+    margin-top: auto;
+    margin-bottom: auto;
+    // margin-right: 70px;
+
+}
+
+.input-wrapper {
+    margin: 0 auto;
+    text-align: center;
+    // width: 100%;
+    // padding-right: 25px;
+}
+
+.input-lgn {
+    max-width: 100%;
+    width: 70%;
+    height: 50px;
+    border-radius: 25px;
+    border-style: none;
+    background: #FFE1C0;
+    padding-left: 50px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.button-wrapper {
+    text-align: center;
+
+    .btn-login {
+        // max-width: 100%;
+        text-align: center;
+        width: 60%;
+        height: 50px;
+        font-size: 16px;
+        font-family: 'Poppins', sans-serif;
+        background-color: #FF702E;
+        color: white;
+        border-radius: 25px;
+        border-style: none;
+        cursor: pointer;
+    }
+}
+
+.btn-login:hover {
+    background-color: #333;
+    will-change: transform;
+    transition-property: transform;
+    transition-duration: 600ms;
+    transition-timing-function: ease;
+    transform: scale(1.1);
+}
+
+.link:hover {
+    color: #ff621a;
+    font-weight: bold;
+}
+
+// ==============Resposive============
+
+@media screen and (max-width : 800px) {
+    .wrap-login {
+        width: 90%;
+        height: 600px;
+        border-radius: 10px;
+        overflow: hidden;
+        display: grid;
+        background: #fff;
+    }
+
+    .input-lgn {
+        // background-color: #213d00;
+        width: 70%;
+        font-size: 16px;
+    }
+
+    .form-login {
+        display: grid;
+    }
+
+    .input-wrapper {
+        width: 80%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .button-wrapper {
+        width: 60%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .logo {
+        display: grid;
+        // flex-direction: column;
+
+        .img-logo {
+            max-width: 100%;
+            width: 25%;
+        }
+    }
+}
+
+@media screen and (max-width : 768px) {
+    .wrap-login {
+        width: 90%;
+        height: 600px;
+        padding-top: 5px;
+    }
+
+    .input-lgn {
+        // background-color: #213d00;
+        width: 70%;
+    }
+
+    .form-login {
+        display: grid;
+        padding-bottom: 15px;
+    }
+
+
+    .input-wrapper {
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .button-wrapper {
+        width: 90%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .logo {
+        display: grid;
+        // flex-direction: column;
+
+        .img-logo {
+            max-width: 100%;
+            width: 35%;
+        }
+    }
+}
+
+@media screen and (max-width : 500px) {
+    .wrap-login {
+        width: 90%;
+    }
+
+    .logo {
+        display: none;
+    }
+
+    .input-lgn {
+        width: 70%;
+    }
+
+    .button-wrapper {
+        padding: 0px;
+
+        .btn-login {
+            // max-width: 100%;
+            width: 80%;
+            height: 50px;
+        }
+    }
+
+    .title-login {
+        margin-bottom: 10%;
+    }
+}
