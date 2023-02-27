@@ -1,3 +1,5 @@
+const { invenDoc } = require("./inventory.docs");
+const { loginDoc } = require("./user.auth.docs");
 const { rootDoc } = require("./user.root.docs");
 
 const swaggerDocumentation = {
@@ -21,12 +23,22 @@ const swaggerDocumentation = {
   },
   tags: [
     {
+      name: "Auth",
+      description: "To get token session"
+    },
+    {
       name: "Root",
       description: "Everything root can do"
+    },
+    {
+      name: "Admin",
+      description: "Everything admin can do"
     }
   ],
   paths: {
-    ...rootDoc
+    ...loginDoc,
+    ...rootDoc,
+    ...invenDoc
   }
 }
 
