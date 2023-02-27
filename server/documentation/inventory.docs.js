@@ -229,6 +229,48 @@ const updateInventory = {
   }
 }
 
+const deleteInventory = {
+  tags: ["Admin"],
+  summary: "Delete inventory",
+  security: [{ bearerAuth: [] }],
+  description: "This API is used to delete an inventory",
+  requestBody: {
+    content: {
+      "application/json": {
+        schema: {
+          type: "object",
+          properties: {
+            id: {
+              type: "int",
+              nullable: false,
+              description: "ID of inventory to delete",
+              example: 2
+            }
+          }
+        }
+      }
+    }
+  },
+  responses: {
+    200: {
+      description: "success",
+      content: {
+        "application/json": {
+          schema: {
+            type: "object",
+            example: {
+              message: "inventory successfully deleted"
+            }
+          }
+        }
+      }
+    },
+    400: {
+      description: "bad request"
+    }
+  }
+}
+
 exports.invenDoc = {
   "/api/v1/inventory/{year}": {
     get: getInventoriesByYear
@@ -238,5 +280,8 @@ exports.invenDoc = {
   },
   "/api/v1/inventory/update": {
     put: updateInventory
+  },
+  "/api/v1/inventory/delete": {
+    delete: deleteInventory
   }
 }
