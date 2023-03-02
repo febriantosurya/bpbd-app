@@ -1,5 +1,5 @@
 const getInventoriesByYear = {
-  tags: ["Admin"],
+  tags: ["Admin_Inventory"],
   summary: "Get inventories",
   security: [{ bearerAuth: [] }],
   description: "This API is used to get inventories stored at warehouse by year",
@@ -42,7 +42,7 @@ const getInventoriesByYear = {
 }
 
 const addInventory = {
-  tags: ["Admin"],
+  tags: ["Admin_Inventory"],
   security: [{ bearerAuth: [] }],
   summary: "Add inventory using admin",
   description: "This API is used to add inventory to warehouse by year",
@@ -126,7 +126,7 @@ const addInventory = {
 }
 
 const updateInventory = {
-  tags: ["Admin"],
+  tags: ["Admin_Inventory"],
   security: [{ bearerAuth: [] }],
   summary: "Update inventory",
   description: "This API is used to update inventory by using ID",
@@ -230,7 +230,7 @@ const updateInventory = {
 }
 
 const deleteInventory = {
-  tags: ["Admin"],
+  tags: ["Admin_Inventory"],
   summary: "Delete inventory",
   security: [{ bearerAuth: [] }],
   description: "This API is used to delete an inventory",
