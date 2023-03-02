@@ -31,7 +31,7 @@ const swaggerDocumentation = {
       description: "Everything root can do"
     },
     {
-      name: "Admin",
+      name: "Admin_Inventory",
       description: "Everything admin can do"
     }
   ],
