@@ -1,4 +1,3 @@
-const { invenDoc } = require("./inventory.docs");
 const { loginDoc } = require("./user.auth.docs");
 const { rootDoc } = require("./user.root.docs");
 
@@ -38,7 +37,6 @@ const swaggerDocumentation = {
   paths: {
     ...loginDoc,
     ...rootDoc,
-    ...invenDoc
   }
 }
 
