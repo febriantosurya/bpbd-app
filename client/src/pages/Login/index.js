@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import login from '../../api/auth/login'
 import { ImageLogo } from '../../assets'
 import { Button, Gap, Input } from '../../components'
@@ -13,8 +13,9 @@ function Login() {
         const response = await login(username, password);
         if (response.data?.message === "success") {
             localStorage.setItem("token", response.data.token);
+            // console.log(response.data.token)
             if (response.data.level === 0) {
-                window.location = "/root"
+                window.location = "/kelolaadmin"
             } else if (response.data.level === 1) {
                 window.location = "/"
             }
@@ -29,7 +30,7 @@ function Login() {
         <div className='container-login'>
             <div className='wrap-login'>
                 <div className='logo'>
-                    <img src={ImageLogo} className="img-logo" />
+                    <img src={ImageLogo} alt="img" className="img-logo" />
                 </div>
 
                 <form className='form-login' onSubmit={handleLogin}>
@@ -40,18 +41,20 @@ function Login() {
                         placeholder="Username"
                         defaultValue={username}
                         onChange={(e) => setUsername(e.target.value)} />
+                    <Gap height={10} />
                     <Input
                         className="input-lgn"
                         placeholder="Password"
                         defaultValue={password}
                         onChange={(e) => setPassword(e.target.value)} />
-                    <Gap height={25} />
+
+                    <Gap height={40} />
+
                     <Button
                         className="btn-login"
-                        title="Login" />
+                        title="Login" 
+                        />
                     <Gap height={25} />
-                    {/* <Link className="link-log" title="Create Your Account Here" /> */}
-
                 </form>
             </div>
         </div>
