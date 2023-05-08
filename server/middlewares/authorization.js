@@ -12,13 +12,12 @@ exports.checkRootAuthorization = (req, res, next) => {
     authSplit[1]
   ]
   if (authType !== 'Bearer') {
-    res.status(401).json({ message: "invalid authorization" })
-    return
+    return res.status(401).json({ message: "invalid authorization" })
   }
   try {
     const user = jwt.verify(authToken, process.env.ROOT_SECRET_KEY)
     req.user = user.data
-    next()
+    next();
   } catch (error) {
     return res.status(400).json({ message: `failed ${error.message}` })
   }
@@ -35,13 +34,12 @@ exports.checkAdminAuthorization = (req, res, next) => {
     authSplit[1]
   ]
   if (authType !== 'Bearer') {
-    res.status(401).json({ message: "invalid authorization" })
-    return
+    return res.status(401).json({ message: "invalid authorization" })
   }
   try {
     const user = jwt.verify(authToken, process.env.ADMIN_SECRET_KEY)
     req.user = user.data
-    next()
+    next();
   } catch (error) {
     return res.status(400).json({ message: `failed ${error.message}` })
   }

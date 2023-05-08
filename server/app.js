@@ -8,12 +8,16 @@ const app = express();
 
 const userRoute = require('./routes/user');
 const barangMasukRoute = require('./routes/barangMasuk');
+const barangKeluarRoute = require('./routes/barangKeluar');
+const barangStockRoute = require('./routes/barangStock');
 
 app.use(express.json());
 app.use(cors());
 app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocumentation));
 app.use('/api/v1/', userRoute);
 app.use('/api/v1/inventory', barangMasukRoute);
+app.use('/api/v1/inventory', barangKeluarRoute);
+app.use('/api/v1/inventory', barangStockRoute);
 
 const User = require('./models/user');
 
