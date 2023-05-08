@@ -65,15 +65,15 @@ exports.addAdmin = async (req, res) => {
 
 exports.updateAdmin = async (req, res) => {
   try {
-    const id = { id: req.body.id }
     const data = {
+      id: req.body.id,
       username: req.body.username,
       password: req.body.password,
       name: req.body.name,
       level: 1,
       updatedAt: new Date()
     }
-    await userRepo.updateUser(id, data)
+    await userRepo.updateUser(data)
     return res.status(200).json({ message: "user updated" })
   }
   catch (error) {

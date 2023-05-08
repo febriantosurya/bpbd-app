@@ -1,35 +1,47 @@
-const InvBarang = require('../models/invBarang');
-const InvGudangAktif = require('../models/invGudangAktif');
-const invTransaksiGudang = require('../models/invTransaksiGudang');
+const repo = require('./repoBarang');
+const utils = require('./utils');
 
-const utils = require('./invUtils');
-
-exports.setInTransaction = async () => {
-  let thisMonth = (new Date()).getMonth() + 1;
-  let pastMonth = (new Date()).getMonth();
+exports.setShowInTransaction = async (month, year, status) => {
+  const pastMonth = month - 1;
   if (pastMonth == 0) pastMonth = 12;
-
-  let result = await utils.getInTransaction(thisMonth, 'masuk');
+  let result = await repo.getTransaction(month, year, status);
   for (let i = 0; i < result.length; i ++) {
-    volPastMonth = await utils.getVolumePastMonth(pastMonth, result[i].id);
-    volThisMonth = await utils.sumVolumeTransaction(thisMonth, 'masuk', result[i].id);
-    result[i].dataValues.stokBulanLalu = volPastMonth;
-    if (volThisMonth) {
+    volPastMonth = await repo.getVolumePastMonth(pastMonth, year, result[i].id);
+    volThisMonth = await repo.sumVolumeTransaction(month, year, status, result[i].id);
+    if (volPastMonth && volThisMonth) {
+      result[i].dataValues.stokBulanLalu = volPastMonth;
       result[i].dataValues.totalJumlah = parseInt(volThisMonth) + parseInt(volPastMonth);
     }
     else {
-      result[i].dataValues.totalJumlah = parseInt(volPastMonth);
-    }
-  }
+      if (volPastMonth && !(volThisMonth)) {
+        result[i].dataValues.stokBulanLalu = volPastMonth;
+        result[i].dataValues.totalJumlah = volPastMonth;
+      }
+      if (volThisMonth && !(volPastMonth)) {
+        result[i].dataValues.stokBulanLalu = null;
+        result[i].dataValues.totalJumlah = volThisMonth;
+      }
+    };
+  };
   return result;
 };
 
-exports.setAddInTransaction = async (data, idBarang) => {
-  await utils.addInTransaction(data, idBarang);
+exports.setAddInTransaction = async (data) => {
+  await repo.addTransaction(data);
+  await utils.updateVolumeInvenActive();
   return;
 };
 
 exports.setEditInTransaction = async (data) => {
-  await utils.editInTransaction(data);
+  await repo.editTransaction(data);
+  await utils.updateVolumeInvenActive();
   return;
 };
+
+exports.setAddNewItem = async (data) => {
+  const result = await repo.addNewItem(data);
+  data.idBarang = result.dataValues.id;
+  await repo.addTransaction(data);
+  await repo.addInvenActive(data);
+  return;
+}
