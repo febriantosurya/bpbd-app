@@ -14,5 +14,5 @@ Start the server
 ```
 REST API Documentation
 ```bash
-  /api-docs/
+  https://documenter.getpostman.com/view/27176611/2s93eYVXzc
 ```
