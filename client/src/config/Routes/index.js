@@ -1,18 +1,16 @@
-import React from 'react'
-import { BrowserRouter as Router, Routes as Switch, Route } from 'react-router-dom'
-import { Login } from '../../pages'
+import { createBrowserRouter } from "react-router-dom";
+import { KelolaAdmin, Login } from '../../pages'
+import checkLoggedMiddleware from "../../middleware/checkLoggedMiddleware";
+import hasLoggedMiddleware from "../../middleware/hasLoggedMiddleware";
 
-const Routes = () => {
-    return (
-        <Router>
-            <Switch>
-                <Route
-                    path='/login'
-                    element={<Login />}>
-                </Route>
-            </Switch>
-        </Router>
-    )
-}
-
-export default Routes
+const router = createBrowserRouter([
+    {
+        path: "/login",
+        element: hasLoggedMiddleware(<Login />)
+    },
+    {
+        path: "/kelolaadmin",
+        element: checkLoggedMiddleware(<KelolaAdmin />)
+    }
+]);
+export default router;

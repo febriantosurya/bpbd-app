@@ -1,0 +1,41 @@
+.btn-primary {
+    background-color: #F89C35;
+    width: 17%;
+    height: 43px;
+    font-size: medium;
+    font-family: 'Poppins';
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: black;
+    will-change: transform;
+    transition-property: transform;
+    transition-duration: 600ms;
+    transition-timing-function: ease;
+}
+
+//Responsive
+@media screen and (max-width : 850px) {
+    .btn-primary{
+        width: 27%;
+    }
+}
+
+@media screen and (max-width : 650px) {
+    .btn-primary {
+        width: 30%;
+    }
+}
+
+@media screen and (max-width : 550px) {
+    .btn-primary {
+        width: 35%;
+    }
+}
+
+@media screen and (max-width : 400px) {
+    .btn-primary {
+        width: 45%;
+    }
+}

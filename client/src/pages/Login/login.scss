@@ -1,19 +1,14 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap');
 
 .container-login {
     display: flex;
     flex-wrap: wrap;
     height: 100vh;
     max-width: 100%;
-    // padding: 15px;/
     justify-content: center;
     align-items: center;
     overflow: hidden;
-    background: #F89C35;
-    background: -webkit-linear-gradient(-135deg, #F89C35, #F86435);
-    background: -o-linear-gradient(-135deg, #F89C35, #F86435);
-    background: -moz-linear-gradient(-135deg, #F89C35, #F86435);
-    background: linear-gradient(-135deg, #F89C35, #F86435);
+    background: linear-gradient(306.2deg, #FF702E 25.42%, #F89C35 89.37%);
 }
 
 .wrap-login {
@@ -40,33 +35,27 @@
 }
 
 .title-login {
-    font-weight: bold;
     font-size: 30px;
     text-align: center;
     margin: auto;
-    color: #444;
+    color: #222;
     text-transform: uppercase;
     font-family: 'Poppins', sans-serif;
+    font-weight: 700;
 }
 
 .form-login {
-    // width: 456px;
     flex: 1;
     margin-top: auto;
     margin-bottom: auto;
-    // margin-right: 70px;
-
 }
 
 .input-wrapper {
     margin: 0 auto;
     text-align: center;
-    // width: 100%;
-    // padding-right: 25px;
 }
 
 .input-lgn {
-    max-width: 100%;
     width: 70%;
     height: 50px;
     border-radius: 25px;
@@ -77,26 +66,20 @@
     font-weight: bold;
 }
 
-.button-wrapper {
-    text-align: center;
 
-    .btn-login {
-        // max-width: 100%;
-        text-align: center;
-        width: 60%;
-        height: 50px;
-        font-size: 16px;
-        font-family: 'Poppins', sans-serif;
-        background-color: #FF702E;
-        color: white;
-        border-radius: 25px;
-        border-style: none;
-        cursor: pointer;
-    }
+.btn-login {
+    font-family: 'Poppins', sans-serif;
+    margin: auto;
+    width: 70%;
+    height: 50px;
+    border-radius: 25px;
+    border-style: none;
+    cursor: pointer;
+    background: linear-gradient(90deg, #F89C35 0%, #FF702E 98.96%);
 }
 
 .btn-login:hover {
-    background-color: #333;
+    background-color: black;
     will-change: transform;
     transition-property: transform;
     transition-duration: 600ms;
@@ -104,12 +87,7 @@
     transform: scale(1.1);
 }
 
-.link:hover {
-    color: #ff621a;
-    font-weight: bold;
-}
-
-// ==============Resposive============
+// ==============Resposive using media screen============
 
 @media screen and (max-width : 800px) {
     .wrap-login {
@@ -122,7 +100,6 @@
     }
 
     .input-lgn {
-        // background-color: #213d00;
         width: 70%;
         font-size: 16px;
     }
@@ -162,7 +139,6 @@
     }
 
     .input-lgn {
-        // background-color: #213d00;
         width: 70%;
     }
 
@@ -186,7 +162,6 @@
 
     .logo {
         display: grid;
-        // flex-direction: column;
 
         .img-logo {
             max-width: 100%;
