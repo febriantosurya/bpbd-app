@@ -31,11 +31,20 @@ exports.login = async (req, res) => {
 };
 
 //==================USERS==================
-exports.showUser = async (req, res) => {
+exports.showAdmin = async (req, res) => {
   try {
     admins = await userRepo.getUsers({ level: 1 })
+    return res.status(200).json({ message: "success", data: admins})
+  }
+  catch (error) {
+    return res.status(400).json({ message: `failed ${error.message}` })
+  }
+}
+
+exports.showUserReadOnly = async (req, res) => {
+  try {
     users = await userRepo.getUser({ level: 2 })
-    return res.status(200).json({ message: "success", data: { admins: admins, users: users }})
+    return res.status(200).json({ message: "success", data: users})
   }
   catch (error) {
     return res.status(400).json({ message: `failed ${error.message}` })
