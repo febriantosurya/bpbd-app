@@ -30,24 +30,25 @@ exports.login = async (req, res) => {
   };
 };
 
-//==================ADMINS==================
-exports.showAdmins = async (req, res) => {
+//==================USERS==================
+exports.showUser = async (req, res) => {
   try {
     admins = await userRepo.getUsers({ level: 1 })
-    return res.status(200).json({ message: "success", data: admins })
+    users = await userRepo.getUser({ level: 2 })
+    return res.status(200).json({ message: "success", data: { admins: admins, users: users }})
   }
   catch (error) {
     return res.status(400).json({ message: `failed ${error.message}` })
   }
 }
 
-exports.addAdmin = async (req, res) => {
+exports.addUser = async (req, res) => {
   try {
     const data = {
       username: req.body.username,
       password: req.body.password,
       name: req.body.name,
-      level: 1,
+      level: req.body.level,
       createdAt: new Date(),
       updatedAt: new Date()
     }
@@ -63,25 +64,24 @@ exports.addAdmin = async (req, res) => {
   }
 }
 
-exports.updateAdmin = async (req, res) => {
+exports.updateUser = async (req, res) => {
   try {
     const data = {
       id: req.body.id,
       username: req.body.username,
       password: req.body.password,
       name: req.body.name,
-      level: 1,
       updatedAt: new Date()
     }
     await userRepo.updateUser(data)
     return res.status(200).json({ message: "user updated" })
   }
   catch (error) {
-    return res.status(400).json({ message: `failed ${error}` })
+    return res.status(400).json({ message: `failed ${error.message}` })
   }
 }
 
-exports.deleteAdmin = async (req, res) => {
+exports.deleteUser = async (req, res) => {
   try {
     const username = { username: req.body.username }
     user = await userRepo.getUser(username)

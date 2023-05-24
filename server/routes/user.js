@@ -5,9 +5,9 @@ const middlware = require('../middlewares/authorization')
 const router = express.Router()
 
 router.post('/auth/login', userController.login)
-router.post('/root-add-admin', middlware.checkRootAuthorization, userController.addAdmin)
-router.get('/root-mainpage', middlware.checkRootAuthorization, userController.showAdmins)
-router.delete('/root-remove-admin', middlware.checkRootAuthorization, userController.deleteAdmin)
-router.put('/root-update-admin', middlware.checkRootAuthorization, userController.updateAdmin)
+router.post('/root-add-user', middlware.checkRootAuthorization, userController.addUser)
+router.get('/root-mainpage', middlware.checkRootAuthorization, userController.showUser)
+router.delete('/root-remove-user', middlware.checkRootAuthorization, userController.deleteUser)
+router.put('/root-update-user', middlware.checkRootAuthorization, userController.updateUser)
 
 module.exports = router
