@@ -43,7 +43,7 @@ exports.showAdmin = async (req, res) => {
 
 exports.showUserReadOnly = async (req, res) => {
   try {
-    users = await userRepo.getUser({ level: 2 })
+    users = await userRepo.getUsers({ level: 2 })
     return res.status(200).json({ message: "success", data: users})
   }
   catch (error) {
