@@ -47,30 +47,30 @@ exports.editRegBencana = async (req, res) => {
       korbanHewan: req.body.korbanHewan,
       korbanHartaBenda: req.body.korbanHartaBenda,
       totalKerugian: req.body.totalKerugian
-    }
+    };
     const dataRecord = await regBencanaRepo.getRegBencana(data.id);
     if (!dataRecord) {
       return res.status(404).json({ message: 'not found' });
-    }
+    };
     await regBencanaRepo.editRegisterBencana(data);
     return res.status(200).json({ message: 'success' });
   }
   catch (error) {
-    return res.status(400).json({ message: error.message })
+    return res.status(400).json({ message: error.message });
   };
 };
 
 exports.deleteRegBencana = async (req, res) => {
   try {
-    const id = req.body.id
+    const id = req.body.id;
     const dataRecord = await regBencanaRepo.getRegBencana(id);
     if (!dataRecord) {
-      return res.status(404).json({ message: 'not found' })
-    }
+      return res.status(404).json({ message: 'not found' });
+    };
     await regBencanaRepo.deleteRegBencana(id);
     return res.status(200).json({ message: 'success' });
   }
   catch (error) {
-    return res.status(400).json({ message: error.message })
-  }
-}
+    return res.status(400).json({ message: error.message });
+  };
+};

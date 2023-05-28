@@ -1,5 +1,5 @@
-const { DataTypes } = require('sequelize')
-const sequelize = require('../configs/database')
+const { DataTypes } = require('sequelize');
+const sequelize = require('../configs/database');
 
 const RegBencana = sequelize.define('RegBencana', {
   jenisBencana: {

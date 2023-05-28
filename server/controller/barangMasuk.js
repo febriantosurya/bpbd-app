@@ -18,7 +18,7 @@ exports.addInTransaction = async (req, res) => {
       nama: req.body.nama,
       tanggal: new Date(),
       idBarang: req.body.idBarang
-    }
+    };
     await barangMasukRepo.setAddInTransaction(data);
     return res.status(200).json({ message: 'success' });
   }

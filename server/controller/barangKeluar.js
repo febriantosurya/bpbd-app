@@ -11,8 +11,8 @@ exports.showOutTransaction = async (req, res) => {
   }
   catch (error) {
     return res.status(400).json({ message: `error ${error.message}` });
-  }
-}
+  };
+};
 
 exports.addOutTransaction = async (req, res) => {
   try {
@@ -22,7 +22,7 @@ exports.addOutTransaction = async (req, res) => {
       nama: req.body.nama,
       tanggal: new Date(),
       idBarang: req.body.idBarang
-    }
+    };
     await barangKeluarRepo.setAddOutTransaction(data);
     return res.status(200).json({ message: 'success' });
   }
