@@ -32,30 +32,30 @@ exports.login = async (req, res) => {
     };
   }
   catch (error) {
-    return res.status(400).json({ message: `failed ${error.message}` })
+    return res.status(400).json({ message: `failed ${error.message}` });
   };
 };
 
 //==================USERS==================
 exports.showAdmin = async (req, res) => {
   try {
-    admins = await userRepo.getUsers({ level: 1 })
-    return res.status(200).json({ message: "success", data: admins})
+    admins = await userRepo.getUsers({ level: 1 });
+    return res.status(200).json({ message: "success", data: admins });
   }
   catch (error) {
-    return res.status(400).json({ message: `failed ${error.message}` })
-  }
-}
+    return res.status(400).json({ message: `failed ${error.message}` });
+  };
+};
 
 exports.showUserReadOnly = async (req, res) => {
   try {
-    users = await userRepo.getUsers({ level: 2 })
-    return res.status(200).json({ message: "success", data: users})
+    users = await userRepo.getUsers({ level: 2 });
+    return res.status(200).json({ message: "success", data: users });
   }
   catch (error) {
-    return res.status(400).json({ message: `failed ${error.message}` })
-  }
-}
+    return res.status(400).json({ message: `failed ${error.message}` });
+  };
+};
 
 exports.addUser = async (req, res) => {
   try {
@@ -66,18 +66,18 @@ exports.addUser = async (req, res) => {
       level: req.body.level,
       createdAt: new Date(),
       updatedAt: new Date()
-    }
-    const username = await userRepo.getUser({ username: data.username })
+    };
+    const username = await userRepo.getUser({ username: data.username });
     if (username !== null) {
-      return res.status(400).json({ message: "failed username has been used" })
-    }
-    await userRepo.addUser(data)
-    return res.status(200).json({ message: "new user added" })
+      return res.status(400).json({ message: "failed username has been used" });
+    };
+    await userRepo.addUser(data);
+    return res.status(200).json({ message: "new user added" });
   }
   catch (error) {
-    return res.status(400).json({ message: `failed ${error.message}` })
-  }
-}
+    return res.status(400).json({ message: `failed ${error.message}` });
+  };
+};
 
 exports.updateUser = async (req, res) => {
   try {
@@ -87,29 +87,29 @@ exports.updateUser = async (req, res) => {
       password: req.body.password,
       name: req.body.name,
       updatedAt: new Date()
-    }
-    await userRepo.updateUser(data)
-    return res.status(200).json({ message: "user updated" })
+    };
+    await userRepo.updateUser(data);
+    return res.status(200).json({ message: "user updated" });
   }
   catch (error) {
-    return res.status(400).json({ message: `failed ${error.message}` })
-  }
-}
+    return res.status(400).json({ message: `failed ${error.message}` });
+  };
+};
 
 exports.deleteUser = async (req, res) => {
   try {
-    const username = { username: req.body.username }
-    user = await userRepo.getUser(username)
+    const username = { username: req.body.username };
+    user = await userRepo.getUser(username);
     if (!user) {
-      return res.status(404).json({ message: "user not found" })
+      return res.status(404).json({ message: "user not found" });
     }
     else if (user.level == 0) {
-      return res.status(403).json({ message: "root cannot be deleted" })
-    }
-    await userRepo.deleteUser(username)
-    return res.status(200).json({ message: "delete success" })
+      return res.status(403).json({ message: "root cannot be deleted" });
+    };
+    await userRepo.deleteUser(username);
+    return res.status(200).json({ message: "delete success" });
   }
   catch (error) {
-    return res.status(400).json({ message: `failed ${error.message}` })
-  }
-}
+    return res.status(400).json({ message: `failed ${error.message}` });
+  };
+};

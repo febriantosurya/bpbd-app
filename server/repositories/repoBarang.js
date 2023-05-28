@@ -3,7 +3,7 @@ const InvGudangAktif = require('../models/invGudangAktif');
 const InvGudangLama = require('../models/invGudangLama');
 const InvTransaksiGudang = require('../models/invTransaksiGudang');
 const sequelize = require('../configs/database');
-const { Op, QueryTypes, where } = require('sequelize');
+const { Op } = require('sequelize');
 
 // show data
 exports.getTransaction = async (month, year, statusBarang) => {
@@ -24,7 +24,7 @@ exports.getTransaction = async (month, year, statusBarang) => {
     }
   });
   return result;
-}
+};
 
 exports.sumVolumeTransaction = async (month, year, statusBarang, idBarang) => {
   const result = await InvTransaksiGudang.findOne({
@@ -42,7 +42,7 @@ exports.sumVolumeTransaction = async (month, year, statusBarang, idBarang) => {
     raw: true
   });
   return result.sum;
-}
+};
 
 exports.getVolumePastMonth = async (pastMonth, year, idBarang) => {
   const result = await InvGudangLama.findOne({
@@ -62,8 +62,8 @@ exports.getVolumePastMonth = async (pastMonth, year, idBarang) => {
   }
   else {
     return null;
-  }
-}
+  };
+};
 
 // add & edit data
 exports.addTransaction = async (data) => {
@@ -148,9 +148,9 @@ exports.updateInvenActive = async (data) => {
     result.jumlah = data.jumlah;
     result.save()
     return result;
-  }
+  };
   return null;
-}
+};
 
 exports.addInvenDump = async (data) => {
   await InvGudangLama.create({
@@ -158,9 +158,9 @@ exports.addInvenDump = async (data) => {
     jumlah: data.jumlah,
     keterangan: data.keterangan,
     InvBarangId: data.idBarang
-  })
+  });
   return;
-}
+};
 
 exports.addNoteToInventory = async (data) => {
   await InvGudangAktif.update({
@@ -170,7 +170,7 @@ exports.addNoteToInventory = async (data) => {
     where: { id: data.id }
   });
   return;
-}
+};
 
 // CHECK MONTH AND UPDATE MONTH FROM INVEN ACTIVE
 exports.getAllInvenActive = async (data) => {

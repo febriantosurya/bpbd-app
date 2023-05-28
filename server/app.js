@@ -1,8 +1,5 @@
 const express = require('express');
 const cors = require('cors')
-const swaggerUI = require('swagger-ui-express');
-
-const swaggerDocumentation = require('./documentation/documentation');
 
 const app = express();
 
@@ -15,7 +12,6 @@ const readOnlyRoute = require('./routes/readOnly');
 
 app.use(express.json());
 app.use(cors());
-app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerDocumentation));
 app.use('/api/v1/', userRoute);
 app.use('/api/v1/inventory', barangMasukRoute);
 app.use('/api/v1/inventory', barangKeluarRoute);
