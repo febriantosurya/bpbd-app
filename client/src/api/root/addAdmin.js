@@ -1,11 +1,12 @@
 import axios from 'axios';
 
-const postData = async (token, username, password, name) => {
+const postUserAdmin = async (token, username, password, name) => {
     try {
-        const res = await axios.post(`http://localhost:5000/api/v1/root-add-admin`, {
+        const res = await axios.post(`http://localhost:5000/api/v1/root-add-user`, {
             username: username,
             name: name,
-            password: password
+            password: password,
+            level: 1
         }, {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -19,4 +20,4 @@ const postData = async (token, username, password, name) => {
     }
 }
 
-export default postData
+export default postUserAdmin;

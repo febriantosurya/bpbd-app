@@ -1,0 +1,16 @@
+.container-dashboard {
+    opacity: 70%;
+    height: 100vh;
+    margin-left: 25%;
+    background-color: rgb(255, 220, 180);
+    text-align: center;
+    padding: 20px;
+}
+
+.main-sidebar {
+    width: 25%;
+    background: linear-gradient(360deg, #F89C35 40.6%, rgba(248, 156, 53, 0) 100%);
+    position: fixed;
+    height: 100%;
+    overflow: auto;
+}

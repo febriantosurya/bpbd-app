@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-const getData = async (token) => {
+const getUserReadOnly = async (token) => {
     try {
-        const res = await axios({   
-            url: 'http://localhost:5000/api/v1/root-mainpage',
+        const res = await axios({
+            url: 'http://localhost:5000/api/v1/root-user',
             method: 'get',
             headers: { Authorization: `Bearer ${token}` }
         })
@@ -14,4 +14,4 @@ const getData = async (token) => {
     }
 }
 
-export default getData
+export default getUserReadOnly
