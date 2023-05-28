@@ -23,6 +23,12 @@ exports.login = async (req, res) => {
         data: user
       }, `${process.env.ADMIN_SECRET_KEY}`, { expiresIn: '1h' });
       return res.status(200).json({ message: "success", token: token, level: user.level });
+    }
+    else if (user.level == 2) {
+      const token = jwt.sign({
+        data: user
+      }, `${process.env.USER_SECRET_KEY}`, { expiresIn: '1h' });
+      return res.status(200).json({ message: "success", token: token, level: user.level });
     };
   }
   catch (error) {

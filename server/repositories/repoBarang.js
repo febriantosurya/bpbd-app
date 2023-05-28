@@ -114,6 +114,21 @@ exports.getInventoryThisMonth = async () => {
   return result;
 };
 
+exports.getInventoryByMonth = async (data) => {
+  const result = await InvBarang.findAll({
+    include: { 
+      model: InvGudangLama,
+      where: {
+        [Op.and]: [
+          sequelize.fn('EXTRACT(MONTH from "tanggal") =', data.month),
+          sequelize.fn('EXTRACT(YEAR from "tanggal") =', data.year)
+        ]
+      }
+    }
+  });
+  return result;
+};
+
 exports.addInvenActive = async (data) => {
   await InvGudangAktif.create({
     tanggal: data.tanggal,
