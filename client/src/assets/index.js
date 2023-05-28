@@ -1,3 +1,5 @@
 import ImageLogo from './image/logo.png';
+import Logout from './image/logout.svg';
+import BencanaGO from './image/bencanaGO.png'
 
-export { ImageLogo };
+export { ImageLogo, Logout, BencanaGO};

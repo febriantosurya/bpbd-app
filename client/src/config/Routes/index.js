@@ -1,16 +1,24 @@
 import { createBrowserRouter } from "react-router-dom";
-import { KelolaAdmin, Login } from '../../pages'
+import { KelolaAdmin, KelolaUser, Login, Dashboard } from '../../pages'
 import checkLoggedMiddleware from "../../middleware/checkLoggedMiddleware";
 import hasLoggedMiddleware from "../../middleware/hasLoggedMiddleware";
 
 const router = createBrowserRouter([
     {
-        path: "/login",
+        path: "/",
         element: hasLoggedMiddleware(<Login />)
     },
     {
         path: "/kelolaadmin",
         element: checkLoggedMiddleware(<KelolaAdmin />)
+    },
+    {
+        path: "/kelolauser",
+        element: checkLoggedMiddleware(<KelolaUser />)
+    },
+    {
+        path: "/dashboard",
+        element: checkLoggedMiddleware(<Dashboard />)
     }
 ]);
 export default router;

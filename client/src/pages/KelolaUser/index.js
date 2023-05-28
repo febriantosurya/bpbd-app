@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Gap, SidebarRoot } from "../../components";
-// import { ImageLogo, Logout } from '../../assets';
 
 //bootstrap
 import Button from 'react-bootstrap/Button';
@@ -9,14 +8,15 @@ import Modal from 'react-bootstrap/Modal';
 import Table from 'react-bootstrap/Table';
 
 //api
-import getData from "../../api/root/getUserAdmin";
+import getData from "../../api/root/getUserReadOnly";
 import delData from "../../api/root/deleteUser";
-import postData from "../../api/root/addAdmin";
+import postData from "../../api/root/addUser";
 import putData from "../../api/root/editUser";
 //styling
-import './kelolaadmin.scss'
+// import './kelolauser.scss'
+// import MyPagination from "../../components/atoms/MyPagination";
 
-function KelolaAdmin() {
+function KelolaUser() {
     //post
     const [show, setShow] = useState(false);
     const [username, setUsername] = useState("");
@@ -33,24 +33,6 @@ function KelolaAdmin() {
     const handleShow = () => setShow(true);
 
     //--------- all the function below ----------
-    const renderTable = () => {
-        return data.map((admin, key) => {
-            return (
-                updateState === admin.id ? <EditList admin={admin} /> :
-                    <tr key={key}>
-                        {/* <td>{key + 1}</td> */}
-                        <td><Form.Control plaintext readOnly defaultValue={admin.name} /></td>
-                        <td><Form.Control plaintext readOnly defaultValue={admin.username} /></td>
-                        <td><Form.Control plaintext readOnly defaultValue={admin.password} /></td>
-                        <td>
-                            <Button variant="warning" onClick={() => handleEdit(admin.id)}>Perbarui</Button>
-                            <Button variant="danger" onClick={(e) => handleDelete(admin.username, e)}>Hapus</Button>
-                        </td>
-                    </tr>
-            )
-        })
-    }
-
     function EditList({ admin }) {
         const [btnUpdate, setBtnUpdate] = useState(true);
         function handInputname(event) {
@@ -75,12 +57,30 @@ function KelolaAdmin() {
         )
     }
 
+    const renderTable = () => {
+        return data.map((admin, key) => {
+            return (
+                updateState === admin.id ? <EditList admin={admin} /> :
+                    <tr key={key}>
+                        {/* <td>{key + 1}</td> */}
+                        <td><Form.Control plaintext readOnly defaultValue={admin.name} /></td>
+                        <td><Form.Control plaintext readOnly defaultValue={admin.username} /></td>
+                        <td><Form.Control plaintext readOnly defaultValue={admin.password} /></td>
+                        <td>
+                            <Button variant="warning" onClick={() => handleEdit(admin.id)}>Perbarui</Button>
+                            <Button variant="danger" onClick={(e) => handleDelete(admin.username, e)}>Hapus</Button>
+                        </td>
+                    </tr>
+            )
+        })
+    }
+
     function handleEdit(id) {
         if (window.confirm("Apakah anda yakin untuk memperbarui data?")) {
             setUpdateState(id);
         }
         else {
-            window.location = 'kelolaadmin'
+            window.location = 'kelolauser'
         }
     }
 
@@ -93,16 +93,16 @@ function KelolaAdmin() {
             setPassword("");
             setName("")
             setShow(false)
-            window.location = '/kelolaadmin'
+            window.location = '/kelolauser'
         }
 
         return (
             <div>
-                <Button onClick={handleShow} className="btn-primary">Tambah Admin</Button>
+                <Button onClick={handleShow} className="btn-primary">Tambah User</Button>
 
                 <Modal show={show} onHide={handleClose}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Tambah Admin</Modal.Title>
+                        <Modal.Title>Tambah User</Modal.Title>
                     </Modal.Header>
 
                     <Modal.Body>
@@ -158,9 +158,8 @@ function KelolaAdmin() {
     //Function : Delete admin (DELETE)
     async function handleDelete(username) {
         await delData(token, username)
-        window.location = '/kelolaadmin'
+        window.location = '/kelolauser'
     }
-
 
     // function : Update admin datas (PUT)
     async function handleSubmit(event) {
@@ -169,7 +168,7 @@ function KelolaAdmin() {
         const password = event.target.elements.password.value
         const name = event.target.elements.name.value
         await putData(token, updateState, username, password, name)
-        window.location = '/kelolaadmin'
+        window.location = '/kelolauser'
         setUpdateState(-1)
     }
 
@@ -188,6 +187,7 @@ function KelolaAdmin() {
         dataFetch();
     }, [token]);
 
+
     //Main UI
     return (
         <div>
@@ -196,7 +196,7 @@ function KelolaAdmin() {
 
             {/* KONTEN */}
             <div className="container-root">
-                <h1 style={{ fontSize: "35px" }}>Kelola Admin</h1>
+                <h1 style={{ fontSize: "35px" }}>Kelola User</h1>
                 <Gap height={15} />
                 {handleAdd()}
                 <Gap height={20} />
@@ -221,4 +221,4 @@ function KelolaAdmin() {
     );
 };
 
-export default KelolaAdmin;
+export default KelolaUser;

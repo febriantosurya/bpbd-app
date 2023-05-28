@@ -1,12 +1,12 @@
 import axios from 'axios';
 
-const putData = async (token, id, username, password, name) => {
+const postUserReadOnly = async (token, username, password, name) => {
     try {
-        const res = await axios.put(`http://localhost:5000/api/v1/root-update-admin`, {
-            id: id,
+        const res = await axios.post(`http://localhost:5000/api/v1/root-add-user`, {
             username: username,
             name: name,
-            password: password
+            password: password,
+            level: 2
         }, {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -20,4 +20,4 @@ const putData = async (token, id, username, password, name) => {
     }
 }
 
-export default putData
+export default postUserReadOnly;

@@ -17,7 +17,10 @@ function Login() {
             if (response.data.level === 0) {
                 window.location = "/kelolaadmin"
             } else if (response.data.level === 1) {
-                window.location = "/"
+                window.location = "/dashboard"
+            }
+            else if (response.data.level === 2) {
+                window.location = "/dashboard"
             }
         } else {
             alert("Invalid")
@@ -52,8 +55,8 @@ function Login() {
 
                     <Button
                         className="btn-login"
-                        title="Login" 
-                        />
+                        title="Login"
+                    />
                     <Gap height={25} />
                 </form>
             </div>
