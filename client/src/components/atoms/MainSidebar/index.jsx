@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Gap from '../Gap';
-import { ImageLogo, Logout } from '../../../assets';
+import { ImageLogo, Logout, BencanaGO } from '../../../assets';
 
 
 const MainSidebar = () => {
@@ -15,9 +15,9 @@ const MainSidebar = () => {
         <div className="sidebar">
             <div className='logo'>
                 <center>
-                    <img src={ImageLogo} alt="img" style={{ width: "50%" }} />
+                    <img src={BencanaGO} alt="img" style={{ width: "50%", margin:"10px 10px" }} />
                 </center>
-                <h1 style={{ fontSize: "20px", fontFamily: "Poppins, sans-serif", textAlign: "center" }}>BPBD <br /> Kabupaten Magetan</h1>
+                {/* <h1 style={{ fontSize: "20px", fontFamily: "Poppins, sans-serif", textAlign: "center" }}>BPBD <br /> Kabupaten Magetan</h1> */}
                 <Gap height={10} />
                 <hr size="10px" style={{ width: "75%", margin: "auto", color: "white" }}></hr>
             </div>
