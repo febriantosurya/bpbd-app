@@ -24,6 +24,7 @@ function Login() {
             }
         } else {
             alert("Invalid")
+            window.location = "/"
         }
         setUsername("");
         setPassword("")
