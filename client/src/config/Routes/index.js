@@ -1,5 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
-import { KelolaAdmin, KelolaUser, Login, Dashboard } from '../../pages'
+import { KelolaAdmin, KelolaUser, Login, Dashboard, RegisterBencana } from '../../pages'
 import checkLoggedMiddleware from "../../middleware/checkLoggedMiddleware";
 import hasLoggedMiddleware from "../../middleware/hasLoggedMiddleware";
 
@@ -19,6 +19,10 @@ const router = createBrowserRouter([
     {
         path: "/dashboard",
         element: checkLoggedMiddleware(<Dashboard />)
+    },
+    {
+        path: "/register-bencana",
+        element: checkLoggedMiddleware(<RegisterBencana />)
     }
 ]);
 export default router;

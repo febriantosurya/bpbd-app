@@ -9,7 +9,7 @@ import Modal from 'react-bootstrap/Modal';
 import Table from 'react-bootstrap/Table';
 
 //api
-import getData from "../../api/root/getUserAdmin";
+import getUserAdmin from "../../api/root/getUserAdmin";
 import delData from "../../api/root/deleteUser";
 import postData from "../../api/root/addAdmin";
 import putData from "../../api/root/editUser";
@@ -176,7 +176,7 @@ function KelolaAdmin() {
     //Function : Get all admin (GET)
     useEffect(() => {
         async function dataFetch() {
-            const response = await getData(token);
+            const response = await getUserAdmin(token);
             if (response.data?.message !== "success") {
                 localStorage.removeItem("token");
                 window.location = '/';
