@@ -9,6 +9,7 @@ const barangKeluarRoute = require('./routes/barangKeluar');
 const barangStockRoute = require('./routes/barangStock');
 const regBencanaRoute = require('./routes/registerBencana');
 const readOnlyRoute = require('./routes/readOnly');
+const dashboardRoute = require('./routes/dashboard');
 
 app.use(express.json());
 app.use(cors());
@@ -18,6 +19,7 @@ app.use('/api/v1/inventory', barangKeluarRoute);
 app.use('/api/v1/inventory', barangStockRoute);
 app.use('/api/v1/regbencana', regBencanaRoute);
 app.use('/api/v1/read-only', readOnlyRoute);
+app.use('/api/v1/dashboard', dashboardRoute);
 
 const User = require('./models/user');
 
