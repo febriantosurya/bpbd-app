@@ -6,6 +6,10 @@ const RegBencana = sequelize.define('RegBencana', {
     type: DataTypes.STRING,
     allowNull: false
   },
+  keterangan: {
+    type: DataTypes.TEXT,
+    allowNull: true
+  },
   lokasiDetail: {
     type: DataTypes.TEXT,
     allowNull: false
@@ -18,10 +22,6 @@ const RegBencana = sequelize.define('RegBencana', {
     type: DataTypes.DATE,
     allowNull: false
   },
-  keterangan: {
-    type: DataTypes.TEXT,
-    allowNull: true
-  },
   korbanManusia: {
     type: DataTypes.TEXT,
     allowNull: true
@@ -30,11 +30,23 @@ const RegBencana = sequelize.define('RegBencana', {
     type: DataTypes.TEXT,
     allowNull: true
   },
-  korbanHartaBenda: {
+  korbanBangunan: {
+    type: DataTypes.TEXT,
+    allowNull: true
+  },
+  korbanHarta: {
+    type: DataTypes.TEXT,
+    allowNull: true
+  },
+  korbanJalan: {
     type: DataTypes.TEXT,
     allowNull: true
   },
   totalKerugian: {
+    type: DataTypes.TEXT,
+    allowNull: true
+  },
+  penyebabKejadian: {
     type: DataTypes.TEXT,
     allowNull: true
   }
