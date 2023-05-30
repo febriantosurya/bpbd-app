@@ -2,7 +2,17 @@ const repoDashboard = require('../repositories/dashboard');
 
 exports.showDashboard = async (req, res) => {
   try {
-    const data = ['Banjir', 'Banjir Bandang' , 'Kebakaran', 'Angin'];
+    const data = [
+      'Pohon Tumbang', 
+      'Kebakaran Hutan dan Lahan', 
+      'Tanah Longsor', 
+      'Gempa Bumi', 
+      'Angin Kencang', 
+      'Evakuasi/Pertolongan', 
+      'Bencana Lainnya', 
+      'Banjir Bandang', 
+      'Banjir Luapan'
+    ];
     result = {};
     for (let i = 0; i < data.length; i++) {
       temp = await repoDashboard.totalKejadian(data[i]);
