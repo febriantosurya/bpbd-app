@@ -22,10 +22,16 @@ function Dashboard() {
     useEffect(() => {
         async function getData() {
             const token = localStorage.getItem("token")
-            let result = await getDashboardData(token)
-            result = result.data?.data
-            const keys = Object.keys(result)
-            const values = Object.keys(result).map(function (key) { return result[key]; });
+            let response = await getDashboardData(token)
+            if (response.data?.message !== "success") {
+                localStorage.removeItem("token");
+                window.location = '/';
+            }
+            else {
+                response = response.data?.data
+            };
+            const keys = Object.keys(response)
+            const values = Object.keys(response).map(function (key) { return response[key]; });
             setData(values)
             setLabels(keys)
         }
