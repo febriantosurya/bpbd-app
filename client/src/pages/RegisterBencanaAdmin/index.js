@@ -1,20 +1,21 @@
 import React from 'react'
-import { MainSidebar } from '../../components'
-import { BencanaGO } from '../../assets'
+import { MainSidebar, Gap } from '../../components'
 import Table from 'react-bootstrap/Table';
 import './RegBencana.scss'
 
-function RegisterBencana() {
+function RegisterBencanaAdmin() {
+    
+    
     return (
         <div>
-            <MainSidebar/>
+            <MainSidebar />
             <div className='container-regbencana'>
-                
+                <h1 className='header'>Daftar Register Bencana</h1>
+                <Gap height={10} />
                 <form>
                     <Table id='tb-reg' striped bordered hover size="sm">
                         <thead>
                             <tr>
-                                {/* <th>No</th> */}
                                 <th>No</th>
                                 <th>Jenis Bencana</th>
                                 <th>Lokasi Detail</th>
@@ -36,4 +37,4 @@ function RegisterBencana() {
     )
 }
 
-export default RegisterBencana
+export default RegisterBencanaAdmin
