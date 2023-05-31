@@ -1,15 +1,9 @@
 .container-dashboard {
-    background-image: url("../../assets/image/GOopacity30.png");
     height: 100vh;
     margin-left: 25%;
     background-color: rgb(255, 249, 240);
     text-align: center;
     padding: 20px;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-color: rgb(255, 249, 240);
-    background-attachment: fixed;
-    background-position-x: 70%;
 }
 
 .main-sidebar {
@@ -18,4 +12,9 @@
     position: fixed;
     height: 100%;
     overflow: auto;
+}
+
+.chart {
+    width: 50%;
+    margin: auto;
 }
