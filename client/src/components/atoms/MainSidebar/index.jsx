@@ -27,7 +27,7 @@ const MainSidebar = () => {
             <a href="/register-bencana" className='btn'><Button className='mainBtn-sidebar' type='submit'>Register Bencana</Button></a>
             <a href="/register-bencana" className='btn'><Button className='mainBtn-sidebar' type='submit'>Inventaris Barang</Button></a>
             <a href="/" className="btn" style={{ paddingBottom: "10px", marginTop: "50%" }}>
-                <Button onClick={handleLogout} style={{ width: "40%" }} type='submit'><img src={Logout} alt="img" /> Keluar</Button>
+                <Button onClick={handleLogout} style={{ width: "auto", borderRadius:"10px" }} type='submit'><img src={Logout} alt="img" /> Keluar</Button>
             </a>
             <hr size="10px" style={{ width: "100%", margin: "auto", color: "white", padding: "5px" }}></hr>
             <h1 style={{ fontSize: "10px", textAlign: "center", color: "#dddddd" }}>@Copyright BPBD Kabupaten Magetan</h1>
