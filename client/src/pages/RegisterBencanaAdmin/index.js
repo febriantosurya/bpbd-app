@@ -8,6 +8,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import './RegBencana.scss'
 import getRegBencana from '../../api/reg/showReg';
+import delReg from '../../api/reg/delReg';
 
 function RegisterBencanaAdmin() {
     // const token = localStorage.getItem('token')
@@ -34,17 +35,18 @@ function RegisterBencanaAdmin() {
     const [month, setMonth] = useState(String(initMonth));
     const [displayMonth, setDisplayMonth] = useState(months[initMonth])
     const [year, setYear] = useState(String(initYear))
+    const [selectedRows, setSelectedRows] = useState([])
+    const [id, setId] = useState(0) //IDMU KOSONG INI LOOO
+    const token = localStorage.getItem("token")
 
     useEffect(() => {
         async function dataFetch() {
-            const token = localStorage.getItem("token")
             const response = await getRegBencana(token, month, year);
             if (response.data?.message !== "success") {
                 localStorage.removeItem("token");
                 window.location = '/';
             }
             else {
-                // console.log(response.data.data)
                 setData(response.data.data)
             };
         };
@@ -76,12 +78,43 @@ function RegisterBencanaAdmin() {
         console.log(month, year)
     }
 
+    //checkbox
+    const handleCheckboxChange = (event, id) => {
+        const isChecked = event.target.checked;
+        console.log(id)
+        if (isChecked) {
+            setId(parseInt(id))
+            // Tambahkan id ke dalam array selectedRows
+            setSelectedRows([...selectedRows, id]);
+        } else {
+            // Hapus id dari array selectedRows
+            const updatedSelectedRows = selectedRows.filter(rowId => rowId !== id);
+            setSelectedRows(updatedSelectedRows);
+        }
+    };
+
+    const handleDeleteRows = async (e) => {
+        e.preventDefault()
+        await delReg(token, id)
+        // console.log(id)
+        // Menghapus baris yang dipilih dari data
+        // await delReg(token, id);
+        // window.location = '/register-bencana'
+        // Mengosongkan selectedRows setelah menghapus baris
+        setSelectedRows([]);
+    };
     //show list reg bencana
     const showTable = () => {
-        return data.map((item) => {
+        return data.map((item, number) => {
             return (
-                <tr key={item.id}>
-                    <td>{item.id}</td>
+                <tr key={number}>
+                    <td>
+                        <input
+                            type='checkbox'
+                            value={item.id}
+                            checked={item.selectedRows}
+                            onChange={(event) => handleCheckboxChange(event, item.id)} /></td>
+                    <td>{number + 1}</td>
                     <td>{item.jenisBencana}</td>
                     <td>{item.lokasiDetail}</td>
                     <td>{item.kecamatan}</td>
@@ -125,11 +158,11 @@ function RegisterBencanaAdmin() {
                         <Button variant="warning" style={{ marginLeft: "10px", borderRadius: "5px", width: "20%", backgroundColor: "orange", border: "1px solid #dddddd", height: "34px", textAlign: "center" }} onClick={handleEnter}>Enter</Button>
                     </InputGroup>
                 </form>
-
                 <form>
                     <Table id='tb-reg' striped bordered hover size="sm">
                         <thead>
                             <tr>
+                                <th>#</th>
                                 <th>No</th>
                                 <th>Jenis Bencana</th>
                                 <th>Lokasi Detail</th>
@@ -150,6 +183,8 @@ function RegisterBencanaAdmin() {
                         </tbody>
                     </Table>
                 </form>
+                <Button variant="Danger" style={{ backgroundColor: "red" }} onClick={(e) => handleDeleteRows(e)}>Delete</Button>
+
                 <Button href='/' variant="warning" style={{ width: "100%", marginTop: "10px", backgroundColor: "orange" }}>Tambah Register Bencana</Button>
             </div>
         </div>
