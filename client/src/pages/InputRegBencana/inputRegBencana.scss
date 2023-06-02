@@ -1,0 +1,51 @@
+.container-input-reg {
+  height: auto;
+  margin-left: 25%;
+  background-color: rgb(255, 249, 240);
+  text-align: center;
+  padding: 20px;
+}
+
+.main-sidebar {
+  width: 25%;
+  background: linear-gradient(360deg, #F89C35 40.6%, rgba(248, 156, 53, 0) 100%);
+  position: fixed;
+  height: 100%;
+  overflow: auto;
+}
+
+.header{
+  background-color: #F89C35;;
+  border-radius: 10px;
+  font-size: 25px;
+  padding: 5px 15px;
+  font-family: 'Poppins';
+}
+
+#dropdown-basic-button {
+  text-align: left;
+  width: 100%;
+}
+
+.keterangan {
+  display: flex;
+  flex-direction: column;
+  max-width: 1000px;
+}
+
+.keterangan textarea {
+  height: 60px;
+  resize: vertical; 
+}
+
+#korban-key {
+  color: #F89C35;
+  width: 25%;
+}
+#korban-val {
+  width: 100%;
+}
+
+#end {
+  margin-top: 10%;
+}
