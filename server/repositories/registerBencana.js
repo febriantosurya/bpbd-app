@@ -28,17 +28,7 @@ exports.getRegBencana = async (id) => {
 // END
 
 exports.addRegisterBencana = async (data) => {
-  await RegBencana.create({
-    jenisBencana: data.jenisBencana,
-    lokasiDetail: data.lokasiDetail,
-    kecamatan: data.kecamatan,
-    tanggal: data.tanggal,
-    keterangan: data.keterangan,
-    korbanManusia: data.korbanManusia,
-    korbanHewan: data.korbanHewan,
-    korbanHartaBenda: data.korbanHartaBenda,
-    totalKerugian: data.totalKerugian
-  });
+  await RegBencana.create(data);
   return;
 };
 

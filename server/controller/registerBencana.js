@@ -18,14 +18,17 @@ exports.addRegBencana = async (req, res) => {
   try {
     const data = {
       jenisBencana: req.body.jenisBencana,
+      keterangan: req.body.keterangan,
       lokasiDetail: req.body.lokasiDetail,
       kecamatan: req.body.kecamatan,
       tanggal: new Date(),
-      keterangan: req.body.keterangan,
-      korbanManusia: req.body.korbanManusia,
-      korbanHewan: req.body.korbanHewan,
-      korbanHartaBenda: req.body.korbanHartaBenda,
-      totalKerugian: req.body.totalKerugian
+      korbanManusia: req.body.Manusia,
+      korbanHewan: req.body.Hewan,
+      korbanRumah: req.body.Rumah,
+      korbanHarta: req.body.Harta,
+      korbanJalan: req.body.Jalan,
+      totalKerugian: req.body.totalKerugian,
+      penyebabKejadian: req.body.penyebab
     };
     await regBencanaRepo.addRegisterBencana(data);
     return res.status(200).json({ message: 'success' });
@@ -40,13 +43,16 @@ exports.editRegBencana = async (req, res) => {
     const data = {
       id: req.body.id,
       jenisBencana: req.body.jenisBencana,
+      keterangan: req.body.keterangan,
       lokasiDetail: req.body.lokasiDetail,
       kecamatan: req.body.kecamatan,
-      keterangan: req.body.keterangan,
-      korbanManusia: req.body.korbanManusia,
-      korbanHewan: req.body.korbanHewan,
-      korbanHartaBenda: req.body.korbanHartaBenda,
-      totalKerugian: req.body.totalKerugian
+      korbanManusia: req.body.Manusia,
+      korbanHewan: req.body.Hewan,
+      korbanRumah: req.body.Rumah,
+      korbanHarta: req.body.Harta,
+      korbanJalan: req.body.Jalan,
+      totalKerugian: req.body.totalKerugian,
+      penyebabKejadian: req.body.penyebab
     };
     const dataRecord = await regBencanaRepo.getRegBencana(data.id);
     if (!dataRecord) {

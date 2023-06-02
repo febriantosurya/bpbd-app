@@ -30,7 +30,7 @@ const RegBencana = sequelize.define('RegBencana', {
     type: DataTypes.TEXT,
     allowNull: true
   },
-  korbanBangunan: {
+  korbanRumah: {
     type: DataTypes.TEXT,
     allowNull: true
   },
