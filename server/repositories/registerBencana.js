@@ -51,7 +51,7 @@ exports.editRegisterBencana = async (data) => {
 };
 
 exports.deleteRegBencana = async (id) => {
-  await RegBencana.drop({
+  await RegBencana.destroy({
     where: {
       id: id
     }

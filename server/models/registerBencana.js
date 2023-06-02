@@ -19,7 +19,11 @@ const RegBencana = sequelize.define('RegBencana', {
     allowNull: false
   },
   tanggal: {
-    type: DataTypes.DATE,
+    type: DataTypes.DATEONLY,
+    allowNull: false
+  },
+  waktu: {
+    type: DataTypes.STRING,
     allowNull: false
   },
   korbanManusia: {
