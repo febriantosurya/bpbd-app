@@ -1,5 +1,5 @@
 .container-input-reg {
-  height: 100vh;
+  height: auto;
   margin-left: 25%;
   background-color: rgb(255, 249, 240);
   text-align: center;
@@ -20,4 +20,32 @@
   font-size: 25px;
   padding: 5px 15px;
   font-family: 'Poppins';
+}
+
+#dropdown-basic-button {
+  text-align: left;
+  width: 100%;
+}
+
+.keterangan {
+  display: flex;
+  flex-direction: column;
+  max-width: 1000px;
+}
+
+.keterangan textarea {
+  height: 60px;
+  resize: vertical; 
+}
+
+#korban-key {
+  color: #F89C35;
+  width: 25%;
+}
+#korban-val {
+  width: 100%;
+}
+
+#end {
+  margin-top: 10%;
 }
