@@ -41,6 +41,8 @@ function InputRegBencana() {
     const [lokasiDetail, setLokasiDetail] = useState("")
     const [penyebab, setPenyebab] = useState("")
     const [totalKerugian, setTotalKerugian] = useState("")
+    const [tanggal, setTanggal] = useState(null)
+    const [jam, setJam] = useState(". . . .")
 
     const [disableDescKorban, setDisableDescKorban] = useState(true)
     const [disAddKorbanBtn, setDisAddKorbanBtn] = useState(true)
@@ -65,10 +67,12 @@ function InputRegBencana() {
         setDisableDescKorban(false)
         setSelectKorban(event)
     }
+
     function handleDescKorban (e) {
         (e.target.value === "") ? setDisAddKorbanBtn(true) : setDisAddKorbanBtn(false)
         setDescKorban(e.target.value)
     }
+
     function handleDelKorban (i) {
         const delVal = [...val]
         keyDataKorban.splice(i, 1)
@@ -76,6 +80,15 @@ function InputRegBencana() {
         delVal.splice(i, 1)
         setVal(delVal)
     }
+
+    function handleSetTanggal (e) {
+        // setTanggal(e.target.value)
+        const splitVal = (e.target.value).split("T")
+        console.log(splitVal[0])
+        console.log(splitVal[1])
+        setTanggal(splitVal[0])
+        setJam(splitVal[1])
+    }    
 
     //DROPDOWN
     const korban = { 1: "Manusia", 2: "Hewan", 3: "Rumah", 4: "Harta", 5: "Jalan" }
@@ -107,8 +120,8 @@ function InputRegBencana() {
               </div>
             ))}
           </>
-        );
-    };
+        )
+    }
     
     async function handleSubmitForm (e) {
         e.preventDefault()
@@ -129,6 +142,8 @@ function InputRegBencana() {
         dataKorban["kecamatan"] = selectKecamatan
         dataKorban["totalKerugian"] = totalKerugian
         dataKorban["penyebab"] = penyebab
+        dataKorban["tanggal"] = tanggal
+        dataKorban["waktu"] = jam
         Swal.fire({
             title: 'Apakah anda yakin?',
             text: "Anda dapat mengubah dan menghapus data di laman register bencana",
@@ -142,7 +157,7 @@ function InputRegBencana() {
                 submitData()
                 Swal.fire({ title: "Data ditambahkan!", icon: "success" }).then(function () {
                     window.location = "/register-bencana"
-                });
+                })
             }
         })
     }
@@ -171,6 +186,13 @@ function InputRegBencana() {
                 <br/>
                 <h5 style={{textAlign: 'left'}} >Lokasi Detail<span style={{color: "#ff0000"}}>*</span></h5>
                 <Form.Control as="textarea" placeholder="Tulis Lokasi Detail" style={{ height: '100px' }} onChange={e=>setLokasiDetail(e.target.value)} />
+                <br/>
+                <h5 style={{textAlign: 'left'}} >Waktu<span style={{color: "#ff0000"}}>*</span></h5>
+                <div style={{textAlign: 'left'}}>
+                    <p>Tanggal memiliki format <b style={{color: "#ff0000"}}>bulan/tanggal/tahun</b></p>
+                    <p>Konversi format 24 jam = <b style={{color: "#ff0000"}}>{jam} WIB</b></p>
+                </div>
+                <Form.Control style={{width: "25%"}} type="datetime-local" onChange={e => handleSetTanggal(e)}/>
                 <br/>
                 <h5 style={{textAlign: 'left'}} >Terdampak</h5>
                 <InputGroup className="mb-3">
