@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import MainSidebar from '../../components/atoms/MainSidebar'
 import './inputRegBencana.scss'
+import addRegBencana from '../../api/reg/addReg'
 
 // BOOTSTRAP
 import Dropdown from 'react-bootstrap/Dropdown'
@@ -23,7 +24,7 @@ let dataKorban = {
     "Harta": "", 
     "Jalan": "",
     "totalKerugian": "",
-    "penyebabKejadian": ""
+    "penyebab": ""
 }
 
 let keyDataKorban = []
@@ -31,6 +32,7 @@ let valDataKorban = []
 
 
 function InputRegBencana() {
+    const [token, setToken] = useState("")
     const [selectedBencana, setSelectedBencana] = useState("Pilih Bencana")
     const [selectKecamatan, setSelectKecamatan] = useState("Pilih Kecamatan")
     const [selectKorban, setSelectKorban] = useState("Pilih Korban")
@@ -74,9 +76,6 @@ function InputRegBencana() {
         delVal.splice(i, 1)
         setVal(delVal)
     }
-    // end dynamically add korban
-
-    //ALERT
 
     //DROPDOWN
     const korban = { 1: "Manusia", 2: "Hewan", 3: "Rumah", 4: "Harta", 5: "Jalan" }
@@ -111,8 +110,11 @@ function InputRegBencana() {
         );
     };
     
-    function handleSubmitForm (e) {
+    async function handleSubmitForm (e) {
         e.preventDefault()
+        async function submitData () {
+            await addRegBencana(token, dataKorban)
+        }
         if (selectedBencana === "Pilih Bencana" || selectKecamatan === "Pilih Kecamatan" || lokasiDetail === "") {
             Swal.fire(
                 'Error',
@@ -126,7 +128,7 @@ function InputRegBencana() {
         dataKorban["lokasiDetail"] = lokasiDetail
         dataKorban["kecamatan"] = selectKecamatan
         dataKorban["totalKerugian"] = totalKerugian
-        dataKorban["penyebabKejadian"] = penyebab
+        dataKorban["penyebab"] = penyebab
         Swal.fire({
             title: 'Apakah anda yakin?',
             text: "Anda dapat mengubah dan menghapus data di laman register bencana",
@@ -135,34 +137,18 @@ function InputRegBencana() {
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
             confirmButtonText: 'Yes'
-          }).then((result) => {
+        }).then((result) => {
             if (result.isConfirmed) {
+                submitData()
                 Swal.fire({ title: "Data ditambahkan!", icon: "success" }).then(function () {
-                    window.location = "/register-bencana";
+                    window.location = "/register-bencana"
                 });
             }
-          })
-        console.log(dataKorban)
+        })
     }
 
     useEffect(() => {
-
-        // async function getData() {
-        //     const token = localStorage.getItem("token")
-        //     if (response.data?.message !== "success") {
-        //         localStorage.removeItem("token");
-        //         window.location = '/';
-        //     }
-        //     else {
-        //         let result = await getDashboardData(token)
-        //         result = result.data?.data
-        //     };
-        //     const keys = Object.keys(result)
-        //     const values = Object.keys(result).map(function (key) { return result[key]; });
-        //     setData(values)
-        //     setLabels(keys)
-        // }
-        // getData()
+        setToken(localStorage.getItem("token"))
     }, [])
 
     return (
