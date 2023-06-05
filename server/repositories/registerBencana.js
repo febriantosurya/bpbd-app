@@ -38,14 +38,14 @@ exports.editRegisterBencana = async (data) => {
       id: data.id
     }
   });
-  data_stored.jenisBencana = data.jenisBencana;
-  data_stored.lokasiDetail = data.lokasiDetail;
-  data_stored.kecamatan = data.kecamatan;
-  data_stored.keterangan = data.keterangan;
-  data_stored.korbanManusia = data.korbanManusia;
-  data_stored.korbanHewan = data.korbanHewan;
-  data_stored.korbanHartaBenda = data.korbanHartaBenda;
-  data_stored.totalKerugian = data.totalKerugian;
+  // data_stored.jenisBencana = data.jenisBencana;
+  // data_stored.lokasiDetail = data.lokasiDetail;
+  // data_stored.kecamatan = data.kecamatan;
+  // data_stored.keterangan = data.keterangan;
+  // data_stored.korbanManusia = data.korbanManusia;
+  // data_stored.korbanHewan = data.korbanHewan;
+  // data_stored.korbanHartaBenda = data.korbanHartaBenda;
+  // data_stored.totalKerugian = data.totalKerugian;
   data_stored.save();
   return;
 };
