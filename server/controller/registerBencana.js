@@ -41,22 +41,22 @@ exports.addRegBencana = async (req, res) => {
 
 exports.editRegBencana = async (req, res) => {
   try {
-    // const data = {
-    //   id: req.body.id,
-    //   jenisBencana: req.body.jenisBencana,
-    //   keterangan: req.body.keterangan,
-    //   lokasiDetail: req.body.lokasiDetail,
-    //   kecamatan: req.body.kecamatan,
-    //   tanggal: req.body.tanggal,
-    //   waktu: req.body.waktu,
-    //   korbanManusia: req.body.Manusia,
-    //   korbanHewan: req.body.Hewan,
-    //   korbanRumah: req.body.Rumah,
-    //   korbanHarta: req.body.Harta,
-    //   korbanJalan: req.body.Jalan,
-    //   totalKerugian: req.body.totalKerugian,
-    //   penyebabKejadian: req.body.penyebab
-    // };
+    const data = {
+      id: req.body.id,
+      jenisBencana: req.body.jenisBencana,
+      keterangan: req.body.keterangan,
+      lokasiDetail: req.body.lokasiDetail,
+      kecamatan: req.body.kecamatan,
+      tanggal: req.body.tanggal,
+      waktu: req.body.waktu,
+      korbanManusia: req.body.Manusia,
+      korbanHewan: req.body.Hewan,
+      korbanRumah: req.body.Rumah,
+      korbanHarta: req.body.Harta,
+      korbanJalan: req.body.Jalan,
+      totalKerugian: req.body.totalKerugian,
+      penyebabKejadian: req.body.penyebab
+    };
     const dataRecord = await regBencanaRepo.getRegBencana(data.id);
     if (!dataRecord) {
       return res.status(404).json({ message: 'not found' });
