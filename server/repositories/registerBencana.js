@@ -39,13 +39,18 @@ exports.editRegisterBencana = async (data) => {
     }
   });
   data_stored.jenisBencana = data.jenisBencana;
+  data_stored.keterangan = data.keterangan;
   data_stored.lokasiDetail = data.lokasiDetail;
   data_stored.kecamatan = data.kecamatan;
-  data_stored.keterangan = data.keterangan;
+  data_stored.tanggal = data.tanggal;
+  data_stored.waktu = data.waktu;
   data_stored.korbanManusia = data.korbanManusia;
   data_stored.korbanHewan = data.korbanHewan;
-  data_stored.korbanHartaBenda = data.korbanHartaBenda;
+  data_stored.korbanHarta = data.korbanHarta;
+  data_stored.korbanRumah = data.korbanRumah;
+  data_stored.korbanJalan = data.korbanRumah;
   data_stored.totalKerugian = data.totalKerugian;
+  data_stored.penyebabKejadian = data.penyebabKejadian;
   data_stored.save();
   return;
 };
