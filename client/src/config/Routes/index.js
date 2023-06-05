@@ -27,6 +27,6 @@ const router = createBrowserRouter([
     {
         path: "/input-reg-bencana",
         element: checkLoggedMiddleware(<InputRegBencana />)
-    }
+    },
 ]);
 export default router;

@@ -5,4 +5,4 @@ import Dashboard from "./Dashboard";
 import RegisterBencanaAdmin from "./RegisterBencanaAdmin";
 import InputRegBencana from "./InputRegBencana";
 
-export { Login, KelolaAdmin , KelolaUser, Dashboard, RegisterBencanaAdmin, InputRegBencana }
+export { Login, KelolaAdmin, KelolaUser, Dashboard, RegisterBencanaAdmin, InputRegBencana }
