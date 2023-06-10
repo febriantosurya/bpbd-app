@@ -8,5 +8,6 @@ router.get('/show-in/:month/:year', middleware.checkUserAuthorization, readOnlyC
 router.get('/show-out/:month/:year', middleware.checkUserAuthorization, readOnlyController.showOutTransaction);
 router.get('/show-inv-now', middleware.checkUserAuthorization, readOnlyController.showInventoryThisMonth);
 router.get('/show-inv-past/:month/:year', middleware.checkUserAuthorization, readOnlyController.showInventoryByMonth);
+router.get('/show-register-bencana/:month/:year', middleware.checkUserAuthorization, readOnlyController.showRegisterBencana);
 
 module.exports = router;
