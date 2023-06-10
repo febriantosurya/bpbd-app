@@ -10,10 +10,22 @@
     padding: 20px;
 }
 
-.header{
-    background-color: #F89C35;;
+.header {
+    background-color: orange;
     border-radius: 10px;
-    font-size: 25px;
+    font-size: 20px;
     padding: 5px 15px;
     font-family: 'Poppins';
+}
+
+.input {
+    display: flex;
+    // justify-content: center;
+    // align-items: center;
+}
+
+#dropdown-bulan {
+    width: auto;
+    height: 58%;
+    font-size: small;
 }
