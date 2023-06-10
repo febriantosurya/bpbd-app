@@ -46,9 +46,9 @@ exports.editRegisterBencana = async (data) => {
   data_stored.waktu = data.waktu;
   data_stored.korbanManusia = data.korbanManusia;
   data_stored.korbanHewan = data.korbanHewan;
-  data_stored.korbanHarta = data.korbanHarta;
   data_stored.korbanRumah = data.korbanRumah;
-  data_stored.korbanJalan = data.korbanRumah;
+  data_stored.korbanHarta = data.korbanHarta;
+  data_stored.korbanJalan = data.korbanJalan;
   data_stored.totalKerugian = data.totalKerugian;
   data_stored.penyebabKejadian = data.penyebabKejadian;
   data_stored.save();

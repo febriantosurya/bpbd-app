@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Gap, SidebarRoot } from "../../components";
 // import { ImageLogo, Logout } from '../../assets';
+import Swal from 'sweetalert2'
 
 //bootstrap
 import Button from 'react-bootstrap/Button';
@@ -51,6 +52,22 @@ function KelolaAdmin() {
         })
     }
 
+    function handleEdit(id) {
+        Swal.fire({
+            title: 'Apakah anda yakin perbarui data?',
+            text: "Anda dapat mengubah data di laman kelola user",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                setUpdateState(id)
+            }
+        })
+    }
+
     function EditList({ admin }) {
         const [btnUpdate, setBtnUpdate] = useState(true);
         function handInputname(event) {
@@ -73,15 +90,6 @@ function KelolaAdmin() {
                 <td><Button variant="success" id="buttonUpdate" type='submit' disabled={btnUpdate}>Simpan</Button></td>
             </tr>
         )
-    }
-
-    function handleEdit(id) {
-        if (window.confirm("Apakah anda yakin untuk memperbarui data?")) {
-            setUpdateState(id);
-        }
-        else {
-            window.location = 'kelolaadmin'
-        }
     }
 
     //function POST
