@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import login from '../../api/auth/login'
 import { ImageLogo } from '../../assets'
 import { Button, Gap, Input } from '../../components'
+import Swal from 'sweetalert2'
 import './login.scss'
 
 function Login() {
@@ -13,18 +14,22 @@ function Login() {
         const response = await login(username, password);
         if (response.data?.message === "success") {
             localStorage.setItem("token", response.data.token);
-            // console.log(response.data.token)
             if (response.data.level === 0) {
                 window.location = "/kelolaadmin"
             } else if (response.data.level === 1) {
                 window.location = "/dashboard"
             }
             else if (response.data.level === 2) {
-                window.location = "/dashboard"
+                window.location = "/dashboard-user"
             }
         } else {
-            alert("Invalid")
-            window.location = "/"
+            Swal.fire(
+                'Gagal',
+                'Username atau password salah, silahkan coba lagi!',
+                'error'
+            ).then(()=> {
+                window.location = "/"
+            })
         }
         setUsername("");
         setPassword("")

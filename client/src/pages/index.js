@@ -6,4 +6,17 @@ import RegisterBencanaAdmin from "./RegisterBencanaAdmin";
 import InputRegBencana from "./InputRegBencana";
 import ErrorHandler from "./ErrorHandler";
 
-export { Login, KelolaAdmin, KelolaUser, Dashboard, RegisterBencanaAdmin, InputRegBencana, ErrorHandler }
+// USER READ ONLY
+import DashboardUser from "./DashboardUser";
+import RegisterBencanaUser from "./RegisterBencanaUser";
+export { 
+  Login,
+  KelolaAdmin, 
+  KelolaUser, 
+  Dashboard, 
+  DashboardUser,
+  RegisterBencanaAdmin,
+  RegisterBencanaUser,
+  InputRegBencana, 
+  ErrorHandler 
+}
