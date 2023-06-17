@@ -11,15 +11,12 @@ const DoughnutChart = ({ data }) => {
       const ctx = chartRef.current.getContext('2d');
 
       if (chartInstance) {
-        chartInstance.destroy(); // Destroy the previous chart instance
+        chartInstance.destroy();
       }
 
       chartInstance = new Chart(ctx, {
         type: 'doughnut',
-        data: data,
-        options: {
-          // Configure chart options here
-        },
+        data: data
       });
     };
 
@@ -27,7 +24,7 @@ const DoughnutChart = ({ data }) => {
 
     return () => {
       if (chartInstance) {
-        chartInstance.destroy(); // Destroy the chart instance on component unmount
+        chartInstance.destroy();
       }
     };
   }, [data]);

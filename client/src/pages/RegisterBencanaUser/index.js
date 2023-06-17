@@ -35,20 +35,21 @@ function RegisterBencanaUser() {
     const [year, setYear] = useState(String(initYear))
     const token = localStorage.getItem("token")
 
-    useEffect(() => {
-        async function dataFetch() {
-            const response = await getRegBencana(token, month, year);
-            console.log(response)
-            if (response.data?.message !== "success") {
-                localStorage.removeItem("token");
-                window.location = '/';
-            }
-            else {
-                setData(response.data.data)
-            };
+    async function dataFetch() {
+        const response = await getRegBencana(token, month, year);
+        if (response.data?.message !== "success") {
+            localStorage.removeItem("token");
+            window.location = '/';
+        }
+        else {
+            setData(response.data.data)
         };
+    };
+
+    useEffect(() => {
         dataFetch();
-    }, [token, month, year]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const DropdownMonth = ({ data }) => {
         return (
@@ -64,14 +65,13 @@ function RegisterBencanaUser() {
 
     function handleBulan(event) {
         const keyval = event.split(",")
-        console.log(keyval)
         setDisplayMonth(keyval[1])
         setMonth(keyval[0])
     }
 
     async function handleEnter(e) {
         e.preventDefault()
-        console.log(month, year)
+        dataFetch()
     }
 
     const showTable = () => {
@@ -113,12 +113,15 @@ function RegisterBencanaUser() {
                         <Form.Group id="mb-4" controlId="controlinput" style={{ width: "10%" }}>
                             <Form.Control
                                 style={{ fontFamily: "Poppins", fontSize: "small" }}
+                                step={1}
+                                onKeyDown={e=>e.preventDefault()}
+                                min={0}
                                 defaultValue={year}
-                                onChange={(e) => { setYear(e.target.value) }}
+                                onChange={e=>setYear(e.target.value)}
                                 type="number"
                             />
                         </Form.Group>
-                        <Button variant="warning" style={{ marginLeft: "10px", borderRadius: "5px", width: "20%", backgroundColor: "orange", border: "1px solid #dddddd", height: "34px", textAlign: "center" }} onClick={handleEnter}>Enter</Button>
+                        <Button variant="warning" style={{ marginLeft: "10px", borderRadius: "5px", width: "20%", backgroundColor: "orange", border: "1px solid #dddddd", height: "34px", textAlign: "center" }} onClick={handleEnter}>Cari</Button>
                     </InputGroup>
                 </form>
                 <form>

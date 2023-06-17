@@ -43,19 +43,21 @@ function RegisterBencanaAdmin() {
     const [id, setId] = useState(0)
     const token = localStorage.getItem("token")
 
-    useEffect(() => {
-        async function dataFetch() {
-            const response = await getRegBencana(token, month, year);
-            if (response.data?.message !== "success") {
-                localStorage.removeItem("token");
-                window.location = '/';
-            }
-            else {
-                setData(response.data.data)
-            };
+    async function dataFetch() {
+        const response = await getRegBencana(token, month, year);
+        if (response.data?.message !== "success") {
+            localStorage.removeItem("token");
+            window.location = '/';
+        }
+        else {
+            setData(response.data.data)
         };
+    };
+
+    useEffect(() => {
         dataFetch();
-    }, [token, month, year]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     //Pengaturan Bulan dan Tahun
     const DropdownMonth = ({ data }) => {
@@ -79,7 +81,7 @@ function RegisterBencanaAdmin() {
 
     async function handleEnter(e) {
         e.preventDefault()
-        console.log(month, year)
+        dataFetch()
     }
 
     //checkbox
@@ -270,7 +272,10 @@ function RegisterBencanaAdmin() {
                             <Form.Control
                                 style={{ fontFamily: "Poppins", fontSize: "small" }}
                                 defaultValue={year}
-                                onChange={(e) => { setYear(e.target.value) }}
+                                step={1}
+                                min={0}
+                                onKeyDown={e=>e.preventDefault()}
+                                onChange={e=>setYear(e.target.value)}
                                 type="number"
                             />
                         </Form.Group>

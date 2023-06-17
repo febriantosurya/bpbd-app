@@ -28,6 +28,8 @@ const User = sequelize.define('User', {
     type: DataTypes.DATE
   }
 }, {
+  createdAt: false,
+  updatedAt: false,
   sequelize,
   tableName: "users",
   modelName: "User"
