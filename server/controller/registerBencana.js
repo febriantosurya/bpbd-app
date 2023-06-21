@@ -7,7 +7,12 @@ exports.showAllRegBencanaByMonth = async (req, res) => {
       year: req.params.year
     };
     const result = await regBencanaRepo.getAllRegBencana(data);
-    return res.status(200).json({ message: 'success', data: result });
+    if (result.length > 0) {
+      return res.status(200).json({ message: 'success', data: result });
+    }
+    else {
+      return res.status(404).json({ message: 'no data' });
+    }
   } 
   catch (error) {
     return res.status(400).json({ message: error.message });

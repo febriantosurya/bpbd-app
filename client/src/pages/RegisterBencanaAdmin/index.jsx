@@ -41,16 +41,28 @@ function RegisterBencanaAdmin() {
     const [year, setYear] = useState(String(initYear))
     const [selectedRow, setSelectedRow] = useState({})
     const [id, setId] = useState(0)
+    const [updateInventory, setUpdateInventory] = useState(false)
     const token = localStorage.getItem("token")
 
     async function dataFetch() {
         const response = await getRegBencana(token, month, year);
-        if (response.data?.message !== "success") {
-            localStorage.removeItem("token");
-            window.location = '/';
+        if (response.data?.message === "success") {
+            setData(response.data.data)
+        }
+        else if (response.response.data?.message === "no data") {
+            setUpdateInventory(true)
+            Swal.fire({
+                title: 'Pergantian Bulan',
+                text: "Klik Ya data untuk memperbarui data pada bulan ini. Data bulan lalu dapat diakses dengan memilih bulan dan tahun yang sesuai!",
+                icon: 'warning',
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya'
+            })
         }
         else {
-            setData(response.data.data)
+            localStorage.removeItem("token");
+            window.location = '/';
         };
     };
 
@@ -59,7 +71,7 @@ function RegisterBencanaAdmin() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    //Pengaturan Bulan dan Tahun
+    // MONTH AND YEAR SETTER
     const DropdownMonth = ({ data }) => {
         return (
             <ul>
@@ -84,7 +96,7 @@ function RegisterBencanaAdmin() {
         dataFetch()
     }
 
-    //checkbox
+    // CHECKBOX
     const handleCheckboxChange = (event, rowData) => {
         const isChecked = event.target.checked;
         if (isChecked) {
@@ -97,7 +109,7 @@ function RegisterBencanaAdmin() {
         }
     };
 
-    //delete row
+    // DELETE ROW
     const handleDeleteRows = async (e) => {
         e.preventDefault()
         async function delRegRow() {
@@ -121,7 +133,7 @@ function RegisterBencanaAdmin() {
         })
     };
 
-    // =============================================MODAL EDIT
+    // MODAL EDIT
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -150,9 +162,10 @@ function RegisterBencanaAdmin() {
                 }
             })
         }
+
         return (
             <div>
-                <Button variant="Primary" style={{ backgroundColor: "blue" }} onClick={handleShow} >Edit</Button>
+                <Button disabled={updateInventory} variant="Primary" style={{ backgroundColor: "blue" }} onClick={handleShow} >Edit</Button>
                 <Modal show={show} onHide={handleClose}>
                     <Modal.Header closeButton>
                         <Modal.Title>Edit Data</Modal.Title>
@@ -223,7 +236,7 @@ function RegisterBencanaAdmin() {
         )
     }
 
-    //show list reg bencana
+    // SHOW LIST REG BENCANA
     const showTable = () => {
         return data.map((item, number) => {
             return (
@@ -283,7 +296,7 @@ function RegisterBencanaAdmin() {
                     </InputGroup>
                 </form>
 
-                <Button variant="Danger" style={{ backgroundColor: "red" }} onClick={(e) => handleDeleteRows(e)}>Delete</Button>
+                <Button disabled={updateInventory} variant="Danger" style={{ backgroundColor: "red" }} onClick={(e) => handleDeleteRows(e)}>Delete</Button>
                 {handleEditRows()}
 
                 <form>
@@ -316,7 +329,7 @@ function RegisterBencanaAdmin() {
                     </Table>
                 </form>
 
-                <Button href='/input-reg-bencana' variant="warning" style={{ width: "100%", marginTop: "10px", backgroundColor: "orange" }}>Tambah Register Bencana</Button>
+                <Button disabled={updateInventory} href='/input-reg-bencana' variant="warning" style={{ width: "100%", marginTop: "10px", backgroundColor: "orange" }}>Tambah Register Bencana</Button>
             </div>
         </div >
     )

@@ -12,6 +12,7 @@ exports.getAllRegBencana = async (data) => {
       ]
     }
   });
+  if (!result) return null;
   return result;
 };
 
