@@ -41,24 +41,12 @@ function RegisterBencanaAdmin() {
     const [year, setYear] = useState(String(initYear))
     const [selectedRow, setSelectedRow] = useState({})
     const [id, setId] = useState(0)
-    const [updateInventory, setUpdateInventory] = useState(false)
     const token = localStorage.getItem("token")
 
     async function dataFetch() {
         const response = await getRegBencana(token, month, year);
         if (response.data?.message === "success") {
             setData(response.data.data)
-        }
-        else if (response.response.data?.message === "no data") {
-            setUpdateInventory(true)
-            Swal.fire({
-                title: 'Pergantian Bulan',
-                text: "Klik Ya data untuk memperbarui data pada bulan ini. Data bulan lalu dapat diakses dengan memilih bulan dan tahun yang sesuai!",
-                icon: 'warning',
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Ya'
-            })
         }
         else {
             localStorage.removeItem("token");
@@ -165,7 +153,7 @@ function RegisterBencanaAdmin() {
 
         return (
             <div>
-                <Button disabled={updateInventory} variant="Primary" style={{ backgroundColor: "blue" }} onClick={handleShow} >Edit</Button>
+                <Button variant="Primary" style={{ backgroundColor: "blue" }} onClick={handleShow} >Edit</Button>
                 <Modal show={show} onHide={handleClose}>
                     <Modal.Header closeButton>
                         <Modal.Title>Edit Data</Modal.Title>
@@ -296,7 +284,7 @@ function RegisterBencanaAdmin() {
                     </InputGroup>
                 </form>
 
-                <Button disabled={updateInventory} variant="Danger" style={{ backgroundColor: "red" }} onClick={(e) => handleDeleteRows(e)}>Delete</Button>
+                <Button variant="Danger" style={{ backgroundColor: "red" }} onClick={(e) => handleDeleteRows(e)}>Delete</Button>
                 {handleEditRows()}
 
                 <form>
@@ -329,7 +317,7 @@ function RegisterBencanaAdmin() {
                     </Table>
                 </form>
 
-                <Button disabled={updateInventory} href='/input-reg-bencana' variant="warning" style={{ width: "100%", marginTop: "10px", backgroundColor: "orange" }}>Tambah Register Bencana</Button>
+                <Button href='/input-reg-bencana' variant="warning" style={{ width: "100%", marginTop: "10px", backgroundColor: "orange" }}>Tambah Register Bencana</Button>
             </div>
         </div >
     )
