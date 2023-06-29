@@ -52,7 +52,10 @@ function KelolaUser() {
                 <td><Form.Control type="text" name="name" onChange={handInputname} defaultValue={admin.name} /></td>
                 <td><Form.Control type="text" name="username" onChange={handInputusername} defaultValue={admin.username} /></td>
                 <td><Form.Control type="text" name="password" onChange={handInputpassword} defaultValue={admin.password} /></td>
-                <td><Button variant="success" id="buttonUpdate" type='submit' disabled={btnUpdate}>Simpan</Button></td>
+                <td>
+                    <Button variant="success" id="buttonUpdate" type='submit' disabled={btnUpdate}>Simpan</Button>
+                    <Button variant="danger" type='submit' onClick={()=>{window.location="/kelolauser"}}>Cancel</Button>   
+                </td>
             </tr>
         )
     }

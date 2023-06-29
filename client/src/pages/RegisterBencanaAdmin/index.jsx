@@ -85,9 +85,10 @@ function RegisterBencanaAdmin() {
     }
 
     // CHECKBOX
+    const [isChecked, setIsChecked] = useState(true)
     const handleCheckboxChange = (event, rowData) => {
-        const isChecked = event.target.checked;
-        if (isChecked) {
+        setIsChecked(!(event.target.checked))
+        if (event.target.checked) {
             setId(parseInt(rowData.id))
             setSelectedRow(rowData)
         }
@@ -153,7 +154,7 @@ function RegisterBencanaAdmin() {
 
         return (
             <div>
-                <Button variant="Primary" style={{ backgroundColor: "blue" }} onClick={handleShow} >Edit</Button>
+                <Button disabled={isChecked} variant="warning" onClick={handleShow}>Ubah</Button>
                 <Modal show={show} onHide={handleClose}>
                     <Modal.Header closeButton>
                         <Modal.Title>Edit Data</Modal.Title>
@@ -161,19 +162,19 @@ function RegisterBencanaAdmin() {
                     <Modal.Body>
                         <Form >
                             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                                <Form.Label>Jenis Bencana</Form.Label>
-                                <Form.Control type="text" readOnly={true} defaultValue={selectedRow.jenisBencana} />
+                                <b><Form.Label>Jenis Bencana</Form.Label></b>
+                                <Form.Control style={{borderColor: "red"}} type="text" readOnly={true} defaultValue={selectedRow.jenisBencana} />
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                                <Form.Label>Lokasi Detail</Form.Label>
-                                <Form.Control type="text" readOnly={true} defaultValue={selectedRow.lokasiDetail} onChange={e => setSelectedRow({ ...selectedRow, "lokasiDetail": e.target.value })} />
+                                <b><Form.Label>Lokasi Detail</Form.Label></b>
+                                <Form.Control style={{borderColor: "red"}} type="text" readOnly={true} defaultValue={selectedRow.lokasiDetail} onChange={e => setSelectedRow({ ...selectedRow, "lokasiDetail": e.target.value })} />
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                                <Form.Label>Kecamatan</Form.Label>
-                                <Form.Control type="text" readOnly={true} defaultValue={selectedRow.kecamatan} />
+                                <b><Form.Label>Kecamatan</Form.Label></b>
+                                <Form.Control style={{borderColor: "red"}} type="text" readOnly={true} defaultValue={selectedRow.kecamatan} />
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                                <Form.Label>Tanggal</Form.Label>
+                                <b><Form.Label>Tanggal</Form.Label></b>
                                 <Form.Control type="datetime-local" defaultValue={`${selectedRow.tanggal}T${selectedRow.waktu}`}
                                     onChange={e => {
                                         const datetime = (e.target.value).split("T")
@@ -182,35 +183,35 @@ function RegisterBencanaAdmin() {
                                 />
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                                <Form.Label>Keterangan</Form.Label>
+                                <b><Form.Label>Keterangan</Form.Label></b>
                                 <Form.Control type="text" defaultValue={selectedRow.keterangan} onChange={e => setSelectedRow({ ...selectedRow, "keterangan": e.target.value })} />
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                                <Form.Label>Korban Manusia</Form.Label>
+                                <b><Form.Label>Korban Manusia</Form.Label></b>
                                 <Form.Control type="text" defaultValue={selectedRow.korbanManusia} onChange={e => setSelectedRow({ ...selectedRow, "Manusia": e.target.value })} />
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                                <Form.Label>Korban Hewan</Form.Label>
+                                <b><Form.Label>Korban Hewan</Form.Label></b>
                                 <Form.Control type="text" defaultValue={selectedRow.korbanHewan} onChange={e => setSelectedRow({ ...selectedRow, "Hewan": e.target.value })} />
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                                <Form.Label>Korban Rumah</Form.Label>
+                                <b><Form.Label>Korban Rumah</Form.Label></b>
                                 <Form.Control type="text" defaultValue={selectedRow.korbanRumah} onChange={e => setSelectedRow({ ...selectedRow, "Rumah": e.target.value })} />
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                                <Form.Label>Korban Harta</Form.Label>
+                                <b><Form.Label>Korban Harta</Form.Label></b>
                                 <Form.Control type="text" defaultValue={selectedRow.korbanHarta} onChange={e => setSelectedRow({ ...selectedRow, "Harta": e.target.value })} />
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                                <Form.Label>Korban Jalan</Form.Label>
+                                <b><Form.Label>Korban Jalan</Form.Label></b>
                                 <Form.Control type="text" defaultValue={selectedRow.korbanJalan} onChange={e => setSelectedRow({ ...selectedRow, "Jalan": e.target.value })} />
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                                <Form.Label>Total Kerugian</Form.Label>
+                                <b><Form.Label>Total Kerugian</Form.Label></b>
                                 <Form.Control type="text" defaultValue={selectedRow.totalKerugian} onChange={e => setSelectedRow({ ...selectedRow, "totalKerugian": e.target.value })} />
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1" >
-                                <Form.Label>Peyebab Kejadian</Form.Label>
+                                <b><Form.Label>Peyebab Kejadian</Form.Label></b>
                                 <Form.Control as="textarea" rows={2} defaultValue={selectedRow.penyebabKejadian} onChange={e => setSelectedRow({ ...selectedRow, "penyebab": e.target.value })} />
                             </Form.Group>
                         </Form>
@@ -240,7 +241,7 @@ function RegisterBencanaAdmin() {
                     <td>{item.jenisBencana}</td>
                     <td>{item.lokasiDetail}</td>
                     <td>{item.kecamatan}</td>
-                    <td>{item.tanggal} {item.waktu}</td>
+                    <td>{item.tanggal} {item.waktu} WIB</td>
                     <td>{item.keterangan}</td>
                     <td>{item.korbanManusia}</td>
                     <td>{item.korbanHewan}</td>
@@ -283,9 +284,10 @@ function RegisterBencanaAdmin() {
                         <Button variant="warning" style={{ marginLeft: "10px", borderRadius: "5px", width: "20%", backgroundColor: "orange", border: "1px solid #dddddd", height: "34px", textAlign: "center" }} onClick={handleEnter}>Enter</Button>
                     </InputGroup>
                 </form>
-
-                <Button variant="Danger" style={{ backgroundColor: "red" }} onClick={(e) => handleDeleteRows(e)}>Delete</Button>
-                {handleEditRows()}
+                <div style={{ "display": "flex" }}>
+                    <Button disabled={isChecked} variant="danger" onClick={(e) => handleDeleteRows(e)}>Hapus</Button>
+                    {handleEditRows()}
+                </div>
 
                 <form>
                     <Table id='tb-reg' striped bordered hover size="sm">

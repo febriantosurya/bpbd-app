@@ -52,6 +52,7 @@ function Login() {
                         onChange={(e) => setUsername(e.target.value)} />
                     <Gap height={10} />
                     <Input
+                        type="password"
                         className="input-lgn"
                         placeholder="Password"
                         defaultValue={password}
