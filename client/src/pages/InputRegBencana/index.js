@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import MainSidebar from '../../components/atoms/MainSidebar'
+import { Sidebar } from '../../components'
 import './inputRegBencana.scss'
+import '../../assets/style/defaultLayout.scss'
 import addRegBencana from '../../api/reg/addReg'
 
 // BOOTSTRAP
@@ -162,14 +163,26 @@ function InputRegBencana() {
         })
     }
 
+    // SIDEBAR
+    const [showSideBar, setShowSideBar] = useState(false);
+    const handleCloseSideBar = () => setShowSideBar(false);
+    const handleShowSideBar = () => setShowSideBar(true);
+    function sideBar() {
+        return (
+            <Sidebar handleShow={handleShowSideBar} handleClose={handleCloseSideBar} show={showSideBar} btn1="/dashboard" btn2="/register-bencana" btn3="/dontknow"/>
+        )
+    }
+
     useEffect(() => {
         setToken(localStorage.getItem("token"))
     }, [])
 
     return (
-        <div>
-            <MainSidebar />
-            <div className='container-input-reg'>
+        <div className='content'>
+            <div className='sidebar-secondary'>
+                {sideBar()}
+            </div>    
+            <div className='container-default container-input-reg'>
                 <h1 className='header'>Register Bencana</h1>
                 <h5 style={{textAlign: 'left'}} >Jenis Bencana<span style={{color: "#ff0000"}}>*</span></h5>
                 <DropdownButton id="dropdown-basic-button" title={selectedBencana} onSelect={e => {setSelectedBencana(e)}}>

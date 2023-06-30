@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import MainSidebar from '../../components/atoms/MainSidebar'
+import { Sidebar, DoughnutChart } from '../../components';
 import getDashboardData from '../../api/dashboard/dashboard'
-import DoughnutChart from '../../components/atoms/DoughnutChart'
-import './dashboard.scss'
+import '../../assets/style/dashboard.scss'
 
 function Dashboard() {
 
@@ -19,6 +18,16 @@ function Dashboard() {
         ],
     };
 
+    // SIDEBAR
+    const [showSideBar, setShowSideBar] = useState(false);
+    const handleCloseSideBar = () => setShowSideBar(false);
+    const handleShowSideBar = () => setShowSideBar(true);
+    function sideBar() {
+        return (
+            <Sidebar handleShow={handleShowSideBar} handleClose={handleCloseSideBar} show={showSideBar} btn1="/dashboard" btn2="/register-bencana" btn3="/register-bencana"/>
+        )
+    }
+
     useEffect(() => {
         async function getData() {
             const token = localStorage.getItem("token")
@@ -31,7 +40,7 @@ function Dashboard() {
                 response = response.data?.data
             };
             const keys = Object.keys(response)
-            const values = Object.keys(response).map(function (key) { return response[key]; });
+            const values = Object.keys(response).map(function (key) { return response[key] })
             setData(values)
             setLabels(keys)
         }
@@ -39,8 +48,10 @@ function Dashboard() {
     }, [])
 
     return (
-        <div>
-            <MainSidebar />
+        <div className='content'>
+            <div id="sidebar">
+                {sideBar()}
+            </div>    
             <div className='container-dashboard'>
                 <h1 style={{fontSize:"30px"}}>Kejadian Bencana di Bulan Ini</h1>
                 <br/>

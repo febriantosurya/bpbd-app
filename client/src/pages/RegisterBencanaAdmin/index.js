@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { MainSidebar, Gap } from '../../components'
+import { Gap, Sidebar } from '../../components'
 import './RegBencana.scss'
 import Swal from 'sweetalert2'
 
@@ -121,6 +121,16 @@ function RegisterBencanaAdmin() {
             }
         })
     };
+
+    // SIDEBAR
+    const [showSideBar, setShowSideBar] = useState(false);
+    const handleCloseSideBar = () => setShowSideBar(false);
+    const handleShowSideBar = () => setShowSideBar(true);
+    function sideBar() {
+        return (
+            <Sidebar handleShow={handleShowSideBar} handleClose={handleCloseSideBar} show={showSideBar} btn1="/dashboard" btn2="/register-bencana" btn3="/register-bencana"/>
+        )
+    }
 
     // MODAL EDIT
     const [show, setShow] = useState(false);
@@ -250,16 +260,17 @@ function RegisterBencanaAdmin() {
                     <td>{item.korbanJalan}</td>
                     <td>{item.totalKerugian}</td>
                     <td>{item.penyebabKejadian}</td>
-                    {/* Add more table cells for other properties */}
                 </tr>
             )
         })
     }
 
     return (
-        <div>
-            <MainSidebar />
-            <div className='container-regbencana'>
+        <div className='content'>
+            <div className='sidebar-secondary'>
+                {sideBar()}
+            </div>            
+            <div className='container-default'>
                 <h1 className='header'>Daftar Register Bencana</h1>
                 <Gap height={10} />
 
@@ -285,8 +296,9 @@ function RegisterBencanaAdmin() {
                     </InputGroup>
                 </form>
                 <div style={{ "display": "flex" }}>
-                    <Button disabled={isChecked} variant="danger" onClick={(e) => handleDeleteRows(e)}>Hapus</Button>
-                    {handleEditRows()}
+                    <Button href='/input-reg-bencana' variant="warning">Tambah Register Bencana</Button>
+                    {isChecked ? null : handleEditRows()}
+                    {isChecked ? null : <Button disabled={isChecked} variant="danger" onClick={(e) => handleDeleteRows(e)}>Hapus</Button>}
                 </div>
 
                 <form>
@@ -318,8 +330,6 @@ function RegisterBencanaAdmin() {
                         </tbody>
                     </Table>
                 </form>
-
-                <Button href='/input-reg-bencana' variant="warning" style={{ width: "100%", marginTop: "10px", backgroundColor: "orange" }}>Tambah Register Bencana</Button>
             </div>
         </div >
     )

@@ -1,13 +1,11 @@
 .container-dashboard {
-  height: 100vh;
-  margin-left: 25%;
-  background-color: rgb(255, 249, 240);
-  text-align: center;
-  padding: 20px;
-}
-
+    height: 100vh;
+    width: 200vh;
+    background-color: rgb(255, 249, 240);
+    text-align: center;
+  }
+  
 .main-sidebar {
-  width: 25%;
   background: linear-gradient(360deg, #F89C35 40.6%, rgba(248, 156, 53, 0) 100%);
   position: fixed;
   height: 100%;
@@ -15,6 +13,6 @@
 }
 
 .chart {
-  width: 50%;
+  width: 40%;
   margin: auto;
 }

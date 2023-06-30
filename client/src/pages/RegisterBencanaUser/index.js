@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import { MainSidebarUser, Gap } from '../../components'
-import './RegBencana.scss'
+import { Gap, Sidebar } from '../../components'
+// import './Register/RegBencana.scss'
 import getRegBencana from '../../api/reg/showRegUser';
 
 //BOOTSTRAP IMPORTING
@@ -63,6 +63,16 @@ function RegisterBencanaUser() {
         );
     };
 
+    // SIDEBAR
+    const [showSideBar, setShowSideBar] = useState(false);
+    const handleCloseSideBar = () => setShowSideBar(false);
+    const handleShowSideBar = () => setShowSideBar(true);
+    function sideBar() {
+        return (
+            <Sidebar handleShow={handleShowSideBar} handleClose={handleCloseSideBar} show={showSideBar} btn1="/dashboard-user" btn2="/register-bencana-user" btn3="/gudang-keluar-masuk"/>
+        )
+    }
+
     function handleBulan(event) {
         const keyval = event.split(",")
         setDisplayMonth(keyval[1])
@@ -97,8 +107,10 @@ function RegisterBencanaUser() {
     }
 
     return (
-        <div>
-            <MainSidebarUser />
+        <div className='content'>
+            <div id="sidebar">
+                {sideBar()}
+            </div>           
             <div className='container-regbencana'>
                 <h1 className='header'>Daftar Register Bencana</h1>
                 <Gap height={10} />

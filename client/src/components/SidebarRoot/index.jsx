@@ -2,7 +2,7 @@
 import React from 'react';
 import Button from 'react-bootstrap/Button';
 import Gap from '../Gap';
-import { ImageLogo, Logout } from '../../../assets';
+import { ImageLogo, Logout } from '../../assets';
 
 
 const SidebarRoot = () => {
