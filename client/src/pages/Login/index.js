@@ -45,26 +45,13 @@ function Login() {
                 <form className='form-login' onSubmit={handleLogin}>
                     <p className='title-login'>Login</p>
                     <Gap height={20} />
-                    <Input
-                        className="input-lgn"
-                        placeholder="Username"
-                        defaultValue={username}
-                        onChange={(e) => setUsername(e.target.value)} />
+                    <Input className="input-lgn" placeholder="Username" defaultValue={username} onChange={(e) => setUsername(e.target.value)} />
                     <Gap height={10} />
-                    <Input
-                        type="password"
-                        className="input-lgn"
-                        placeholder="Password"
-                        defaultValue={password}
-                        onChange={(e) => setPassword(e.target.value)} />
-
+                    <Input type="password" className="input-lgn" placeholder="Password" defaultValue={password} onChange={(e) => setPassword(e.target.value)} />
                     <Gap height={40} />
-
-                    <Button
-                        className="btn-login"
-                        title="Login"
-                    />
+                    <Button className="btn-login" title="Login"/>
                     <Gap height={25} />
+                    <p style={{ "textAlign": "center" }} >Belum punya akun? Hubungi <a href='https://wa.me/6283111725891?text=Halo,%20saya%20ingin%20membuat%20akun%20BencanaGO'>admin BPBD</a></p>
                 </form>
             </div>
         </div>

@@ -98,6 +98,12 @@ function RegisterBencanaAdmin() {
         }
     };
 
+    // DOWNLOAD CONTENT
+    function handleExportXlsx (e) {
+        e.preventDefault()
+        alert("data diunduh")
+    }
+
     // DELETE ROW
     const handleDeleteRows = async (e) => {
         e.preventDefault()
@@ -164,7 +170,7 @@ function RegisterBencanaAdmin() {
 
         return (
             <div>
-                <Button disabled={isChecked} variant="warning" onClick={handleShow}>Ubah</Button>
+                <Button style={{ "marginRight": "10px" }} disabled={isChecked} variant="warning" onClick={handleShow}>Ubah</Button>
                 <Modal show={show} onHide={handleClose}>
                     <Modal.Header closeButton>
                         <Modal.Title>Edit Data</Modal.Title>
@@ -296,9 +302,10 @@ function RegisterBencanaAdmin() {
                     </InputGroup>
                 </form>
                 <div style={{ "display": "flex" }}>
-                    <Button href='/input-reg-bencana' variant="warning">Tambah Register Bencana</Button>
+                    <Button style={{ "marginRight": "10px" }} variant="warning" href='/input-reg-bencana'>Tambah Register Bencana</Button>
+                    <Button style={{ "marginRight": "10px" }} onClick={e=>handleExportXlsx(e)} variant="warning">Unduh ke Excel</Button>
                     {isChecked ? null : handleEditRows()}
-                    {isChecked ? null : <Button disabled={isChecked} variant="danger" onClick={(e) => handleDeleteRows(e)}>Hapus</Button>}
+                    {isChecked ? null : <Button style={{ "marginRight": "100px" }} disabled={isChecked} variant="danger" onClick={(e) => handleDeleteRows(e)}>Hapus</Button>}
                 </div>
 
                 <form>
