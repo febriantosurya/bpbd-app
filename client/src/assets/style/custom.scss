@@ -1,21 +1,21 @@
-.btn-primary {
-    background-color: white;
-    color: black;
-    width: 23%;
-    height: 43px;
-    font-size: medium;
-    font-family: 'Poppins';
-    border-color: #dddddd;
-}
+// .btn-primary {
+//     background-color: white;
+//     color: black;
+//     width: 23%;
+//     height: 43px;
+//     font-size: medium;
+//     font-family: 'Poppins';
+//     border-color: #dddddd;
+// }
 
-.btn-primary:hover {
-    background-color: #0994DC;
-    will-change: transform;
-    transition-property: transform;
-    transition-duration: 600ms;
-    transition-timing-function: ease;
-    border-color: #dddddd;
-}
+// .btn-primary:hover {
+//     background-color: #0994DC;
+//     will-change: transform;
+//     transition-property: transform;
+//     transition-duration: 600ms;
+//     transition-timing-function: ease;
+//     border-color: #dddddd;
+// }
 
 .btn-sidebar {
     background-color: white;
@@ -35,6 +35,12 @@
     // text-align: center;
 }
 
+#bar-icon {
+    background-color: transparent;
+    border-color: transparent;
+    width: 50%;
+    margin: 5px;
+}
 .form-label {
     padding: 5px;
     margin: auto;

@@ -18,6 +18,7 @@ import delReg from '../../api/reg/delReg';
 import putReg from '../../api/reg/editReg';
 
 function RegisterBencanaAdmin() {
+    const ExcelJS = require('exceljs');
     const months = {
         1: "Januari",
         2: "Februari",
@@ -74,7 +75,6 @@ function RegisterBencanaAdmin() {
 
     function handleBulan(event) {
         const keyval = event.split(",")
-        console.log(keyval)
         setDisplayMonth(keyval[1])
         setMonth(keyval[0])
     }
@@ -99,9 +99,130 @@ function RegisterBencanaAdmin() {
     };
 
     // DOWNLOAD CONTENT
-    function handleExportXlsx (e) {
-        e.preventDefault()
-        alert("data diunduh")
+    const handleExportXlsx = () => {
+        const wb = new ExcelJS.Workbook();
+        const sheet = wb.addWorksheet("sheet");
+
+        sheet.columns = [
+            {
+                header: "No",
+                key: "no",
+                width: 4,
+            },
+            {
+                header: "Jenis Bencana",
+                key: "jenisBencana",
+                width: 15,
+            },
+            {
+                header: "Lokasi Detail",
+                key: "lokasiDetail",
+                width: 15
+            },
+            {
+                header: "Kecamatan",
+                key: "kecamatan",
+                width: 15
+            },
+            {
+                header: "Tanggal",
+                key: "tanggal",
+                width: 11
+            },
+            {
+                header: "Waktu",
+                key: "waktu",
+                width: 8
+            },
+            {
+                header: "Keterangan",
+                key: "keterangan",
+                width: 20
+            },
+            {
+                header: "Korban Manusia",
+                key: "korbanManusia",
+                width: 15
+            },
+            {
+                header: "Korban Rumah",
+                key: "korbanRumah",
+                width: 15
+            },
+            {
+                header: "Korban Hewan",
+                key: "korbanHewan",
+                width: 15
+            },
+            {
+                header: "Korban Harta",
+                key: "korbanHarta",
+                width: 15
+            },
+            {
+                header: "Total Kerugian",
+                key: "totalKerugian",
+                width: 17
+            },
+            {
+                header: "Penyebab Kejadian",
+                key: "penyebabKejadian",
+                width: 30,
+            },
+        ];
+
+        data.map((item, number) => {
+            sheet.addRow({
+                no: number + 1,
+                jenisBencana: item.jenisBencana,
+                lokasiDetail: item.lokasiDetail,
+                kecamatan: item.kecamatan,
+                tanggal: item.tanggal,
+                waktu: item.waktu,
+                keterangan: item.keterangan,
+                korbanManusia: item.korbanManusia,
+                korbanHewan: item.korbanHewan,
+                korbanRumah: item.korbanRumah,
+                korbanHarta: item.korbanHarta,
+                korbanJalan: item.korbanJalan,
+                totalKerugian: item.totalKerugian,
+                penyebabKejadian: item.penyebabKejadian
+            });
+        })
+
+        let totalRow = sheet.lastRow.number
+        let totalColumn = sheet.lastColumn.number
+        //Loop through all table's row
+        for (let i = 1; i <= totalRow; i++) {
+            for (let j = 65; j < 65 + totalColumn; j++) {
+                let cell = sheet.getCell(`${String.fromCharCode(j)}${i}`)
+                if (i === 1) {
+                    cell.fill = {
+                        type: 'pattern',
+                        pattern: 'solid',
+                        fgColor: { argb: 'FDFD02' },
+                    };
+                }
+                cell.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
+                cell.border = {
+                    top: { style: 'thin', color: { argb: '000000' } },
+                    left: { style: 'thin', color: { argb: '000000' } },
+                    bottom: { style: 'thin', color: { argb: '000000' } },
+                    right: { style: 'thin', color: { argb: '000000' } }
+                };
+            }
+        }
+        wb.xlsx.writeBuffer().then(function (data) {
+            const blob = new Blob([data], {
+                type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            });
+            const url = window.URL.createObjectURL(blob);
+            const anchor = document.createElement("a");
+            anchor.href = url;
+            anchor.download = displayMonth + " " + year + ".xlsx";
+            anchor.click();
+            window.URL.revokeObjectURL(url);
+        });
     }
 
     // DELETE ROW
@@ -134,7 +255,7 @@ function RegisterBencanaAdmin() {
     const handleShowSideBar = () => setShowSideBar(true);
     function sideBar() {
         return (
-            <Sidebar handleShow={handleShowSideBar} handleClose={handleCloseSideBar} show={showSideBar} btn1="/dashboard" btn2="/register-bencana" btn3="/register-bencana"/>
+            <Sidebar handleShow={handleShowSideBar} handleClose={handleCloseSideBar} show={showSideBar} btn1="/dashboard" btn2="/register-bencana" btn3="/register-bencana" />
         )
     }
 
@@ -179,17 +300,17 @@ function RegisterBencanaAdmin() {
                         <Form >
                             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                                 <b><Form.Label>Jenis Bencana</Form.Label></b>
-                                <Form.Control style={{borderColor: "red"}} type="text" readOnly={true} defaultValue={selectedRow.jenisBencana} />
+                                <Form.Control style={{ borderColor: "red" }} type="text" readOnly={true} defaultValue={selectedRow.jenisBencana} />
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                                 <b><Form.Label>Lokasi Detail</Form.Label></b>
-                                <Form.Control style={{borderColor: "red"}} type="text" readOnly={true} defaultValue={selectedRow.lokasiDetail} onChange={e => setSelectedRow({ ...selectedRow, "lokasiDetail": e.target.value })} />
+                                <Form.Control style={{ borderColor: "red" }} type="text" readOnly={true} defaultValue={selectedRow.lokasiDetail} onChange={e => setSelectedRow({ ...selectedRow, "lokasiDetail": e.target.value })} />
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                                 <b><Form.Label>Kecamatan</Form.Label></b>
-                                <Form.Control style={{borderColor: "red"}} type="text" readOnly={true} defaultValue={selectedRow.kecamatan} />
+                                <Form.Control style={{ borderColor: "red" }} type="text" readOnly={true} defaultValue={selectedRow.kecamatan} />
                             </Form.Group>
-                            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                            <Form.Group className="mb-tanggal" controlId="exampleForm.ControlInput1">
                                 <b><Form.Label>Tanggal</Form.Label></b>
                                 <Form.Control type="datetime-local" defaultValue={`${selectedRow.tanggal}T${selectedRow.waktu}`}
                                     onChange={e => {
@@ -228,7 +349,7 @@ function RegisterBencanaAdmin() {
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1" >
                                 <b><Form.Label>Peyebab Kejadian</Form.Label></b>
-                                <Form.Control as="textarea" rows={2} defaultValue={selectedRow.penyebabKejadian} onChange={e => setSelectedRow({ ...selectedRow, "penyebab": e.target.value })} />
+                                <Form.Control as="textarea" defaultValue={selectedRow.penyebabKejadian} onChange={e => setSelectedRow({ ...selectedRow, "penyebab": e.target.value })} />
                             </Form.Group>
                         </Form>
                     </Modal.Body>
@@ -274,8 +395,8 @@ function RegisterBencanaAdmin() {
     return (
         <div className='content'>
             <div className='sidebar-secondary'>
-                {sideBar()}
-            </div>            
+                <center>{sideBar()}</center>
+            </div>
             <div className='container-default'>
                 <h1 className='header'>Daftar Register Bencana</h1>
                 <Gap height={10} />
@@ -293,8 +414,8 @@ function RegisterBencanaAdmin() {
                                 defaultValue={year}
                                 step={1}
                                 min={0}
-                                onKeyDown={e=>e.preventDefault()}
-                                onChange={e=>setYear(e.target.value)}
+                                onKeyDown={e => e.preventDefault()}
+                                onChange={e => setYear(e.target.value)}
                                 type="number"
                             />
                         </Form.Group>
@@ -303,7 +424,7 @@ function RegisterBencanaAdmin() {
                 </form>
                 <div style={{ "display": "flex" }}>
                     <Button style={{ "marginRight": "10px" }} variant="warning" href='/input-reg-bencana'>Tambah Register Bencana</Button>
-                    <Button style={{ "marginRight": "10px" }} onClick={e=>handleExportXlsx(e)} variant="warning">Unduh ke Excel</Button>
+                    <Button style={{ "marginRight": "10px" }} onClick={e => handleExportXlsx(e)} variant="warning">Unduh ke Excel</Button>
                     {isChecked ? null : handleEditRows()}
                     {isChecked ? null : <Button style={{ "marginRight": "100px" }} disabled={isChecked} variant="danger" onClick={(e) => handleDeleteRows(e)}>Hapus</Button>}
                 </div>
