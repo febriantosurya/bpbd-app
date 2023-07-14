@@ -10,6 +10,7 @@ const barangStockRoute = require('./routes/barangStock');
 const regBencanaRoute = require('./routes/registerBencana');
 const readOnlyRoute = require('./routes/readOnly');
 const dashboardRoute = require('./routes/dashboard');
+const arsipAktifRoute = require('./routes/arsipAktif');
 
 app.use(express.json());
 app.use(cors());
@@ -20,6 +21,7 @@ app.use('/api/v1/inventory', barangStockRoute);
 app.use('/api/v1/regbencana', regBencanaRoute);
 app.use('/api/v1/read-only', readOnlyRoute);
 app.use('/api/v1/dashboard', dashboardRoute);
+app.use('/api/v1/archive-active', arsipAktifRoute);
 
 const User = require('./models/user');
 
@@ -28,6 +30,7 @@ const InvGudangAktif = require('./models/invGudangAktif');
 const InvGudangLama = require('./models/invGudangLama');
 const InvTransaksiGudang = require('./models/invTransaksiGudang');
 const RegBencana = require('./models/registerBencana');
+const ArsipAktif = require('./models/arsipAktif')
 
 app.listen(5000, async () => {
   console.log("App is running on port 5000");
@@ -37,4 +40,5 @@ app.listen(5000, async () => {
   await InvGudangLama.sync({ alter: true });
   await InvTransaksiGudang.sync({ alter: true });
   await RegBencana.sync({ alter: true })
+  await ArsipAktif.sync({ alter: true })
 });
