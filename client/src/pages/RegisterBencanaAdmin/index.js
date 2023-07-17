@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Gap, Sidebar } from '../../components'
+import { Sidebar } from '../../components'
 import './RegBencana.scss'
 import Swal from 'sweetalert2'
 
@@ -392,72 +392,86 @@ function RegisterBencanaAdmin() {
         })
     }
 
+    window.onscroll = function () { scrollFunction() };
+
+    function scrollFunction() {
+        if (document.body.scrollTop > 140 || document.documentElement.scrollTop > 140) {
+            document.getElementById("navbar").style.top = "0";
+        } else {
+            document.getElementById("navbar").style.top = "-100px";
+        }
+    }
+
     return (
         <div className='content'>
             <div className='sidebar-secondary'>
                 <center>{sideBar()}</center>
             </div>
+
             <div className='container-default'>
-                <h1 className='header'>Daftar Register Bencana</h1>
-                <Gap height={10} />
-
-                <form className='input' onSubmit={handleEnter}>
-                    <p style={{ width: "80px", textAlign: "center", justifyContent: "center", marginTop: "5px" }}>Bulan : </p>
-                    <DropdownButton id="dropdown-bulan" title={displayMonth} onSelect={(event) => { handleBulan(event) }}>
-                        <DropdownMonth data={months} />
-                    </DropdownButton>
-                    <InputGroup size="sm" className="mb-3">
-                        <p style={{ width: "60px", textAlign: "center", justifyContent: "center", marginTop: "5px" }}>Tahun :</p>
-                        <Form.Group id="mb-4" controlId="controlinput" style={{ width: "10%" }}>
-                            <Form.Control
-                                style={{ fontFamily: "Poppins", fontSize: "small" }}
-                                defaultValue={year}
-                                step={1}
-                                min={0}
-                                onKeyDown={e => e.preventDefault()}
-                                onChange={e => setYear(e.target.value)}
-                                type="number"
-                            />
-                        </Form.Group>
-                        <Button variant="warning" style={{ marginLeft: "10px", borderRadius: "5px", width: "20%", backgroundColor: "orange", border: "1px solid #dddddd", height: "34px", textAlign: "center" }} onClick={handleEnter}>Enter</Button>
-                    </InputGroup>
-                </form>
-                <div style={{ "display": "flex" }}>
-                    <Button style={{ "marginRight": "10px" }} variant="warning" href='/input-reg-bencana'>Tambah Register Bencana</Button>
-                    <Button style={{ "marginRight": "10px" }} onClick={e => handleExportXlsx(e)} variant="warning">Unduh ke Excel</Button>
-                    {isChecked ? null : handleEditRows()}
-                    {isChecked ? null : <Button style={{ "marginRight": "100px" }} disabled={isChecked} variant="danger" onClick={(e) => handleDeleteRows(e)}>Hapus</Button>}
+                <div className='nav2'>
+                    <h1 className='header'>Daftar Register Bencana</h1>
+                    <div style={{ display: "flex", marginBottom: "10px" }}>
+                        <Button style={{ fontSize: "medium", width: "auto", justifyContent: "center", borderRadius: "10PX", marginRight: "5px" }} href='/input-reg-bencana'>Tambah Register Bencana</Button>
+                    </div>
+                    <form className='input' onSubmit={handleEnter}>
+                        <InputGroup size="sm" className="mb-3">
+                            <p style={{ width: "auto", margin: "5px" }}>Bulan :</p>
+                            <DropdownButton id="dropdown-bulan" title={displayMonth} onSelect={(event) => { handleBulan(event) }}>
+                                <DropdownMonth data={months} />
+                            </DropdownButton>
+                            <p style={{ width: "60px", textAlign: "center", justifyContent: "center", marginTop: "5px" }}>Tahun :</p>
+                            <Form.Group id="mb-4" controlId="controlinput" style={{ width: "11%" }}>
+                                <Form.Control
+                                    style={{ fontFamily: "Poppins", fontSize: "small" }}
+                                    defaultValue={year}
+                                    step={1}
+                                    min={0}
+                                    onKeyDown={e => e.preventDefault()}
+                                    onChange={e => setYear(e.target.value)}
+                                    type="number"
+                                />
+                            </Form.Group>
+                            <Button style={{ fontSize: "small", width: "auto", fontFamily: "Poppins", height: "75%", borderRadius: "5px", backgroundColor: "orange", marginLeft: "10px" }} onClick={handleEnter}>Enter</Button>
+                            <Button style={{ fontSize: "small", width: "auto", fontFamily: "Poppins", height: "75%", borderRadius: "5px", margin: "0px 10px", backgroundColor: "orange" }} onClick={e => handleExportXlsx(e)}>Unduh ke Excel</Button>
+                        </InputGroup>
+                    </form>
+                    <div style={{ "display": "flex", justifyContent: "right", marginBottom: "10px" }}>
+                        {isChecked ? null : handleEditRows()}
+                        {isChecked ? null : <Button disabled={isChecked} variant="danger" onClick={(e) => handleDeleteRows(e)}>Hapus</Button>}
+                    </div>
                 </div>
-
-                <form>
-                    <Table id='tb-reg' striped bordered hover size="sm">
-                        <thead className='text-center align-middle'>
-                            <tr>
-                                <th colSpan="7"></th>
-                                <th colSpan="5">Korban</th>
-                            </tr>
-                            <tr>
-                                <th>#</th>
-                                <th>No</th>
-                                <th>Jenis Bencana</th>
-                                <th>Lokasi Detail</th>
-                                <th>Kecamatan</th>
-                                <th>Tanggal & Waktu</th>
-                                <th>Keterangan</th>
-                                <th>Manusia</th>
-                                <th>Hewan</th>
-                                <th>Rumah</th>
-                                <th>Harta</th>
-                                <th>Jalan</th>
-                                <th>Total Kerugian</th>
-                                <th>Penyebab Kejadian</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tb-reg">
-                            {showTable()}
-                        </tbody>
-                    </Table>
-                </form>
+                <div className='mainTable'>
+                    <form>
+                        <Table id='tb-reg' striped bordered hover size="sm">
+                            <thead className='text-center align-middle'>
+                                <tr>
+                                    <th colSpan="7"></th>
+                                    <th colSpan="5">Korban</th>
+                                </tr>
+                                <tr>
+                                    <th>#</th>
+                                    <th>No</th>
+                                    <th>Jenis Bencana</th>
+                                    <th>Lokasi Detail</th>
+                                    <th>Kecamatan</th>
+                                    <th>Tanggal & Waktu</th>
+                                    <th>Keterangan</th>
+                                    <th>Manusia</th>
+                                    <th>Hewan</th>
+                                    <th>Rumah</th>
+                                    <th>Harta</th>
+                                    <th>Jalan</th>
+                                    <th>Total Kerugian</th>
+                                    <th>Penyebab Kejadian</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tb-reg">
+                                {showTable()}
+                            </tbody>
+                        </Table>
+                    </form>
+                </div>
             </div>
         </div >
     )

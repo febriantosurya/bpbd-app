@@ -30,8 +30,8 @@ const SidebarRoot = () => {
                 <a href="/kelolaadmin" className="btn"><Button className="btn-sidebar" type='submit'>Kelola Admin</Button></a>
                 <a href="/kelolauser" className="btn"><Button className="btn-sidebar" type='submit'>Kelola User</Button></a>
                 <Gap height={150} />
-                <a href="/" className="btn" style={{ paddingBottom: "5px" }}>
-                    <Button onClick={handleLogout} style={{ width: "40%" }} type='submit'><img src={Logout} alt="img" /> Keluar</Button>
+                <a href="/" className="btn" style={{ paddingBottom: "10px", marginTop: "auto" }}>
+                    <Button onClick={handleLogout} style={{ width: "auto", borderRadius: "10px" }} type='submit'><img src={Logout} alt="img" /> Keluar</Button>
                 </a>
                 <hr size="10px"></hr>
                 <h1 style={{ fontSize: "10px", textAlign: "center", color: "#dddddd" }}>@Copyright BPBD Kabupaten Magetan</h1>

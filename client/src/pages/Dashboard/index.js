@@ -55,7 +55,6 @@ function Dashboard() {
             <div className='container-dashboard'>
                 <h1 style={{fontSize:"30px"}}>Kejadian Bencana di Bulan Ini</h1>
                 <br/>
-                <br/>
                 <div className='chart'>
                     <DoughnutChart data={chartData} />
                 </div>
