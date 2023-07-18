@@ -5,18 +5,20 @@ import Dashboard from "./Dashboard";
 import RegisterBencanaAdmin from "./RegisterBencanaAdmin";
 import InputRegBencana from "./InputRegBencana";
 import ErrorHandler from "./ErrorHandler";
+import Arsip from "./Arsip";
 
 // USER READ ONLY
 import DashboardUser from "./DashboardUser";
 import RegisterBencanaUser from "./RegisterBencanaUser";
-export { 
+export {
   Login,
-  KelolaAdmin, 
-  KelolaUser, 
-  Dashboard, 
+  KelolaAdmin,
+  KelolaUser,
+  Dashboard,
   DashboardUser,
   RegisterBencanaAdmin,
   RegisterBencanaUser,
-  InputRegBencana, 
-  ErrorHandler 
+  InputRegBencana,
+  ErrorHandler,
+  Arsip
 }

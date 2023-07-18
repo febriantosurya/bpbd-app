@@ -24,7 +24,7 @@ function Dashboard() {
     const handleShowSideBar = () => setShowSideBar(true);
     function sideBar() {
         return (
-            <Sidebar handleShow={handleShowSideBar} handleClose={handleCloseSideBar} show={showSideBar} btn1="/dashboard" btn2="/register-bencana" btn3="/register-bencana"/>
+            <Sidebar handleShow={handleShowSideBar} handleClose={handleCloseSideBar} show={showSideBar} btn1="/dashboard" btn2="/register-bencana" btn3="/register-bencana" btn4="/arsip"/>
         )
     }
 
@@ -49,7 +49,7 @@ function Dashboard() {
 
     return (
         <div className='content'>
-            <div id="sidebar">
+            <div className="sidebar-secondary">
                 {sideBar()}
             </div>    
             <div className='container-dashboard'>
