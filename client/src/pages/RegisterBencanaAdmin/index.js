@@ -291,7 +291,7 @@ function RegisterBencanaAdmin() {
 
         return (
             <div>
-                <Button style={{ "marginRight": "10px" }} disabled={isChecked} variant="warning" onClick={handleShow}>Ubah</Button>
+                <Button style={{ marginRight: "10px", fontSize: "small", fontFamily: "Poppins", borderRadius: "5px", height:"33px"}} disabled={isChecked} variant="warning" onClick={handleShow}>Ubah</Button>
                 <Modal show={show} onHide={handleClose}>
                     <Modal.Header closeButton>
                         <Modal.Title>Edit Data</Modal.Title>
@@ -409,13 +409,13 @@ function RegisterBencanaAdmin() {
             </div>
 
             <div className='container-default'>
-                <div className='nav2'>
-                    <h1 className='header'>Daftar Register Bencana</h1>
+                <div className='nav2' style={{ display: "fixed", textAlign: "center" }}>
+                    <h1 style={{ fontSize: "30px", paddingTop:"20px" }}>Daftar Register Bencana</h1>
                     <div style={{ display: "flex", marginBottom: "10px" }}>
                         <Button style={{ fontSize: "medium", width: "auto", justifyContent: "center", borderRadius: "10PX", marginRight: "5px" }} href='/input-reg-bencana'>Tambah Register Bencana</Button>
                     </div>
-                    <form className='input' onSubmit={handleEnter}>
-                        <InputGroup size="sm" className="mb-3">
+                    <form onSubmit={handleEnter}>
+                        <InputGroup >
                             <p style={{ width: "auto", margin: "5px" }}>Bulan :</p>
                             <DropdownButton id="dropdown-bulan" title={displayMonth} onSelect={(event) => { handleBulan(event) }}>
                                 <DropdownMonth data={months} />
@@ -436,10 +436,12 @@ function RegisterBencanaAdmin() {
                             <Button style={{ fontSize: "small", width: "auto", fontFamily: "Poppins", height: "75%", borderRadius: "5px", margin: "0px 10px", backgroundColor: "orange" }} onClick={e => handleExportXlsx(e)}>Unduh ke Excel</Button>
                         </InputGroup>
                     </form>
-                    <div style={{ "display": "flex", justifyContent: "right", marginBottom: "10px" }}>
+
+                    <div style={{ display: "flex", textAlign: "left"}}>
                         {isChecked ? null : handleEditRows()}
-                        {isChecked ? null : <Button disabled={isChecked} variant="danger" onClick={(e) => handleDeleteRows(e)}>Hapus</Button>}
+                        {isChecked ? null : <Button style={{fontSize: "small", fontFamily: "Poppins", borderRadius: "5px", height:"33px"}} disabled={isChecked} variant="danger" onClick={(e) => handleDeleteRows(e)}>Hapus</Button>}
                     </div>
+
                 </div>
                 <div className='mainTable'>
                     <form>
