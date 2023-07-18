@@ -1,16 +1,6 @@
 .content {
     display: flex;
 }
-.container-regbencana {
-    background-image: url("../../assets/image/GOopacity30.png");
-    width: 200vh;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-color: rgb(255, 249, 240);
-    background-attachment: fixed;
-    background-position-x: 70%;
-    padding: 20px;
-}
 
 #sidebar {
     width: 5vh;
@@ -18,22 +8,31 @@
     background-color: orange;
 }
 
-.header {
-    background-color: orange;
-    border-radius: 10px;
-    font-size: 20px;
-    padding: 5px 15px;
-    font-family: 'Poppins';
-}
-
 .input {
     display: flex;
+    width: 700px;
     // justify-content: center;
     // align-items: center;
 }
 
 #dropdown-bulan {
     width: auto;
-    height: 58%;
+    height: 75%;
+    border-radius: 5px;
     font-size: small;
+}
+
+.nav2 {
+    overflow: visible;
+    background-color: rgb(255, 249, 240);
+    position: fixed;
+    /* Set the navbar to fixed position */
+    top: 0;
+    /* Position the navbar at the top of the page */
+    width: 100%;
+    /* Full width */
+}
+
+.mainTable{
+    padding-top: 190px;
 }
