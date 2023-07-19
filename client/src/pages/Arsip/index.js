@@ -16,6 +16,7 @@ import Modal from 'react-bootstrap/Modal';
 import showArsip from '../../api/arsip/showArsip';
 import delArsip from '../../api/arsip/delArsip';
 import editArsip from '../../api/arsip/editArsip'
+import addArsip from '../../api/arsip/addArsip';
 
 function Arsip() {
     const [id, setId] = useState(0)
@@ -102,7 +103,7 @@ function Arsip() {
             confirmButtonText: 'Yes'
         }).then((result) => {
             if (result.isConfirmed) {
-                delArsip()
+                delRegRow()
                 Swal.fire({ title: "Data dihapus!", icon: "success" }).then(function () {
                     window.location = "/arsip"
                 })
@@ -182,7 +183,14 @@ function Arsip() {
         )
     }
 
+    const [showAdd, setShowAdd] = useState(false);
+    const handleCloseAdd = () => setShowAdd(false);
+    const handleShowAdd = () => setShowAdd(true);
+
     function handleAddRows() {
+        async function addArsipReq() {
+            await addArsip(token, addedRow)
+        }
         function handleSave(e) {
             e.preventDefault()
             console.log(selectedRow)
@@ -197,7 +205,7 @@ function Arsip() {
             }).then((result) => {
                 if (result.isConfirmed) {
                     Swal.fire({ title: "Data berhasil ditambahkan!", icon: "success" }).then(function () {
-                        console.log(addedRow)
+                        addArsipReq()
                         window.location = "/arsip"
                     })
                 }
@@ -206,8 +214,8 @@ function Arsip() {
 
         return (
             <div>
-                <Button style={{ marginRight: "10px", fontSize: "small", fontFamily: "Poppins", borderRadius: "5px", height: "33px" }} variant="warning" onClick={handleShow}>Tambah Data</Button>
-                <Modal show={show} onHide={handleClose}>
+                <Button style={{ marginRight: "10px", fontSize: "medium", fontFamily: "Poppins", borderRadius: "5px", height: "33px" }} variant="warning" onClick={handleShowAdd}>Tambah Data</Button>
+                <Modal show={showAdd} onHide={handleCloseAdd}>
                     <Modal.Header closeButton>
                         <Modal.Title>Tambah Arsip Aktif</Modal.Title>
                     </Modal.Header>
@@ -249,12 +257,12 @@ function Arsip() {
     }
 
     return (
-        <div>
+        <div className='content'>
             <div className='sidebar-secondary'>
                 <center>{sideBar()}</center>
             </div>
 
-            <div style={{ marginLeft: "5vh", padding: "0px 20px" }}>
+            <div className='container-default'>
                 <div className='nav2' style={{ display: "fixed", textAlign: "center" }}>
                     <h1 style={{ fontSize: "30px", paddingTop: "20px" }}>Daftar Arsip Aktif</h1>
                     <div style={{ display: "flex", marginBottom: "10px" }}>
@@ -268,7 +276,7 @@ function Arsip() {
 
                 <div className='mainTable'>
                     <form>
-                        <Table striped bordered hover size="sm">
+                        <Table id='tb-reg' striped bordered hover size="sm">
                             <thead className='text-center align-middle'>
                                 <tr>
                                     <th>#</th>
