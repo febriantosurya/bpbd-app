@@ -18,7 +18,7 @@ const SidebarRoot = () => {
             <div className="sidebar">
                 <div className='logo'>
                     <center>
-                        <img src={ImageLogo} alt="img" style={{ width: "50%" }} />
+                        <img src={ImageLogo} alt="burger bar" style={{ width: "50%" }} />
                     </center>
                     <h1 style={{ fontSize: "24px", fontFamily: "Poppins, sans-serif", textAlign: "center" }}>BPBD <br /></h1>
                     <h1 style={{ fontSize: "23px", fontFamily: "Poppins, sans-serif", textAlign: "center" }}>Kabupaten Magetan</h1>

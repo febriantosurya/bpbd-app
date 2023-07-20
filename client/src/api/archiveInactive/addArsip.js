@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-const editArsip = async (token, data) => {
+const addArsip = async (token, data) => {
     try {
-        const res = await axios.put(`http://${process.env.REACT_APP_HOST}:5000/api/v1/regbencana/archive-active/edit-data`, data, {
+        const res = await axios.post(`http://${process.env.REACT_APP_HOST}:5000/api/v1/archive-inactive/add-data`, data, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -13,4 +13,5 @@ const editArsip = async (token, data) => {
         return error
     }
 }
-export default editArsip;
+
+export default addArsip

@@ -188,6 +188,7 @@ function RegisterBencanaAdmin() {
                 totalKerugian: item.totalKerugian,
                 penyebabKejadian: item.penyebabKejadian
             });
+            return null
         })
 
         let totalRow = sheet.lastRow.number
@@ -255,7 +256,7 @@ function RegisterBencanaAdmin() {
     const handleShowSideBar = () => setShowSideBar(true);
     function sideBar() {
         return (
-            <Sidebar handleShow={handleShowSideBar} handleClose={handleCloseSideBar} show={showSideBar} btn1="/dashboard" btn2="/register-bencana" btn3="/register-bencana" btn4="/arsip"/>
+            <Sidebar handleShow={handleShowSideBar} handleClose={handleCloseSideBar} show={showSideBar} btn1="/dashboard" btn2="/register-bencana" btn3="/register-bencana" btn4="/arsip-aktif"/>
         )
     }
 

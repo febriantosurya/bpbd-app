@@ -180,8 +180,8 @@ function InputRegBencana() {
     return (
         <div className='content'>
             <div className='sidebar-secondary'>
-                {sideBar()}
-            </div>    
+                <center>{sideBar()}</center>
+            </div> 
             <div className='container-default container-input-reg'>
                 <h1 className='header'>Register Bencana</h1>
                 <h5 style={{textAlign: 'left'}} >Jenis Bencana<span style={{color: "#ff0000"}}>*</span></h5>

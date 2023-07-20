@@ -24,7 +24,7 @@ function Dashboard() {
     const handleShowSideBar = () => setShowSideBar(true);
     function sideBar() {
         return (
-            <Sidebar handleShow={handleShowSideBar} handleClose={handleCloseSideBar} show={showSideBar} btn1="/dashboard" btn2="/register-bencana" btn3="/register-bencana" btn4="/arsip"/>
+            <Sidebar handleShow={handleShowSideBar} handleClose={handleCloseSideBar} show={showSideBar} btn1="/dashboard" btn2="/register-bencana" btn3="/register-bencana" btn4="/arsip-aktif"/>
         )
     }
 
@@ -49,9 +49,9 @@ function Dashboard() {
 
     return (
         <div className='content'>
-            <div className="sidebar-secondary">
-                {sideBar()}
-            </div>    
+            <div className='sidebar-secondary'>
+                <center>{sideBar()}</center>
+            </div> 
             <div className='container-dashboard'>
                 <h1 style={{fontSize:"30px"}}>Kejadian Bencana di Bulan Ini</h1>
                 <br/>

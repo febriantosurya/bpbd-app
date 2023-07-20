@@ -5,7 +5,8 @@ import Dashboard from "./Dashboard";
 import RegisterBencanaAdmin from "./RegisterBencanaAdmin";
 import InputRegBencana from "./InputRegBencana";
 import ErrorHandler from "./ErrorHandler";
-import Arsip from "./Arsip";
+import ArchiveActive from "./ArchiveActive";
+import ArchiveInactive from "./ArchiveInactive";
 
 // USER READ ONLY
 import DashboardUser from "./DashboardUser";
@@ -20,5 +21,6 @@ export {
   RegisterBencanaUser,
   InputRegBencana,
   ErrorHandler,
-  Arsip
+  ArchiveActive,
+  ArchiveInactive
 }

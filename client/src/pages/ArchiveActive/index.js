@@ -4,27 +4,38 @@ import Swal from 'sweetalert2'
 
 //BOOTSTRAP IMPORTING
 import Table from 'react-bootstrap/Table';
-import Dropdown from 'react-bootstrap/Dropdown';
-import DropdownButton from 'react-bootstrap/DropdownButton';
-import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 
 
 //IMPORT API
-import showArsip from '../../api/arsip/showArsip';
-import delArsip from '../../api/arsip/delArsip';
-import editArsip from '../../api/arsip/editArsip'
-import addArsip from '../../api/arsip/addArsip';
+import showArsip from '../../api/archiveActive/showArsip';
+import delArsip from '../../api/archiveActive/delArsip';
+import editArsip from '../../api/archiveActive/editArsip'
+import addArsip from '../../api/archiveActive/addArsip';
 
 function Arsip() {
     const [id, setId] = useState(0)
     const token = localStorage.getItem("token")
     const [data, setData] = useState([]);
     const [selectedRow, setSelectedRow] = useState({})
-    const [addedRow, setAddedRow] = useState({})
-    //show data
+    const [addedRow, setAddedRow] = useState({
+        "kodeKlasifikasi": "",
+        "jenisArsip": "",
+        "kurunWaktu": "",
+        "tingkatPerkembangan": "",
+        "jumlah": "",
+        "keterangan": "",
+        "nomorDefFolderDanBoks": "",
+        "lokasiSimpan": "",
+        "jangkaSimpanDanNasibAkhir": "",
+        "kategoriArsip": ""
+    })
+
+    const ExcelJS = require('exceljs');
+
+    // GET DATA
     async function dataArsip() {
         const response = await showArsip(token);
         if (response.data?.message === "success") {
@@ -39,7 +50,6 @@ function Arsip() {
         dataArsip();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    console.log(data)
 
     // SIDEBAR
     const [showSideBar, setShowSideBar] = useState(false);
@@ -47,7 +57,7 @@ function Arsip() {
     const handleShowSideBar = () => setShowSideBar(true);
     function sideBar() {
         return (
-            <Sidebar handleShow={handleShowSideBar} handleClose={handleCloseSideBar} show={showSideBar} btn1="/dashboard" btn2="/register-bencana" btn3="/register-bencana" btn4="/arsip" />
+            <Sidebar handleShow={handleShowSideBar} handleClose={handleCloseSideBar} show={showSideBar} btn1="/dashboard" btn2="/register-bencana" btn3="/register-bencana" btn4="/arsip-aktif" />
         )
     }
     // CHECKBOX
@@ -64,6 +74,7 @@ function Arsip() {
         }
     };
 
+    // SHOW DATA
     const showTable = () => {
         return data.map((item, number) => {
             return (
@@ -95,25 +106,28 @@ function Arsip() {
         }
         Swal.fire({
             title: 'Apakah anda yakin?',
-            text: "Anda dapat mengubah dan menghapus data di laman register bencana",
+            text: 'Data akan dihapus permanen',
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes'
+            confirmButtonText: 'Ya',
+            cancelButtonText: 'Batal'
         }).then((result) => {
             if (result.isConfirmed) {
                 delRegRow()
                 Swal.fire({ title: "Data dihapus!", icon: "success" }).then(function () {
-                    window.location = "/arsip"
+                    window.location = "/arsip-aktif"
                 })
             }
         })
     };
 
-    const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+
+    // EDIT ROW
+    const [showEdit, setShowEdit] = useState(false);
+    const handleCloseEdit = () => setShowEdit(false);
+    const handleShowEdit = () => setShowEdit(true);
 
     function handleEditRows() {
         async function reqEdit() {
@@ -133,7 +147,7 @@ function Arsip() {
                 if (result.isConfirmed) {
                     reqEdit()
                     Swal.fire({ title: "Edit data sukses!", icon: "success" }).then(function () {
-                        window.location = "/arsip"
+                        window.location = "/arsip-aktif"
                     })
                 }
             })
@@ -141,28 +155,28 @@ function Arsip() {
 
         return (
             <div>
-                <Button style={{ marginRight: "10px", fontSize: "small", fontFamily: "Poppins", borderRadius: "5px", height: "33px" }} disabled={isChecked} variant="warning" onClick={handleShow}>Ubah</Button>
-                <Modal show={show} onHide={handleClose}>
+                <Button style={{ marginRight: "10px", fontSize: "small", fontFamily: "Poppins", borderRadius: "5px", height: "33px" }} disabled={isChecked} variant="warning" onClick={handleShowEdit}>Ubah</Button>
+                <Modal show={showEdit} onHide={handleCloseEdit}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Edit Data</Modal.Title>
+                        <Modal.Title>Ubah dan Perbarui Data</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <Form >
                             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                                 <b><Form.Label>No Berkas</Form.Label></b>
-                                <Form.Control style={{ borderColor: "red" }} type="text" defaultValue={selectedRow.noBerkas} onChange={e => setSelectedRow({ ...selectedRow, "noBerkas": e.target.value })} />
+                                <Form.Control type="text" defaultValue={selectedRow.noBerkas} onChange={e => setSelectedRow({ ...selectedRow, "noBerkas": e.target.value })} />
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                                 <b><Form.Label>Nomor Item Arsip</Form.Label></b>
-                                <Form.Control style={{ borderColor: "red" }} type="text" defaultValue={selectedRow.noItemArsip} onChange={e => setSelectedRow({ ...selectedRow, "noItemArsip": e.target.value })} />
+                                <Form.Control type="text" defaultValue={selectedRow.noItemArsip} onChange={e => setSelectedRow({ ...selectedRow, "noItemArsip": e.target.value })} />
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                                 <b><Form.Label>Kode Klasifikasi</Form.Label></b>
-                                <Form.Control style={{ borderColor: "red" }} type="text" defaultValue={selectedRow.kodeKlasifikasi} onChange={e => setSelectedRow({ ...selectedRow, "kodeKlasifikasi": e.target.value })} />
+                                <Form.Control type="text" defaultValue={selectedRow.kodeKlasifikasi} onChange={e => setSelectedRow({ ...selectedRow, "kodeKlasifikasi": e.target.value })} />
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                                 <b><Form.Label>Uraian Info Arsip</Form.Label></b>
-                                <Form.Control style={{ borderColor: "red" }} type="text" defaultValue={selectedRow.uraianInfoArsip} onChange={e => setSelectedRow({ ...selectedRow, "uraianInfoArsip": e.target.value })} />
+                                <Form.Control type="text" defaultValue={selectedRow.uraianInfoArsip} onChange={e => setSelectedRow({ ...selectedRow, "uraianInfoArsip": e.target.value })} />
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                                 <b><Form.Label>Jumlah</Form.Label></b>
@@ -175,14 +189,15 @@ function Arsip() {
                         </Form>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={handleClose}>Close</Button>
-                        <Button variant="primary" onClick={e => handleSave(e)} >Save Changes</Button>
+                        <Button variant="danger" onClick={handleCloseEdit}>Batal</Button>
+                        <Button variant="success" onClick={e => handleSave(e)} >Simpan</Button>
                     </Modal.Footer>
                 </Modal>
             </div>
         )
     }
 
+    // ADD ROW
     const [showAdd, setShowAdd] = useState(false);
     const handleCloseAdd = () => setShowAdd(false);
     const handleShowAdd = () => setShowAdd(true);
@@ -193,20 +208,20 @@ function Arsip() {
         }
         function handleSave(e) {
             e.preventDefault()
-            console.log(selectedRow)
             Swal.fire({
                 title: 'Apakah anda yakin?',
-                text: "Beberapa data tidak dapat diubah",
+                text: "Tanggal arsip tidak bisa diubah",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes'
+                confirmButtonText: 'Ya',
+                cancelButtonText: 'Batal'
             }).then((result) => {
                 if (result.isConfirmed) {
                     Swal.fire({ title: "Data berhasil ditambahkan!", icon: "success" }).then(function () {
                         addArsipReq()
-                        window.location = "/arsip"
+                        window.location = "/arsip-aktif"
                     })
                 }
             })
@@ -248,12 +263,112 @@ function Arsip() {
                         </Form>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={handleClose}>Close</Button>
-                        <Button variant="primary" onClick={e => handleSave(e)} >Save Changes</Button>
+                        <Button variant="danger" onClick={handleCloseAdd}>Batal</Button>
+                        <Button variant="success" onClick={e => handleSave(e)} >Simpan</Button>
                     </Modal.Footer>
                 </Modal>
             </div>
         )
+    }
+
+
+    // DOWNLOAD CONTENT
+    const handleExportXlsx = (e) => {
+        e.preventDefault()
+        const wb = new ExcelJS.Workbook();
+        const sheet = wb.addWorksheet("sheet");
+
+        sheet.columns = [
+            {
+                header: "No",
+                key: "no",
+                width: 4,
+            },
+            {
+                header: "Nomor Berkas",
+                key: "noBerkas",
+                width: 15,
+            },
+            {
+                header: "Nomor Item Arsip",
+                key: "noItemArsip",
+                width: 15
+            },
+            {
+                header: "Kode Klasifikasi",
+                key: "kodeKlasifikasi",
+                width: 15
+            },
+            {
+                header: "Uraian Informasi Arsip",
+                key: "uraianInfoArsip",
+                width: 11
+            },
+            {
+                header: "Tanggal",
+                key: "tanggal",
+                width: 8
+            },
+            {
+                header: "Jumlah",
+                key: "jumlah",
+                width: 20
+            },
+            {
+                header: "Keterangan",
+                key: "keterangan",
+                width: 15
+            }
+        ];
+
+        data.map((item, number) => {
+            sheet.addRow({
+                no: number + 1,
+                jenisBencana: item.jenisBencana,
+                noBerkas: item.noBerkas,
+                noItemArsip: item.noItemArsip,
+                kodeKlasifikasi: item.kodeKlasifikasi,
+                uraianInfoArsip: item.uraianInfoArsip,
+                tanggal: item.tanggal,
+                jumlah: item.jumlah,
+                keterangan: item.keterangan
+            });
+            return null
+        })
+
+        let totalRow = sheet.lastRow.number
+        let totalColumn = sheet.lastColumn.number
+        //Loop through all table's row
+        for (let i = 1; i <= totalRow; i++) {
+            for (let j = 65; j < 65 + totalColumn; j++) {
+                let cell = sheet.getCell(`${String.fromCharCode(j)}${i}`)
+                if (i === 1) {
+                    cell.fill = {
+                        type: 'pattern',
+                        pattern: 'solid',
+                        fgColor: { argb: 'FDFD02' },
+                    };
+                }
+                cell.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
+                cell.border = {
+                    top: { style: 'thin', color: { argb: '000000' } },
+                    left: { style: 'thin', color: { argb: '000000' } },
+                    bottom: { style: 'thin', color: { argb: '000000' } },
+                    right: { style: 'thin', color: { argb: '000000' } }
+                };
+            }
+        }
+        wb.xlsx.writeBuffer().then(function (data) {
+            const blob = new Blob([data], {
+                type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            });
+            const url = window.URL.createObjectURL(blob);
+            const anchor = document.createElement("a");
+            anchor.href = url;
+            anchor.download = "Arsip Aktif.xlsx";
+            anchor.click();
+            window.URL.revokeObjectURL(url);
+        });
     }
 
     return (
@@ -267,6 +382,8 @@ function Arsip() {
                     <h1 style={{ fontSize: "30px", paddingTop: "20px" }}>Daftar Arsip Aktif</h1>
                     <div style={{ display: "flex", marginBottom: "10px" }}>
                         {handleAddRows()}
+                        <Button style={{ fontSize: "small", width: "auto", fontFamily: "Poppins", height: "75%", borderRadius: "5px", margin: "0px 10px", backgroundColor: "orange"}} onClick={e=>handleExportXlsx(e)} >Unduh ke Excel</Button>
+                        <Button style={{ fontSize: "small", width: "auto", fontFamily: "Poppins", height: "75%", borderRadius: "5px", margin: "0px 10px", backgroundColor: "orange"}} onClick={e=>window.location="/arsip-inaktif"} >Arsip Inaktif</Button>
                     </div>
                     <div style={{ display: "flex", textAlign: "left" }}>
                         {isChecked ? null : handleEditRows()}

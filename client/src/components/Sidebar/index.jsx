@@ -11,7 +11,7 @@ function Sidebar(props) {
 
     return (
         <>
-            <img src={BurgerMenu} onClick={handleShow} style={{ cursor: "pointer", margin:"5px"}} />
+            <img alt="burger bar" src={BurgerMenu} onClick={handleShow} style={{ cursor: "pointer", margin:"5px"}} />
 
             <Offcanvas style={{ backgroundColor: "orange" }} show={show} onHide={handleClose}>
                 <Offcanvas.Header closeButton>

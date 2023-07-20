@@ -11,8 +11,8 @@ import {
     InputRegBencana,
     ErrorHandler,
     DashboardUser,
-    Arsip,
-    InputArsip
+    ArchiveActive,
+    ArchiveInactive
 } from '../../pages'
 
 const router = createBrowserRouter([
@@ -53,8 +53,12 @@ const router = createBrowserRouter([
         element: checkLoggedMiddleware(<InputRegBencana />)
     },
     {
-        path: "/arsip",
-        element: checkLoggedMiddleware(<Arsip />)
+        path: "/arsip-aktif",
+        element: checkLoggedMiddleware(<ArchiveActive />)
     },
+    {
+        path: "/arsip-inaktif",
+        element: checkLoggedMiddleware(<ArchiveInactive />)
+    }
 ]);
 export default router;
