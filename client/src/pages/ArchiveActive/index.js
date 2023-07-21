@@ -48,7 +48,6 @@ function Arsip() {
     };
     useEffect(() => {
         dataArsip();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // SIDEBAR
@@ -229,7 +228,7 @@ function Arsip() {
 
         return (
             <div>
-                <Button style={{ marginRight: "10px", fontSize: "medium", fontFamily: "Poppins", borderRadius: "5px", height: "33px" }} variant="warning" onClick={handleShowAdd}>Tambah Data</Button>
+                <Button style={{ fontSize: "small", width: "auto", fontFamily: "Poppins", borderRadius: "5px", backgroundColor:"orange" }} onClick={handleShowAdd}>Tambah Data</Button>
                 <Modal show={showAdd} onHide={handleCloseAdd}>
                     <Modal.Header closeButton>
                         <Modal.Title>Tambah Arsip Aktif</Modal.Title>
@@ -312,7 +311,7 @@ function Arsip() {
             {
                 header: "Jumlah",
                 key: "jumlah",
-                width: 20
+                width: 15
             },
             {
                 header: "Keterangan",
@@ -383,7 +382,7 @@ function Arsip() {
                     <div style={{ display: "flex", marginBottom: "10px" }}>
                         {handleAddRows()}
                         <Button style={{ fontSize: "small", width: "auto", fontFamily: "Poppins", height: "75%", borderRadius: "5px", margin: "0px 10px", backgroundColor: "orange"}} onClick={e=>handleExportXlsx(e)} >Unduh ke Excel</Button>
-                        <Button style={{ fontSize: "small", width: "auto", fontFamily: "Poppins", height: "75%", borderRadius: "5px", margin: "0px 10px", backgroundColor: "orange"}} onClick={e=>window.location="/arsip-inaktif"} >Arsip Inaktif</Button>
+                        <Button style={{ fontSize: "small", width: "auto", fontFamily: "Poppins", height: "75%", borderRadius: "5px", backgroundColor: "orange"}} onClick={e=>window.location="/arsip-inaktif"} >Arsip Inaktif</Button>
                     </div>
                     <div style={{ display: "flex", textAlign: "left" }}>
                         {isChecked ? null : handleEditRows()}
@@ -391,7 +390,7 @@ function Arsip() {
                     </div>
                 </div>
 
-                <div className='mainTable'>
+                <div className='mainTable' style={{paddingTop:"150px"}}>
                     <form>
                         <Table id='tb-reg' striped bordered hover size="sm">
                             <thead className='text-center align-middle'>

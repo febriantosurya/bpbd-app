@@ -21,16 +21,16 @@ function Arsip() {
     const [data, setData] = useState([]);
     const [selectedRow, setSelectedRow] = useState({})
     const [addedRow, setAddedRow] = useState({
-      "kodeKlasifikasi": "",
-      "jenisArsip": "",
-      "kurunWaktu": "",
-      "tingkatPerkembangan": "",
-      "jumlah": "",
-      "keterangan": "",
-      "nomorDefFolderDanBoks": "",
-      "lokasiSimpan": "",
-      "jangkaSimpanDanNasibAkhir": "",
-      "kategoriArsip": ""
+        "kodeKlasifikasi": "",
+        "jenisArsip": "",
+        "kurunWaktu": "",
+        "tingkatPerkembangan": "",
+        "jumlah": "",
+        "keterangan": "",
+        "nomorDefFolderDanBoks": "",
+        "lokasiSimpan": "",
+        "jangkaSimpanDanNasibAkhir": "",
+        "kategoriArsip": ""
     })
 
     const ExcelJS = require('exceljs');
@@ -248,7 +248,7 @@ function Arsip() {
 
         return (
             <div>
-                <Button style={{ marginRight: "10px", fontSize: "medium", fontFamily: "Poppins", borderRadius: "5px", height: "33px" }} variant="warning" onClick={handleShowAdd}>Tambah Data</Button>
+                <Button style={{ fontSize: "small", width: "auto", fontFamily: "Poppins", borderRadius: "5px", backgroundColor: "orange" }} onClick={handleShowAdd}>Tambah Data</Button>
                 <Modal show={showAdd} onHide={handleCloseAdd}>
                     <Modal.Header closeButton>
                         <Modal.Title>Tambah Arsip Aktif</Modal.Title>
@@ -337,7 +337,7 @@ function Arsip() {
             {
                 header: "Tingkat Perkembangan",
                 key: "tingkatPerkembangan",
-                width: 11
+                width: 26
             },
             {
                 header: "Jumlah",
@@ -352,7 +352,7 @@ function Arsip() {
             {
                 header: "Nomor Definitif Folder dan Boks",
                 key: "nomorDefFolderDanBoks",
-                width: 8
+                width: 30
             },
             {
                 header: "Lokasi Simpan",
@@ -362,7 +362,7 @@ function Arsip() {
             {
                 header: "Jangka Simpan dan Nasib Akhir",
                 key: "jangkaSimpanDanNasibAkhir",
-                width: 15
+                width: 30
             },
             {
                 header: "Kategori Arsip",
@@ -434,8 +434,8 @@ function Arsip() {
                     <h1 style={{ fontSize: "30px", paddingTop: "20px" }}>Daftar Arsip Inaktif</h1>
                     <div style={{ display: "flex", marginBottom: "10px" }}>
                         {handleAddRows()}
-                        <Button style={{ fontSize: "small", width: "auto", fontFamily: "Poppins", height: "75%", borderRadius: "5px", margin: "0px 10px", backgroundColor: "orange"}} onClick={e=>handleExportXlsx(e)} >Unduh ke Excel</Button>
-                        <Button style={{ fontSize: "small", width: "auto", fontFamily: "Poppins", height: "75%", borderRadius: "5px", margin: "0px 10px", backgroundColor: "orange"}} onClick={e=>window.location="/arsip-aktif"} >Arsip Aktif</Button>
+                        <Button style={{ fontSize: "small", width: "auto", fontFamily: "Poppins", height: "75%", borderRadius: "5px", margin: "0px 10px", backgroundColor: "orange" }} onClick={e => handleExportXlsx(e)} >Unduh ke Excel</Button>
+                        <Button style={{ fontSize: "small", width: "auto", fontFamily: "Poppins", height: "75%", borderRadius: "5px", margin: "0px 10px", backgroundColor: "orange" }} onClick={e => window.location = "/arsip-aktif"} >Arsip Aktif</Button>
                     </div>
                     <div style={{ display: "flex", textAlign: "left" }}>
                         {isChecked ? null : handleEditRows()}
@@ -443,7 +443,7 @@ function Arsip() {
                     </div>
                 </div>
 
-                <div className='mainTable'>
+                <div className='mainTable' style={{ paddingTop: "150px" }}>
                     <form>
                         <Table id='tb-reg' striped bordered hover size="sm">
                             <thead className='text-center align-middle'>
