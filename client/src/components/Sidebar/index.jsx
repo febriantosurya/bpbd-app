@@ -3,7 +3,7 @@ import { ImageLogo, Logout, BurgerMenu } from '../../assets';
 import Button from 'react-bootstrap/Button';
 
 function Sidebar(props) {
-    const { show, handleClose, handleShow, btn1, btn2, btn3 } = props
+    const { show, handleClose, handleShow, btn1, btn2, btn3,btn4 } = props
     const handleLogout = () => {
         localStorage.removeItem('token');
         window.location = '/';
@@ -11,7 +11,7 @@ function Sidebar(props) {
 
     return (
         <>
-            <img src={BurgerMenu} onClick={handleShow} style={{ cursor: "pointer", margin:"5px"}} />
+            <img alt="burger bar" src={BurgerMenu} onClick={handleShow} style={{ cursor: "pointer", margin:"5px"}} />
 
             <Offcanvas style={{ backgroundColor: "orange" }} show={show} onHide={handleClose}>
                 <Offcanvas.Header closeButton>
@@ -28,6 +28,7 @@ function Sidebar(props) {
                     <a href={btn1} className='btn'><Button className='mainBtn-sidebar' type='submit'>Dashboard</Button></a>
                     <a href={btn2} className='btn'><Button className='mainBtn-sidebar' type='submit'>Register Bencana</Button></a>
                     <a href={btn3} className='btn'><Button className='mainBtn-sidebar' type='submit'>Inventaris Barang</Button></a>
+                    <a href={btn4} className='btn'><Button className='mainBtn-sidebar' type='submit'>Arsip</Button></a>
                     <a href="/" className="btn" style={{ paddingBottom: "10px", marginTop: "auto" }}>
                         <Button onClick={handleLogout} style={{ width: "auto", borderRadius: "10px" }} type='submit'><img src={Logout} alt="img" /> Keluar</Button>
                     </a>

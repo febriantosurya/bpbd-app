@@ -188,6 +188,7 @@ function RegisterBencanaAdmin() {
                 totalKerugian: item.totalKerugian,
                 penyebabKejadian: item.penyebabKejadian
             });
+            return null
         })
 
         let totalRow = sheet.lastRow.number
@@ -255,7 +256,7 @@ function RegisterBencanaAdmin() {
     const handleShowSideBar = () => setShowSideBar(true);
     function sideBar() {
         return (
-            <Sidebar handleShow={handleShowSideBar} handleClose={handleCloseSideBar} show={showSideBar} btn1="/dashboard" btn2="/register-bencana" btn3="/register-bencana" />
+            <Sidebar handleShow={handleShowSideBar} handleClose={handleCloseSideBar} show={showSideBar} btn1="/dashboard" btn2="/register-bencana" btn3="/register-bencana" btn4="/arsip-aktif"/>
         )
     }
 
@@ -390,16 +391,6 @@ function RegisterBencanaAdmin() {
                 </tr>
             )
         })
-    }
-
-    window.onscroll = function () { scrollFunction() };
-
-    function scrollFunction() {
-        if (document.body.scrollTop > 140 || document.documentElement.scrollTop > 140) {
-            document.getElementById("navbar").style.top = "0";
-        } else {
-            document.getElementById("navbar").style.top = "-100px";
-        }
     }
 
     return (

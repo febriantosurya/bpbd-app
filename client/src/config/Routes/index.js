@@ -1,15 +1,18 @@
 import { createBrowserRouter } from "react-router-dom";
 import checkLoggedMiddleware from "../../middleware/checkLoggedMiddleware";
 import hasLoggedMiddleware from "../../middleware/hasLoggedMiddleware";
-import { KelolaAdmin, 
-    KelolaUser, 
-    Login, 
-    Dashboard, 
+import {
+    KelolaAdmin,
+    KelolaUser,
+    Login,
+    Dashboard,
     RegisterBencanaAdmin,
-    RegisterBencanaUser, 
-    InputRegBencana, 
-    ErrorHandler, 
-    DashboardUser 
+    RegisterBencanaUser,
+    InputRegBencana,
+    ErrorHandler,
+    DashboardUser,
+    ArchiveActive,
+    ArchiveInactive
 } from '../../pages'
 
 const router = createBrowserRouter([
@@ -49,5 +52,13 @@ const router = createBrowserRouter([
         path: "/input-reg-bencana",
         element: checkLoggedMiddleware(<InputRegBencana />)
     },
+    {
+        path: "/arsip-aktif",
+        element: checkLoggedMiddleware(<ArchiveActive />)
+    },
+    {
+        path: "/arsip-inaktif",
+        element: checkLoggedMiddleware(<ArchiveInactive />)
+    }
 ]);
 export default router;
