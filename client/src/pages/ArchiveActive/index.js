@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Sidebar } from '../../components'
+import { SearchIcon } from '../../assets';
 import Swal from 'sweetalert2'
 
 //BOOTSTRAP IMPORTING
@@ -7,6 +8,7 @@ import Table from 'react-bootstrap/Table';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
+import Dropdown from 'react-bootstrap/Dropdown';
 
 
 //IMPORT API
@@ -14,6 +16,10 @@ import showArsip from '../../api/archiveActive/showArsip';
 import delArsip from '../../api/archiveActive/delArsip';
 import editArsip from '../../api/archiveActive/editArsip'
 import addArsip from '../../api/archiveActive/addArsip';
+import DropdownButton from 'react-bootstrap/esm/DropdownButton';
+import searchByDate from '../../api/archiveActive/searchByDate';
+import searchByCodeClassify from '../../api/archiveActive/searchByCodeClassify'
+import searchByNote from '../../api/archiveActive/searchByNote';
 
 function Arsip() {
     const [id, setId] = useState(0)
@@ -48,6 +54,7 @@ function Arsip() {
     };
     useEffect(() => {
         dataArsip();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // SIDEBAR
@@ -228,7 +235,7 @@ function Arsip() {
 
         return (
             <div>
-                <Button style={{ fontSize: "small", width: "auto", fontFamily: "Poppins", borderRadius: "5px", backgroundColor:"orange" }} onClick={handleShowAdd}>Tambah Data</Button>
+                <Button style={{fontSize: "small", height: "100%", width: "auto", fontFamily: "Poppins", backgroundColor:"orange" }} onClick={handleShowAdd}>Tambah Data</Button>
                 <Modal show={showAdd} onHide={handleCloseAdd}>
                     <Modal.Header closeButton>
                         <Modal.Title>Tambah Arsip Aktif</Modal.Title>
@@ -370,6 +377,83 @@ function Arsip() {
         });
     }
 
+    // SEARCH CONTENT
+    const [showSearh, setShowSearch] = useState(false);
+    const handleCloseSearch = () => setShowSearch(false);
+    const handleShowSearch = () => setShowSearch(true);
+
+    const [selectedSearch, setSelectedSearch] = useState("Opsi Pencarian");
+    const [searchVal, setSearchVal] = useState("")
+    const [inputDisable, setInputDisable] = useState(true)
+    const [inputDate, setInputDate] = useState(false)
+    const [isFiltering, setIsFiltering] = useState(false)
+
+    function modalSearch() {
+        async function handleSearch(e) {
+            e.preventDefault()
+            if (selectedSearch === "Opsi Pencarian" || searchVal === "") {
+                Swal.fire(
+                    'Gagal',
+                    'Kata kunci dan opsi pencarian wajib diisi!',
+                    'error'
+                )
+            }
+            else {
+                setIsFiltering(true)
+                if (selectedSearch === "Tanggal") {
+                    const data = searchVal.split("-")
+                    const response = await searchByDate(token, data)
+                    setData(response.data.data)
+                }
+                else if (selectedSearch === "Kode Klasifikasi") {
+                    const response = await searchByCodeClassify(token, searchVal)
+                    setData(response.data.data)
+                }
+                else if (selectedSearch === "Keterangan") {
+                    const response = await searchByNote(token, searchVal)
+                    setData(response.data.data)
+                }
+                handleCloseSearch()
+            }
+        }
+
+        function handleSearchInput(e) {
+            setInputDisable(false)
+            setSelectedSearch(e)
+            if (e === "Tanggal") {
+                setInputDate(true)
+            }
+            else {
+                setInputDate(false)
+            }
+        }
+
+        return(
+            <>
+            <Button onClick={handleShowSearch} style={{ fontSize: "small", width: "auto", fontFamily: "Poppins", backgroundColor: "#97a633", marginRight:"10px"}} ><img style={{ width:"20px" }} alt="search" src={SearchIcon}></img></Button>
+                <Modal show={showSearh} onHide={handleCloseSearch}>
+                <Modal.Body>
+                <Form>
+                    <DropdownButton size="sm" variant="secondary" title={selectedSearch} onSelect={e=>handleSearchInput(e)}>
+                        <Dropdown.Item eventKey={"Kode Klasifikasi"}>Kode Klasifikasi</Dropdown.Item>
+                        <Dropdown.Item eventKey={"Tanggal"}>Tanggal</Dropdown.Item>
+                        <Dropdown.Item eventKey={"Keterangan"}>Keterangan</Dropdown.Item>
+                    </DropdownButton>
+                    <br/>
+                    {inputDate ? (
+                        <Form.Control type="date" placeholder="Pilih opsi kemudian ketik disini" autoFocus disabled={inputDisable} onChange={e=>setSearchVal(e.target.value)}/>
+                    ) : (
+                        <Form.Control type="text" placeholder="Pilih opsi kemudian ketik disini" defaultValue={""} autoFocus disabled={inputDisable} onChange={e=>setSearchVal(e.target.value)}/>
+                    )}
+                </Form>
+                </Modal.Body>
+
+                <Button variant="warning" onClick={e=>handleSearch(e)}>Cari</Button>
+            </Modal>
+        </>
+        )
+    }
+
     return (
         <div className='content'>
             <div className='sidebar-secondary'>
@@ -381,8 +465,10 @@ function Arsip() {
                     <h1 style={{ fontSize: "30px", paddingTop: "20px" }}>Daftar Arsip Aktif</h1>
                     <div style={{ display: "flex", marginBottom: "10px" }}>
                         {handleAddRows()}
-                        <Button style={{ fontSize: "small", width: "auto", fontFamily: "Poppins", height: "75%", borderRadius: "5px", margin: "0px 10px", backgroundColor: "orange"}} onClick={e=>handleExportXlsx(e)} >Unduh ke Excel</Button>
-                        <Button style={{ fontSize: "small", width: "auto", fontFamily: "Poppins", height: "75%", borderRadius: "5px", backgroundColor: "orange"}} onClick={e=>window.location="/arsip-inaktif"} >Arsip Inaktif</Button>
+                        <Button style={{ fontSize: "small", width: "auto", fontFamily: "Poppins", margin: "0px 10px", backgroundColor: "orange"}} onClick={e=>handleExportXlsx(e)} >Unduh ke Excel</Button>
+                        <Button style={{ fontSize: "small", width: "auto", fontFamily: "Poppins", backgroundColor: "orange", marginRight:"10px"}} onClick={e=>window.location="/arsip-inaktif"} >Arsip Inaktif</Button>
+                        {modalSearch()}
+                        {isFiltering ? <Button variant='danger' style={{ fontSize: "small", width: "auto", fontFamily: "Poppins"}} onClick={e=>window.location='/arsip-aktif'} >Hapus Pencarian</Button> : null}
                     </div>
                     <div style={{ display: "flex", textAlign: "left" }}>
                         {isChecked ? null : handleEditRows()}

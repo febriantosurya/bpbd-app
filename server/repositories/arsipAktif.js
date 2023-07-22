@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const ArsipAktif = require('../models/arsipAktif');
 
 exports.getData = async () => {
@@ -40,4 +41,34 @@ exports.delData = async (id) => {
       id: id
     }
   });
+};
+
+
+// SEARCHING DATA
+
+exports.getByDate = async (date) => {
+  const result =  await ArsipAktif.findAll({
+    where: {
+      tanggal: date
+    }
+  });
+  return result;
+};
+
+exports.getByCodeClassify = async (data) => {
+  const result = await ArsipAktif.findAll({
+    where: {
+      kodeKlasifikasi: { [Op.like]: `%${data}%` }
+    }
+  });
+  return result;
+};
+
+exports.getByNote = async (data) => {
+  const result = await ArsipAktif.findAll({
+    where: {
+      keterangan: { [Op.like]: `%${data}%` }
+    }
+  });
+  return result;
 };

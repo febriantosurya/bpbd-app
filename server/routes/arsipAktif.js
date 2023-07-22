@@ -9,4 +9,8 @@ router.post('/add-data', middleware.checkAdminAuthorization, arsipAktifRepoContr
 router.delete('/del-data', middleware.checkAdminAuthorization, arsipAktifRepoController.delArsipData);
 router.put('/edit-data', middleware.checkAdminAuthorization, arsipAktifRepoController.editArsipData);
 
+router.get('/show-data/:day/:month/:year', middleware.checkAdminAuthorization, arsipAktifRepoController.searchByDate);
+router.get('/show-data/classify/:classify', middleware.checkAdminAuthorization, arsipAktifRepoController.searchByCodeClassify);
+router.get('/show-data/note/:note', middleware.checkAdminAuthorization, arsipAktifRepoController.searchByNote);
+
 module.exports = router;

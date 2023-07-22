@@ -56,5 +56,40 @@ exports.delArsipData = async (req, res) => {
   }
   catch (error) {
     return res.status(400).json({ message: error.message });
+  };
+};
+
+
+// SEARCHING DATA
+
+exports.searchByDate = async (req, res) => {
+  try {
+    let tanggal = String(req.params.year + "-" + req.params.month + "-" + req.params.day)
+    tanggal = new Date(tanggal)
+    const result = await arsipAktifRepo.getByDate(tanggal);
+    return res.status(200).json({ message: 'success', data: result });
   }
+  catch (error) {
+    return res.status(400).json({ message: error.message });
+  };
+};
+
+exports.searchByCodeClassify = async (req, res) => {
+  try {
+    const result = await arsipAktifRepo.getByCodeClassify(req.params.classify);
+    return res.status(200).json({ message: 'success', data: result });
+  }
+  catch (error) {
+    return res.status(400).json({ message: error.message });
+  };
+};
+
+exports.searchByNote = async (req, res) => {
+  try {
+    const result = await arsipAktifRepo.getByNote(req.params.note);
+    return res.status(200).json({ message: 'success', data: result });
+  }
+  catch (error) {
+    return res.status(400).json({ message: error.message });
+  };
 }
