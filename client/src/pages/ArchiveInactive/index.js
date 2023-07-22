@@ -1,24 +1,29 @@
 import React, { useState, useEffect } from 'react'
 import { Sidebar } from '../../components'
+import { SearchIcon } from '../../assets'
 import Swal from 'sweetalert2'
 
 //BOOTSTRAP IMPORTING
-import Table from 'react-bootstrap/Table';
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
-import Modal from 'react-bootstrap/Modal';
+import Table from 'react-bootstrap/Table'
+import Button from 'react-bootstrap/Button'
+import Form from 'react-bootstrap/Form'
+import Modal from 'react-bootstrap/Modal'
+import Dropdown from 'react-bootstrap/Dropdown'
+import DropdownButton from 'react-bootstrap/DropdownButton'
 
 
 //IMPORT API
-import showArsip from '../../api/archiveInactive/showArsip';
-import delArsip from '../../api/archiveInactive/delArsip';
+import showArsip from '../../api/archiveInactive/showArsip'
+import delArsip from '../../api/archiveInactive/delArsip'
 import editArsip from '../../api/archiveInactive/editArsip'
-import addArsip from '../../api/archiveInactive/addArsip';
+import addArsip from '../../api/archiveInactive/addArsip'
+import searchByCodeClassify from '../../api/archiveInactive/searchByCodeClassify'
+import searchByType from '../../api/archiveInactive/searchByType'
 
 function Arsip() {
     const [id, setId] = useState(0)
     const token = localStorage.getItem("token")
-    const [data, setData] = useState([]);
+    const [data, setData] = useState([])
     const [selectedRow, setSelectedRow] = useState({})
     const [addedRow, setAddedRow] = useState({
         "kodeKlasifikasi": "",
@@ -33,33 +38,42 @@ function Arsip() {
         "kategoriArsip": ""
     })
 
-    const ExcelJS = require('exceljs');
+    const ExcelJS = require('exceljs')
 
     // GET DATA
     async function dataArsip() {
-        const response = await showArsip(token);
+        const response = await showArsip(token)
         if (response.data?.message === "success") {
             setData(response.data.data)
         }
         else {
-            localStorage.removeItem("token");
-            window.location = '/';
-        };
-    };
+            localStorage.removeItem("token")
+            window.location = '/'
+        }
+    }
     useEffect(() => {
-        dataArsip();
+        dataArsip()
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [])
 
     // SIDEBAR
-    const [showSideBar, setShowSideBar] = useState(false);
-    const handleCloseSideBar = () => setShowSideBar(false);
-    const handleShowSideBar = () => setShowSideBar(true);
+    const [showSideBar, setShowSideBar] = useState(false)
+    const handleCloseSideBar = () => setShowSideBar(false)
+    const handleShowSideBar = () => setShowSideBar(true)
     function sideBar() {
         return (
-            <Sidebar handleShow={handleShowSideBar} handleClose={handleCloseSideBar} show={showSideBar} btn1="/dashboard" btn2="/register-bencana" btn3="/register-bencana" btn4="/arsip-aktif" />
+            <Sidebar 
+                handleShow={handleShowSideBar} 
+                handleClose={handleCloseSideBar} 
+                show={showSideBar} 
+                btn1="/dashboard" 
+                btn2="/register-bencana" 
+                btn3="/register-bencana" 
+                btn4="/arsip-aktif"
+            />
         )
     }
+    
     // CHECKBOX
     const [isChecked, setIsChecked] = useState(true)
     const handleCheckboxChange = (event, rowData) => {
@@ -72,7 +86,7 @@ function Arsip() {
             setId(0)
             setSelectedRow({})
         }
-    };
+    }
 
     // SHOW DATA
     const showTable = () => {
@@ -124,13 +138,13 @@ function Arsip() {
                 })
             }
         })
-    };
+    }
 
 
     // EDIT ROW
-    const [showEdit, setShowEdit] = useState(false);
-    const handleCloseEdit = () => setShowEdit(false);
-    const handleShowEdit = () => setShowEdit(true);
+    const [showEdit, setShowEdit] = useState(false)
+    const handleCloseEdit = () => setShowEdit(false)
+    const handleShowEdit = () => setShowEdit(true)
 
     function handleEditRows() {
         async function reqEdit() {
@@ -218,9 +232,9 @@ function Arsip() {
     }
 
     // ADD ROW
-    const [showAdd, setShowAdd] = useState(false);
-    const handleCloseAdd = () => setShowAdd(false);
-    const handleShowAdd = () => setShowAdd(true);
+    const [showAdd, setShowAdd] = useState(false)
+    const handleCloseAdd = () => setShowAdd(false)
+    const handleShowAdd = () => setShowAdd(true)
 
     function handleAddRows() {
         async function addArsipReq() {
@@ -310,8 +324,8 @@ function Arsip() {
     // DOWNLOAD CONTENT
     const handleExportXlsx = (e) => {
         e.preventDefault()
-        const wb = new ExcelJS.Workbook();
-        const sheet = wb.addWorksheet("sheet");
+        const wb = new ExcelJS.Workbook()
+        const sheet = wb.addWorksheet("sheet")
 
         sheet.columns = [
             {
@@ -369,7 +383,7 @@ function Arsip() {
                 key: "kategoriArsip",
                 width: 15
             }
-        ];
+        ]
 
         data.map((item, number) => {
             sheet.addRow({
@@ -384,7 +398,7 @@ function Arsip() {
                 lokasiSimpan: item.lokasiSimpan,
                 jangkaSimpanDanNasibAkhir: item.jangkaSimpanDanNasibAkhir,
                 kategoriArsip: item.kategoriArsip
-            });
+            })
             return null
         })
 
@@ -399,28 +413,90 @@ function Arsip() {
                         type: 'pattern',
                         pattern: 'solid',
                         fgColor: { argb: 'FDFD02' },
-                    };
+                    }
                 }
-                cell.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
+                cell.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true }
                 cell.border = {
                     top: { style: 'thin', color: { argb: '000000' } },
                     left: { style: 'thin', color: { argb: '000000' } },
                     bottom: { style: 'thin', color: { argb: '000000' } },
                     right: { style: 'thin', color: { argb: '000000' } }
-                };
+                }
             }
         }
         wb.xlsx.writeBuffer().then(function (data) {
             const blob = new Blob([data], {
                 type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            });
-            const url = window.URL.createObjectURL(blob);
-            const anchor = document.createElement("a");
-            anchor.href = url;
-            anchor.download = "Arsip Inaktif.xlsx";
-            anchor.click();
-            window.URL.revokeObjectURL(url);
-        });
+            })
+            const url = window.URL.createObjectURL(blob)
+            const anchor = document.createElement("a")
+            anchor.href = url
+            anchor.download = "Arsip Inaktif.xlsx"
+            anchor.click()
+            window.URL.revokeObjectURL(url)
+        })
+    }
+
+    // SEARCH CONTENT
+    const [showSearh, setShowSearch] = useState(false)
+    const handleCloseSearch = () => {setShowSearch(false); setSelectedSearch("Opsi Pencarian")}
+    const handleShowSearch = () => setShowSearch(true)
+
+    const [selectedSearch, setSelectedSearch] = useState("Opsi Pencarian")
+    const [searchAction, setSearchAction] = useState("")
+    const [searchVal, setSearchVal] = useState("")
+    const [inputDisable, setInputDisable] = useState(true)
+    const [isFiltering, setIsFiltering] = useState(false)
+
+    function modalSearch() {
+        async function handleSearch(e) {
+            e.preventDefault()
+            if (selectedSearch === "Opsi Pencarian" || searchVal === "") {
+                Swal.fire(
+                    'Gagal',
+                    'Kata kunci dan opsi pencarian wajib diisi!',
+                    'error'
+                )
+            }
+            else {
+                setIsFiltering(true)
+                setSearchAction(selectedSearch)
+                if (selectedSearch === "Kode Klasifikasi") {
+                    const response = await searchByCodeClassify(token, searchVal)
+                    setData(response.data.data)
+                }
+                else if (selectedSearch === "Jenis Arsip") {
+                    const response = await searchByType(token, searchVal)
+                    setData(response.data.data)
+                }
+                handleCloseSearch()
+            }
+        }
+
+        function handleSearchInput(e) {
+            setInputDisable(false)
+            setSelectedSearch(e)
+        }
+
+        return(
+            <>
+                <Button onClick={handleShowSearch} style={{ fontSize: "small", width: "auto", fontFamily: "Poppins", backgroundColor: "#97a633", marginRight:"10px"}} ><img style={{ width:"20px" }} alt="search" src={SearchIcon}></img></Button>
+                <Modal show={showSearh} onHide={handleCloseSearch}>
+                    <Modal.Body>
+                    <Form onSubmit={e=>e.preventDefault()}>
+                        <DropdownButton size="sm" variant="secondary" title={selectedSearch} onSelect={e=>handleSearchInput(e)}>
+                            <Dropdown.Item eventKey={"Kode Klasifikasi"}>Kode Klasifikasi</Dropdown.Item>
+                            <Dropdown.Item eventKey={"Jenis Arsip"}>Jenis Arsip</Dropdown.Item>
+                            <Dropdown.Item eventKey={"Kategori Arsip"}>Kategori Arsip</Dropdown.Item>
+                        </DropdownButton>
+                        <br/>
+                        <Form.Control type="text" placeholder="Pilih opsi kemudian ketik disini" defaultValue={""} autoFocus disabled={inputDisable} onChange={e=>setSearchVal(e.target.value)}/>
+                    </Form>
+                    </Modal.Body>
+                    <Button variant="warning" onClick={e=>handleSearch(e)}>Cari</Button>
+                </Modal>
+            </>
+        )
     }
 
     return (
@@ -435,7 +511,9 @@ function Arsip() {
                     <div style={{ display: "flex", marginBottom: "10px" }}>
                         {handleAddRows()}
                         <Button style={{ fontSize: "small", width: "auto", fontFamily: "Poppins", height: "75%", borderRadius: "5px", margin: "0px 10px", backgroundColor: "orange" }} onClick={e => handleExportXlsx(e)} >Unduh ke Excel</Button>
-                        <Button style={{ fontSize: "small", width: "auto", fontFamily: "Poppins", height: "75%", borderRadius: "5px", margin: "0px 10px", backgroundColor: "orange" }} onClick={e => window.location = "/arsip-aktif"} >Arsip Aktif</Button>
+                        <Button style={{ fontSize: "small", width: "auto", fontFamily: "Poppins", height: "75%", borderRadius: "5px", marginRight: "10px", backgroundColor: "orange" }} onClick={e => window.location = "/arsip-aktif"} >Arsip Aktif</Button>
+                        {modalSearch()}
+                        {isFiltering ? <Button variant='danger' style={{ fontSize: "small", width: "auto", fontFamily: "Poppins"}} onClick={e=>window.location='/arsip-inaktif'} >Hapus Pencarian</Button> : null}
                     </div>
                     <div style={{ display: "flex", textAlign: "left" }}>
                         {isChecked ? null : handleEditRows()}
@@ -448,17 +526,11 @@ function Arsip() {
                         <Table id='tb-reg' striped bordered hover size="sm">
                             <thead className='text-center align-middle'>
                                 <tr>
-                                    <th>#</th>
-                                    <th>Kode Klasifikasi</th>
-                                    <th>Jenis Arsip</th>
-                                    <th>Kurun Waktu</th>
-                                    <th>Tingkat Perkembangan</th>
-                                    <th>Jumlah</th>
-                                    <th>Keterangan</th>
-                                    <th>Nomor Definitif Folder dan Boks</th>
-                                    <th>Lokasi Simpan</th>
-                                    <th>Jangka Simpan dan Nasib Akhir</th>
-                                    <th>Kategori Arsip</th>
+                                    {['#', 'Kode Klasifikasi', 'Jenis Arsip', 'Kurun Waktu', 'Tingkat Perkembangan', 'Jumlah', 'Keterangan', 'Nomor Definitif Folder dan Boks', 'Lokasi Simpan', 'Jangka Simpan dan Nasib Akhir', 'Kategori Arsip'].map((value) => {
+                                        return ( 
+                                            <th key={value} style={(searchAction === value) ? {backgroundColor:"#ed3957"} : {}}>{value}</th>
+                                        )
+                                    })}
                                 </tr>
                             </thead>
                             <tbody id="tb-reg">

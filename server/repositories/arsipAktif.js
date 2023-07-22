@@ -58,7 +58,7 @@ exports.getByDate = async (date) => {
 exports.getByCodeClassify = async (data) => {
   const result = await ArsipAktif.findAll({
     where: {
-      kodeKlasifikasi: { [Op.like]: `%${data}%` }
+      kodeKlasifikasi: { [Op.iLike]: `%${data}%` }
     }
   });
   return result;
@@ -67,7 +67,7 @@ exports.getByCodeClassify = async (data) => {
 exports.getByNote = async (data) => {
   const result = await ArsipAktif.findAll({
     where: {
-      keterangan: { [Op.like]: `%${data}%` }
+      keterangan: { [Op.iLike]: `%${data}%` }
     }
   });
   return result;

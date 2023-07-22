@@ -1,4 +1,5 @@
 const ArsipInaktif = require('../models/arsipInaktif');
+const { Op } = require('sequelize');
 
 exports.getData = async () => {
   const result = await ArsipInaktif.findAll();
@@ -49,3 +50,24 @@ exports.delData = async (id) => {
   });
   return;
 }
+
+
+// SEARCHING
+
+exports.getByCodeClassify = async (data) => {
+  const result = await ArsipInaktif.findAll({
+    where: {
+      kodeKlasifikasi: { [Op.iLike]: `%${data}%` }
+    }
+  });
+  return result;
+};
+
+exports.getByType = async (data) => {
+  const result = await ArsipInaktif.findAll({
+    where: {
+      jenisArsip: { [Op.iLike]: `%${data}%` }
+    }
+  });
+  return result;
+};
