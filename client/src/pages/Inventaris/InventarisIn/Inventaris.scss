@@ -1,0 +1,31 @@
+.container-regbencana {
+    background-image: url("../../../assets/image/GOopacity30.png");
+    height: 100vh;
+    margin-left: 25%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: rgb(255, 249, 240);
+    background-attachment: fixed;
+    background-position-x: 70%;
+    padding: 20px;
+}
+
+.header {
+    background-color: orange;
+    border-radius: 10px;
+    font-size: 20px;
+    padding: 5px 15px;
+    font-family: 'Poppins';
+}
+
+.input {
+    display: flex;
+    // justify-content: center;
+    // align-items: center;
+}
+
+#dropdown-bulan {
+    width: auto;
+    height: 58%;
+    font-size: small;
+}

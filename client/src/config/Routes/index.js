@@ -12,9 +12,9 @@ import {
     ErrorHandler,
     DashboardUser,
     ArchiveActive,
-    ArchiveInactive
+    ArchiveInactive,
+    Inventaris
 } from '../../pages'
-
 const router = createBrowserRouter([
     {
         path: "*",
@@ -59,6 +59,10 @@ const router = createBrowserRouter([
     {
         path: "/arsip-inaktif",
         element: checkLoggedMiddleware(<ArchiveInactive />)
+    },
+    {
+        path: "/inventaris",
+        element: checkLoggedMiddleware(<Inventaris />)
     }
 ]);
 export default router;

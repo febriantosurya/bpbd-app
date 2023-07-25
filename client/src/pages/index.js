@@ -7,6 +7,7 @@ import InputRegBencana from "./InputRegBencana";
 import ErrorHandler from "./ErrorHandler";
 import ArchiveActive from "./ArchiveActive";
 import ArchiveInactive from "./ArchiveInactive";
+import Inventaris from "./Inventaris";
 
 // USER READ ONLY
 import DashboardUser from "./DashboardUser";
@@ -16,6 +17,7 @@ export {
   KelolaAdmin,
   KelolaUser,
   Dashboard,
+  Inventaris,
   DashboardUser,
   RegisterBencanaAdmin,
   RegisterBencanaUser,
