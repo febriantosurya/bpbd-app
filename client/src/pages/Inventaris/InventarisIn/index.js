@@ -13,7 +13,6 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
-import Container from 'react-bootstrap/Container';
 
 import Swal from 'sweetalert2'
 
@@ -72,7 +71,6 @@ function InventarisIn() {
     const [jumlah,setJumlah] = useState(0)
 
     // variabel input data
-    const [idBarang, setIdBarang] = useState(0)
     const [barang, setBarang] = useState([])
     const [selectedBarang, setSelectedBarang] = useState('')
 
@@ -93,6 +91,7 @@ function InventarisIn() {
                 let d = response.data.data
                 setData(d)
                 let arr = []
+                // eslint-disable-next-line array-callback-return
                 response.data.data.map((item) => {
                     let bulanLalu = {
                         'nama': 'Stok Bulan Lalu',
@@ -102,7 +101,9 @@ function InventarisIn() {
                     }
                     arr.push(bulanLalu)
                     if('InvTransaksiGudangs' in item) {
+                        // eslint-disable-next-line array-callback-return
                         item['InvTransaksiGudangs'].map((dt) => {
+                            // eslint-disable-next-line no-unused-vars
                             const [Y, m, d] = dt['tanggal'].split('-');
                             dt['tanggal'] = d;
                             arr.push(dt)
@@ -134,9 +135,6 @@ function InventarisIn() {
                 // console.log(arr)
                 setDataTransaction(arr)
 
-                let i = 0
-                let colData = []
-
                 // foreach jumlah peralatan
                 let dataTable = []
                 d.forEach((dVal, indexD) => {
@@ -146,6 +144,7 @@ function InventarisIn() {
                         // cari apakah ada value untuk data peralatan tersebut dan siapa penambahnya
                         let jml = '-'
                         arr.forEach((arrVal, indexVal) => {
+                            // eslint-disable-next-line eqeqeq
                             if((arrVal.nama == colVal.nama)&&(arrVal.tanggal == colVal.tanggal)&&(arrVal.InvBarangId == dVal.id)){
                                 jml = arrVal.jumlah
                             }
@@ -250,9 +249,11 @@ function InventarisIn() {
         // Add event listener to the select box
         const handleSelectPenambahChange = (event) => {
             setSelectedTransaction(event.target.value)
+            // eslint-disable-next-line eqeqeq
             if(event.target.value == 0)
                 setJumlah(0)
             else
+                // eslint-disable-next-line eqeqeq
                 setJumlah(selectionItem.find(obj => obj.id == event.target.value).jumlah)
         };
         return (
