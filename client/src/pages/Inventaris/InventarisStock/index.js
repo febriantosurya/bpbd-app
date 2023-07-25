@@ -9,14 +9,12 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
-import Container from 'react-bootstrap/Container';
 
 import Swal from 'sweetalert2'
 
 // API IMPORTING
 import showPastMonth from '../../../api/inventaris/stock/showPastMonth'
 import showThisMonth from '../../../api/inventaris/stock/showThisMonth'
-import updateMonth from '../../../api/inventaris/stock/updateMonth'
 import updateNote from '../../../api/inventaris/stock/updateNote'
 
 function InventarisStock() {
@@ -42,6 +40,7 @@ function InventarisStock() {
     const [displayMonth, setDisplayMonth] = useState(months[initMonth])
     const [year, setYear] = useState(String(initYear))
     const [selectedRow, setSelectedRow] = useState({})
+    // eslint-disable-next-line no-unused-vars
     const [token, setToken] = useState(localStorage.getItem("token"))
 
     // variabel edit note
@@ -52,6 +51,7 @@ function InventarisStock() {
     useEffect(() => {
         async function dataFetch() {
             let response;
+            // eslint-disable-next-line eqeqeq
             if((Number(month) == initMonth) && (Number(year) == initYear)){
                 response = await showThisMonth(token);
             }
