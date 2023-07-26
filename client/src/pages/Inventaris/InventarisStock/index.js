@@ -416,7 +416,7 @@ function InventarisStock() {
         const isChecked = event.target.checked;
         if (isChecked) {
             setId(parseInt(rowData.id))
-            setSelectedItem(parseInt(rowData.InvGudang[0].id))
+            setSelectedItem(parseInt(rowData?.InvGudang[0].id))
             setSelectedRow(rowData)
         } else {
             setId(0)
@@ -428,7 +428,7 @@ function InventarisStock() {
     // show list static column
     const showTable = () => {
         return data.map((item, number) => {
-            let kondisi = item.InvGudang[0]?.keterangan?.toString().toUpperCase() ?? ''
+            let kondisi = item?.InvGudang[0]?.keterangan?.toString().toUpperCase() ?? ''
             return (
                 <tr key={number}>
                     <td> {
@@ -454,7 +454,7 @@ function InventarisStock() {
                     } </td>
                     <td>{number + 1}</td>
                     <td>{item.nama}</td>
-                    <td>{item.InvGudang[0].jumlah}</td>
+                    <td>{item?.InvGudang[0]?.jumlah}</td>
                     <td>{item.unit}</td>
                     <td>{(kondisi === "BAIK")? '\u2713' :""}</td>
                     <td>{(kondisi === "RUSAK RINGAN")? '\u2713':""}</td>
