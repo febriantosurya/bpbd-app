@@ -179,7 +179,7 @@ function InventarisIn() {
         addItem(token, inventoryItem)
         handleCloseModalItem()
         Swal.fire({ title: "Item ditambahkan!", icon: "success" }).then(function () {
-            window.location = "/inventaris"
+            window.location = "/inventaris?page=1"
         })
     };
     // Modal Add Data
@@ -201,7 +201,7 @@ function InventarisIn() {
         addData(token, inventoryData)
         handleCloseModalData()
         Swal.fire({ title: "Data ditambahkan!", icon: "success" }).then(function () {
-            window.location = "/inventaris"
+            window.location = "/inventaris?page=1"
         })
     };
 
@@ -238,7 +238,7 @@ function InventarisIn() {
                 if (result.isConfirmed) {
                     inventoryInEdit(selectedTransaction, jumlah)
                     Swal.fire({ title: "Edit data sukses!", icon: "success" }).then(function () {
-                        window.location = "/inventaris"
+                        window.location = "/inventaris?page=1"
                     })
                 }
             })

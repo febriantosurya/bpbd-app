@@ -16,6 +16,9 @@ import Swal from 'sweetalert2'
 import showPastMonth from '../../../api/inventaris/stock/showPastMonth'
 import showThisMonth from '../../../api/inventaris/stock/showThisMonth'
 import updateNote from '../../../api/inventaris/stock/updateNote'
+import updateMonth from '../../../api/inventaris/stock/updateMonth';
+// API IMPORTING IN OUT
+import getDataIn from '../../../api/inventaris/in/getData';
 
 function InventarisStock() {
     const months = {
@@ -48,9 +51,14 @@ function InventarisStock() {
     const [noteData, setNoteData] = useState("BAIK")
     const [selectedItem, setSelectedItem] = useState(0);
 
+    // dynamic data InventarisIn
+    const [dataInventoryIn, setDataInventoryIn] = useState([])
+    const [invHeader, setInvHeader] = useState([])
+    const [dataIn, setDataIn] = useState([])
+
     useEffect(() => {
         async function dataFetch() {
-            let response;
+            let response, result;
             // eslint-disable-next-line eqeqeq
             if((Number(month) == initMonth) && (Number(year) == initYear)){
                 response = await showThisMonth(token);
@@ -70,11 +78,240 @@ function InventarisStock() {
                     else
                         response.data.data[i]['InvGudang'] = structuredClone(response.data.data[i].InvGudangLamas);
                 }
-                setData(response.data.data)
+                result = response.data.data.sort((a, b) => a.nama.localeCompare(b.nama));
+                setData(result)
+            };
+            const gudangAktifsDate = result[0]?.InvGudangAktifs[0]?.tanggal
+            if(gudangAktifsDate.length > 1){
+                // eslint-disable-next-line no-unused-vars
+                const [Y, m, d] = gudangAktifsDate.split('-');
+                // eslint-disable-next-line eqeqeq
+                if(parseInt(initMonth) > parseInt(m)){
+                    Swal.fire({
+                        title: 'Data perlu diupdate ke bulan ini',
+                        text: "Update data ke bulan ini?",
+                        icon: 'warning',
+                        allowOutsideClick: false,
+                        showCancelButton: false,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Update Bulan'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            updateMonth()
+                            Swal.fire({ title: "Data Inventaris telah diubah ke bulan ini!", icon: "success" }).then(function () {
+                                window.location = "/inventaris?page=3"
+                            })
+                        }
+                    })
+                }
+            }
+
+            // inventory in
+            let responseIn = await getDataIn(token, month, year);
+            // const response = await getInventaris(token, month, year)
+            if (responseIn.data?.message !== "success") {
+                localStorage.removeItem("token");
+                window.location = '/';
+            } else {
+                responseIn.data.data = responseIn.data.data.sort((a, b) => a.nama.localeCompare(b.nama));
+                let d = responseIn.data.data
+                setDataInventoryIn(d)
+                let arr = []
+                // eslint-disable-next-line array-callback-return
+                responseIn.data.data.map((item) => {
+                    let bulanLalu = {
+                        'nama': 'Stok Bulan Lalu',
+                        'jumlah': (item['stokBulanLalu'] == null) ? 0 : item['stokBulanLalu'],
+                        'tanggal': '01',
+                        'InvBarangId': item['id']
+                    }
+                    arr.push(bulanLalu)
+                    if('InvTransaksiGudangs' in item) {
+                        // eslint-disable-next-line array-callback-return
+                        item['InvTransaksiGudangs'].map((dt) => {
+                            // eslint-disable-next-line no-unused-vars
+                            const [Y, m, d] = dt['tanggal'].split('-');
+                            dt['tanggal'] = d;
+                            arr.push(dt)
+                        })
+                    }
+                })
+                arr.sort((a, b) => parseInt(a.tanggal) - parseInt(b.tanggal));
+
+                const keysToRemove = ["jumlah", "InvBarangId", "id"];
+
+                // dynamic column for header
+                let col = arr.map((item) => {
+                    // Create a new object with only the desired keys
+                    let colItem = Object.keys(item).reduce((acc, key) => {
+                        if (!keysToRemove.includes(key)) {
+                        acc[key] = item[key];
+                        }
+                        return acc;
+                    }, {});
+                    return colItem;
+                });
+                col = Array.from(new Set(col.map(JSON.stringify))).map(JSON.parse)
+                setInvHeader(col)
+
+                // foreach jumlah peralatan
+                let dataTable = []
+                d.forEach((dVal, indexD) => {
+                    // foreach detail stok peralatan
+                    let row = []
+                    col.forEach((colVal, indexCol) => {
+                        // cari apakah ada value untuk data peralatan tersebut dan siapa penambahnya
+                        let jml = '-'
+                        arr.forEach((arrVal, indexVal) => {
+                            // eslint-disable-next-line eqeqeq
+                            if((arrVal.nama == colVal.nama)&&(arrVal.tanggal == colVal.tanggal)&&(arrVal.InvBarangId == dVal.id)){
+                                jml = arrVal.jumlah
+                            }
+                        })
+                        row.push(jml)
+                    })
+                    dataTable.push(row)
+                })
+                setDataIn(dataTable)
             };
         };
         dataFetch();
     }, [token, month, year, initMonth, initYear]);
+
+    // DOWNLOAD CONTENT
+    const ExcelJS = require('exceljs')
+    const handleExportXlsx = (e) => {
+        e.preventDefault()
+        const wb = new ExcelJS.Workbook()
+
+        // BARANG MASUK
+        const sheet1 = wb.addWorksheet("Barang Masuk")
+        sheet1.getColumn('A').width = 2;
+        sheet1.getColumn('B').width = 6;
+        sheet1.getColumn('C').width = 30;
+        sheet1.getColumn('D').width = 9;
+        sheet1.getColumn('E').width = 12;
+        sheet1.getColumn('F').width = 9;
+        sheet1.addRows(Array(5).fill({}));
+
+        let header1 = ['', 'NO', 'NAMA PERALATAN', 'VOLUME', 'SATUAN']
+        let header2 = ['', 'b', 'c', 'd', 'e']
+        invHeader.map((item, number) => {
+            header1.push(item?.nama)
+            header2.push(item?.tanggal)
+            return null
+        })
+        sheet1.addRow(header1)
+        sheet1.addRow(header2)
+
+        let inventoryIn = []
+        dataInventoryIn.map((item, number) => {
+            inventoryIn.push([number+1,item.nama, item.totalJumlah, item.unit])
+            return null
+        })
+        let dataSheet1 = [...inventoryIn, ...dataIn]
+        
+        sheet1.addRows(dataSheet1)
+        console.log(dataSheet1)
+        // BARANG KELUAR
+
+        // STOK OPNAM
+        const sheet3 = wb.addWorksheet("Stok Opnam")
+        sheet3.getColumn('A').width = 5;
+        sheet3.getColumn('B').width = 6;
+        sheet3.getColumn('C').width = 30;
+        sheet3.getColumn('D').width = 9;
+        sheet3.getColumn('E').width = 12;
+        sheet3.getColumn('F').width = 6;
+        sheet3.getColumn('G').width = 8;
+        sheet3.getColumn('H').width = 8;
+        sheet3.getColumn('I').width = 8;
+        sheet3.addRows(Array(5).fill({}));
+
+        sheet3.mergeCells('B6:B8')
+        sheet3.mergeCells('C6:C8')
+        sheet3.mergeCells('D6:D8')
+        sheet3.mergeCells('E6:E8')
+        sheet3.mergeCells('F6:I6')
+        sheet3.mergeCells('G7:I7')
+        sheet3.mergeCells('F7:F8')
+
+        sheet3.getCell('B6').value = "NO"
+        sheet3.getCell('C6').value = "NAMA PERALATAN"
+        sheet3.getCell('D6').value = "VOLUME"
+        sheet3.getCell('E6').value = "SATUAN"
+        sheet3.getCell('F6').value = "KONDISI"
+        sheet3.getCell('F7').value = "BAIK"
+        sheet3.getCell('G7').value = "RUSAK"
+        sheet3.getCell('G8').value = "RINGAN"
+        sheet3.getCell('H8').value = "SEDANG"
+        sheet3.getCell('I8').value = "BERAT"
+        
+        // Define the range you want to set as bold (A1 to B2)
+        const startCell = sheet3.getCell('B6');
+        const endCell = sheet3.getCell('I8');
+        // Iterate through the range and set the font style to bold
+        for (let row = startCell.row; row <= endCell.row; row++) 
+            for (let col = startCell.col; col <= endCell.col; col++) 
+                sheet3.getCell(row, col).font = { bold: true };
+
+        sheet3.addRow(['', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'])
+
+        data.map((item, number) => {
+            let kondisi = item?.InvGudang[0]?.keterangan?.toString().toUpperCase() ?? ''
+            sheet3.addRow([
+                '',
+                number + 1,
+                item.nama,
+                item?.InvGudang[0]?.jumlah,
+                item.unit,
+                (kondisi === "BAIK") ? '√':'',
+                (kondisi === "RUSAK RINGAN") ? '√':'',
+                (kondisi === "RUSAK SEDANG") ? '√':'',
+                (kondisi === "RUSAK BERAT") ? '√':''
+            ]
+            )
+            return null
+        })
+
+        let totalRow = sheet3.lastRow.number + 6
+        let totalColumn = sheet3.lastColumn.number - 1
+        //Loop through all table's row
+        for (let i = 6; i <= totalRow; i++) {
+            for (let j = 66; j < 66 + totalColumn; j++) {
+                let cell = sheet3.getCell(`${String.fromCharCode(j)}${i}`)
+                if ((i >= 6)&&(i <=9)) {
+                    cell.fill = {
+                        type: 'pattern',
+                        pattern: 'solid',
+                        fgColor: { argb: 'ED7D31' },
+                    }
+                }
+                cell.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true }
+                cell.border = {
+                    top: { style: 'thin', color: { argb: '000000' } },
+                    left: { style: 'thin', color: { argb: '000000' } },
+                    bottom: { style: 'thin', color: { argb: '000000' } },
+                    right: { style: 'thin', color: { argb: '000000' } }
+                }
+            }
+        }
+        // for (let i = 0; i < 5; i++) {
+        //     sheet.spliceRows(1, 0, {});
+        // }
+        wb.xlsx.writeBuffer().then(function (data) {
+            const blob = new Blob([data], {
+                type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+            })
+            const url = window.URL.createObjectURL(blob)
+            const anchor = document.createElement("a")
+            anchor.href = url
+            anchor.download = "Arsip Aktif.xlsx"
+            anchor.click()
+            window.URL.revokeObjectURL(url)
+        })
+    }
 
     // new modal
     const [show, setShow] = useState(false);
@@ -93,7 +330,6 @@ function InventarisStock() {
                 "idGudangAktif": id,
                 "note": data
             };
-            console.log(dataSubmit)
             await updateNote(token, dataSubmit)
         }
         function handleSave(e) {
@@ -110,7 +346,7 @@ function InventarisStock() {
                 if (result.isConfirmed) {
                     noteInEdit(selectedItem, noteData)
                     Swal.fire({ title: "Edit data sukses!", icon: "success" }).then(function () {
-                        window.location = "/inventaris"
+                        window.location = "/inventaris?page=3"
                     })
                 }
             })
@@ -120,7 +356,8 @@ function InventarisStock() {
         };
         return (
             <div>
-                <Button variant="Primary" style={{ backgroundColor: "orange", marginBottom: "10px" }} onClick={handleShow} >Edit Kondisi</Button>
+                <Button variant="Primary" style={{ backgroundColor: "orange", marginBottom: "10px", marginRight: "4px" }} onClick={handleShow} >Edit Kondisi</Button>
+                <Button variant="Primary" style={{ backgroundColor: "orange", marginBottom: "10px", marginLeft: "4px" }} onClick={e=>handleExportXlsx(e)} >Unduh ke Excel</Button>
                 <Modal show={show} onHide={handleClose}>
                     <Modal.Header closeButton>
                         <Modal.Title>Edit Note</Modal.Title>
@@ -191,6 +428,7 @@ function InventarisStock() {
     // show list static column
     const showTable = () => {
         return data.map((item, number) => {
+            let kondisi = item.InvGudang[0]?.keterangan?.toString().toUpperCase() ?? ''
             return (
                 <tr key={number}>
                     <td> {
@@ -218,10 +456,10 @@ function InventarisStock() {
                     <td>{item.nama}</td>
                     <td>{item.InvGudang[0].jumlah}</td>
                     <td>{item.unit}</td>
-                    <td>{(item.InvGudang[0].keterangan === "BAIK")? '\u2713' :""}</td>
-                    <td>{(item.InvGudang[0].keterangan === "RUSAK RINGAN")? '\u2713':""}</td>
-                    <td>{(item.InvGudang[0].keterangan === "RUSAK SEDANG")? '\u2713':""}</td>
-                    <td>{(item.InvGudang[0].keterangan === "RUSAK BERAT")? '\u2713':""}</td>
+                    <td>{(kondisi === "BAIK")? '\u2713' :""}</td>
+                    <td>{(kondisi === "RUSAK RINGAN")? '\u2713':""}</td>
+                    <td>{(kondisi === "RUSAK SEDANG")? '\u2713':""}</td>
+                    <td>{(kondisi === "RUSAK BERAT")? '\u2713':""}</td>
                 </tr>
             )
         })
@@ -229,7 +467,7 @@ function InventarisStock() {
 
 
     return (
-        <div>
+        <div className="col-auto">
             <Gap height={10}/>
 
             <form className='input'>
@@ -266,7 +504,8 @@ function InventarisStock() {
                         <Form.Control style={
                                 {
                                     fontFamily: "Poppins",
-                                    fontSize: "small"
+                                    fontSize: "small",
+                                    width: "80px"
                                 }
                             }
                             defaultValue={year}
@@ -279,7 +518,7 @@ function InventarisStock() {
                     </Form.Group>
                 </InputGroup>
             </form>
-            <div className='text-start mb-2'>
+            <div className='row mb-2 text-start'>
                 {handleEditNote()}
             </div>
             <form>

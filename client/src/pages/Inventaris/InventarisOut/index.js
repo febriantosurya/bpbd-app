@@ -109,12 +109,6 @@ function InventarisIn() {
                 });
                 col = Array.from(new Set(col.map(JSON.stringify))).map(JSON.parse)
                 setInvHeader(col)
-                // console.log("d")
-                // console.log(d)
-                // console.log("col")
-                // console.log(col)
-                // console.log("arr")
-                // console.log(arr)
                 setDataTransaction(arr)
 
                 // foreach jumlah peralatan
@@ -160,7 +154,7 @@ function InventarisIn() {
         addData(token, inventoryData)
         handleCloseModalData()
         Swal.fire({ title: "Data ditambahkan!", icon: "success" }).then(function () {
-            window.location = "/inventaris"
+            window.location = "/inventaris?page=2"
         })
     };
 
@@ -197,7 +191,7 @@ function InventarisIn() {
                 if (result.isConfirmed) {
                     inventoryInEdit(selectedTransaction, jumlah)
                     Swal.fire({ title: "Edit data sukses!", icon: "success" }).then(function () {
-                        window.location = "/inventaris"
+                        window.location = "/inventaris?page=2"
                     })
                 }
             })
