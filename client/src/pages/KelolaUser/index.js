@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Gap, SidebarRoot } from "../../components";
+import Swal from 'sweetalert2'
 
 //bootstrap
 import Button from 'react-bootstrap/Button';
@@ -29,7 +30,7 @@ function KelolaUser() {
     const [data, setData] = useState([]);
 
     //Function : Add user as Admin (POST)
-    const handleClose = () => setShow(false);
+    const handleClose = () => { setShow(false); setUsername(""); setPassword(""); setName(""); };
     const handleShow = () => setShow(true);
 
     //--------- all the function below ----------
@@ -54,7 +55,7 @@ function KelolaUser() {
                 <td><Form.Control type="text" name="password" onChange={handInputpassword} defaultValue={admin.password} /></td>
                 <td>
                     <Button variant="success" id="buttonUpdate" type='submit' disabled={btnUpdate}>Simpan</Button>
-                    <Button variant="danger" type='submit' onClick={()=>{window.location="/kelolauser"}}>Cancel</Button>   
+                    <Button variant="danger" type='submit' onClick={() => { window.location = "/kelolauser" }}>Cancel</Button>
                 </td>
             </tr>
         )
@@ -91,12 +92,39 @@ function KelolaUser() {
     function handleAdd() {
         const saveAdmin = async (e) => {
             e.preventDefault();
-            await postData(token, username, password, name);
-            setUsername("");
-            setPassword("");
-            setName("")
-            setShow(false)
-            window.location = '/kelolauser'
+            if (username === "" || password === "" || name === "") {
+                Swal.fire({
+                    title: 'Error',
+                    text: "Seluruh data wajib diisi!",
+                    icon: 'error',
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya'
+                })
+            }
+            else {
+                const res = await postData(token, username, password, name);
+                if (res.response?.status === 403) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: "Username telah digunakan",
+                        icon: 'error',
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Ya'
+                    })
+                } else {
+                    Swal.fire({ title: "Data ditambahkan!", icon: "success" }).then(function () {
+                        setUsername("");
+                        setPassword("");
+                        setName("")
+                        setShow(false)
+                        window.location = '/kelolauser'
+                    })
+
+                }
+
+            }
         }
 
         return (
@@ -159,9 +187,27 @@ function KelolaUser() {
     }
 
     //Function : Delete admin (DELETE)
-    async function handleDelete(username) {
-        await delData(token, username)
-        window.location = '/kelolauser'
+    function handleDelete(username) {
+        async function delUser() {
+            const res = await delData(token, username)
+            console.log(res)
+        }
+        Swal.fire({
+            title: 'Apakah anda yakin?',
+            text: "Anda dapat mengubah dan menghapus data di laman kelola user",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                delUser()
+                Swal.fire({ title: "Data dihapus!", icon: "success" }).then(function () {
+                    window.location = "/kelolauser"
+                })
+            }
+        })
     }
 
     // function : Update admin datas (PUT)

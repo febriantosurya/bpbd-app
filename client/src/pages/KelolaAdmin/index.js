@@ -30,7 +30,7 @@ function KelolaAdmin() {
     const [data, setData] = useState([]);
 
     //Function : Add user as Admin (POST)
-    const handleClose = () => {setShow(false); setUsername(""); setPassword(""); setName("")};
+    const handleClose = () => { setShow(false); setUsername(""); setPassword(""); setName("") };
     const handleShow = () => setShow(true);
 
     //--------- all the function below ----------
@@ -89,7 +89,7 @@ function KelolaAdmin() {
                 <td><Form.Control type="text" name="password" onChange={handInputpassword} defaultValue={admin.password} /></td>
                 <td>
                     <Button variant="success" id="buttonUpdate" type='submit' disabled={btnUpdate}>Simpan</Button>
-                    <Button variant="danger" type='submit' onClick={()=>{window.location="/kelolaadmin"}}>Cancel</Button>
+                    <Button variant="danger" type='submit' onClick={() => { window.location = "/kelolaadmin" }}>Cancel</Button>
                 </td>
             </tr>
         )
@@ -102,7 +102,7 @@ function KelolaAdmin() {
             if (username === "" || password === "" || name === "") {
                 Swal.fire({
                     title: 'Error',
-                    text: 'Data wajib diisi!',
+                    text: 'Seluruh data wajib diisi!',
                     icon: 'error',
                     confirmButtonColor: '#3085d6',
                     cancelButtonColor: '#d33',
@@ -122,11 +122,13 @@ function KelolaAdmin() {
                     })
                 }
                 else {
-                    setUsername("")
-                    setPassword("")
-                    setName("")
-                    setShow(false)
-                    window.location = '/kelolaadmin'
+                    Swal.fire({ title: "Data ditambahkan!", icon: "success" }).then(function () {
+                        setUsername("");
+                        setPassword("");
+                        setName("")
+                        setShow(false)
+                        window.location = '/kelolaadmin'
+                    })
                 }
             }
         }
@@ -191,9 +193,26 @@ function KelolaAdmin() {
     }
 
     //Function : Delete admin (DELETE)
-    async function handleDelete(username) {
-        await delData(token, username)
-        window.location = '/kelolaadmin'
+    function handleDelete(username) {
+        async function delAdm() {
+            await delData(token, username)
+        }
+        Swal.fire({
+            title: 'Apakah anda yakin?',
+            text: "Anda dapat mengubah dan menghapus data di laman kelola admin",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                delAdm()
+                Swal.fire({ title: "Data dihapus!", icon: "success" }).then(function () {
+                    window.location = '/kelolaadmin'
+                })
+            }
+        })
     }
 
 
