@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { Sidebar } from '../../../components'
 import './RegBencana.scss'
 import Swal from 'sweetalert2'
 
@@ -13,9 +12,9 @@ import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 
 //API IMPORTING
-import getRegBencana from '../../../api/reg/showReg';
-import delReg from '../../../api/reg/delReg';
-import putReg from '../../../api/reg/editReg';
+import getRegBencanaBaru from '../../../api/reg/dataBaru/showReg';
+import delReg from '../../../api/reg/dataBaru/delReg';
+import putReg from '../../../api/reg/dataBaru/editReg';
 
 function DataBaru() {
     const ExcelJS = require('exceljs');
@@ -45,7 +44,7 @@ function DataBaru() {
     const token = localStorage.getItem("token")
 
     async function dataFetch() {
-        const response = await getRegBencana(token, month, year);
+        const response = await getRegBencanaBaru(token, month, year);
         if (response.data?.message === "success") {
             setData(response.data.data)
         }
@@ -120,6 +119,11 @@ function DataBaru() {
                 width: 15
             },
             {
+                header: "Desa",
+                key: "Desa",
+                width: 15
+            },
+            {
                 header: "Kecamatan",
                 key: "kecamatan",
                 width: 15
@@ -176,6 +180,7 @@ function DataBaru() {
                 no: number + 1,
                 jenisBencana: item.jenisBencana,
                 lokasiDetail: item.lokasiDetail,
+                desa: item.desa,
                 kecamatan: item.kecamatan,
                 tanggal: item.tanggal,
                 waktu: item.waktu,
@@ -250,16 +255,6 @@ function DataBaru() {
         })
     };
 
-    // SIDEBAR
-    const [showSideBar, setShowSideBar] = useState(false);
-    const handleCloseSideBar = () => setShowSideBar(false);
-    const handleShowSideBar = () => setShowSideBar(true);
-    function sideBar() {
-        return (
-            <Sidebar handleShow={handleShowSideBar} handleClose={handleCloseSideBar} show={showSideBar} btn1="/dashboard" btn2="/register-bencana" btn3="/inventaris" btn4="/arsip-aktif"/>
-        )
-    }
-
     // MODAL EDIT
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
@@ -310,6 +305,10 @@ function DataBaru() {
                             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                                 <b><Form.Label>Kecamatan</Form.Label></b>
                                 <Form.Control style={{ borderColor: "red" }} type="text" readOnly={true} defaultValue={selectedRow.kecamatan} />
+                            </Form.Group>
+                            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
+                                <b><Form.Label>Desa</Form.Label></b>
+                                <Form.Control style={{ borderColor: "red" }} type="text" readOnly={true} defaultValue={selectedRow.desa} />
                             </Form.Group>
                             <Form.Group className="mb-tanggal" controlId="exampleForm.ControlInput1">
                                 <b><Form.Label>Tanggal</Form.Label></b>
@@ -378,6 +377,7 @@ function DataBaru() {
                     <td>{number + 1}</td>
                     <td>{item.jenisBencana}</td>
                     <td>{item.lokasiDetail}</td>
+                    <td>{item.desa}</td>
                     <td>{item.kecamatan}</td>
                     <td>{item.tanggal} {item.waktu} WIB</td>
                     <td>{item.keterangan}</td>
@@ -438,6 +438,7 @@ function DataBaru() {
                             <th>No</th>
                             <th>Jenis Bencana</th>
                             <th>Lokasi Detail</th>
+                            <th>Desa</th>
                             <th>Kecamatan</th>
                             <th>Tanggal & Waktu</th>
                             <th>Keterangan</th>

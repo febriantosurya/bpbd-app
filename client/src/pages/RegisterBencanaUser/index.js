@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Gap, Sidebar } from '../../components'
 // import './Register/RegBencana.scss'
-import getRegBencana from '../../api/reg/showRegUser';
+import getRegBencana from '../../api/reg/dataBaru/showRegUser';
 
 //BOOTSTRAP IMPORTING
 import Table from 'react-bootstrap/Table';
