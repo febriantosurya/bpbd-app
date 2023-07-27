@@ -2,7 +2,7 @@ const repo = require('./repoBarang');
 const utils = require('./utils');
 
 exports.setShowInTransaction = async (month, year, status) => {
-  const pastMonth = month - 1;
+  let pastMonth = month - 1;
   if (pastMonth == 0) pastMonth = 12;
   let result = await repo.getTransaction(month, year, status);
   for (let i = 0; i < result.length; i ++) {

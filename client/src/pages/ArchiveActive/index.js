@@ -26,16 +26,12 @@ function Arsip() {
     const [data, setData] = useState([])
     const [selectedRow, setSelectedRow] = useState({})
     const [addedRow, setAddedRow] = useState({
+        "noBerkas": "",
+        "noItemArsip": "",
         "kodeKlasifikasi": "",
-        "jenisArsip": "",
-        "kurunWaktu": "",
-        "tingkatPerkembangan": "",
+        "uraianInfoArsip": "", 
         "jumlah": "",
-        "keterangan": "",
-        "nomorDefFolderDanBoks": "",
-        "lokasiSimpan": "",
-        "jangkaSimpanDanNasibAkhir": "",
-        "kategoriArsip": ""
+        "keterangan": ""
     })
 
     // GET DATA
@@ -65,7 +61,7 @@ function Arsip() {
                 handleClose={handleCloseSideBar} 
                 show={showSideBar} btn1="/dashboard" 
                 btn2="/register-bencana" 
-                btn3="/register-bencana" 
+                btn3="/inventaris" 
                 btn4="/arsip-aktif"/>
         )
     }
