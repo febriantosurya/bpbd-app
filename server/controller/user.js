@@ -69,7 +69,7 @@ exports.addUser = async (req, res) => {
     };
     const username = await userRepo.getUser({ username: data.username });
     if (username !== null) {
-      return res.status(400).json({ message: "failed username has been used" });
+      return res.status(403).json({ message: "username failed" });
     };
     await userRepo.addUser(data);
     return res.status(200).json({ message: "new user added" });
