@@ -30,7 +30,7 @@ function KelolaAdmin() {
     const [data, setData] = useState([]);
 
     //Function : Add user as Admin (POST)
-    const handleClose = () => setShow(false);
+    const handleClose = () => {setShow(false); setUsername(""); setPassword(""); setName("")};
     const handleShow = () => setShow(true);
 
     //--------- all the function below ----------
@@ -99,12 +99,36 @@ function KelolaAdmin() {
     function handleAdd() {
         const saveAdmin = async (e) => {
             e.preventDefault();
-            await postData(token, username, password, name);
-            setUsername("");
-            setPassword("");
-            setName("")
-            setShow(false)
-            window.location = '/kelolaadmin'
+            if (username === "" || password === "" || name === "") {
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Data wajib diisi!',
+                    icon: 'error',
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Ya'
+                })
+            }
+            else {
+                const res = await postData(token, username, password, name);
+                if (res.response?.status === 403) {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Username telah digunakan!',
+                        icon: 'error',
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Ya'
+                    })
+                }
+                else {
+                    setUsername("")
+                    setPassword("")
+                    setName("")
+                    setShow(false)
+                    window.location = '/kelolaadmin'
+                }
+            }
         }
 
         return (
