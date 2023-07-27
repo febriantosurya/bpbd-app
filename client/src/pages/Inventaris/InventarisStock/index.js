@@ -19,6 +19,7 @@ import updateNote from '../../../api/inventaris/stock/updateNote'
 import updateMonth from '../../../api/inventaris/stock/updateMonth';
 // API IMPORTING IN OUT
 import getDataIn from '../../../api/inventaris/in/getData';
+import getDataOut from '../../../api/inventaris/out/getData';
 
 function InventarisStock() {
     const months = {
@@ -51,14 +52,20 @@ function InventarisStock() {
     const [noteData, setNoteData] = useState("BAIK")
     const [selectedItem, setSelectedItem] = useState(0);
 
-    // dynamic data InventarisIn
+    // data InventarisIn
     const [dataInventoryIn, setDataInventoryIn] = useState([])
-    const [invHeader, setInvHeader] = useState([])
+    const [invHeaderIn, setInvHeaderIn] = useState([])
     const [dataIn, setDataIn] = useState([])
+
+    // data InventarisOut
+    const [dataInventoryOut, setDataInventoryOut] = useState([])
+    const [invHeaderOut, setInvHeaderOut] = useState([])
+    const [dataOut, setDataOut] = useState([])
+
 
     useEffect(() => {
         async function dataFetch() {
-            let response, result;
+            let response, result = ['',''];
             // eslint-disable-next-line eqeqeq
             if((Number(month) == initMonth) && (Number(year) == initYear)){
                 response = await showThisMonth(token);
@@ -81,35 +88,9 @@ function InventarisStock() {
                 result = response.data.data.sort((a, b) => a.nama.localeCompare(b.nama));
                 setData(result)
             };
-            const gudangAktifsDate = result[0]?.InvGudangAktifs[0]?.tanggal
-            if(gudangAktifsDate.length > 1){
-                // eslint-disable-next-line no-unused-vars
-                const [Y, m, d] = gudangAktifsDate.split('-');
-                // eslint-disable-next-line eqeqeq
-                if(parseInt(initMonth) > parseInt(m)){
-                    Swal.fire({
-                        title: 'Data perlu diupdate ke bulan ini',
-                        text: "Update data ke bulan ini?",
-                        icon: 'warning',
-                        allowOutsideClick: false,
-                        showCancelButton: false,
-                        confirmButtonColor: '#3085d6',
-                        cancelButtonColor: '#d33',
-                        confirmButtonText: 'Update Bulan'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            updateMonth()
-                            Swal.fire({ title: "Data Inventaris telah diubah ke bulan ini!", icon: "success" }).then(function () {
-                                window.location = "/inventaris?page=3"
-                            })
-                        }
-                    })
-                }
-            }
 
             // inventory in
             let responseIn = await getDataIn(token, month, year);
-            // const response = await getInventaris(token, month, year)
             if (responseIn.data?.message !== "success") {
                 localStorage.removeItem("token");
                 window.location = '/';
@@ -153,7 +134,7 @@ function InventarisStock() {
                     return colItem;
                 });
                 col = Array.from(new Set(col.map(JSON.stringify))).map(JSON.parse)
-                setInvHeader(col)
+                setInvHeaderIn(col)
 
                 // foreach jumlah peralatan
                 let dataTable = []
@@ -175,6 +156,93 @@ function InventarisStock() {
                 })
                 setDataIn(dataTable)
             };
+
+            // inventory out
+            let responseOut = await getDataOut(token, month, year)
+            if (responseOut.data?.message !== "success") {
+                localStorage.removeItem("token");
+                window.location = '/';
+            } else {
+                responseOut.data.data = responseOut.data.data.sort((a, b) => a.nama.localeCompare(b.nama));
+                let d = responseOut.data.data
+                setDataInventoryOut(d)
+                let arr = []
+                // eslint-disable-next-line array-callback-return
+                responseOut.data.data.map((item) => {
+                    if('InvTransaksiGudangs' in item) {
+                        // eslint-disable-next-line array-callback-return
+                        item['InvTransaksiGudangs'].map((dt) => {
+                            // eslint-disable-next-line no-unused-vars
+                            const [Y, m, d] = dt['tanggal'].split('-');
+                            dt['tanggal'] = d;
+                            arr.push(dt)
+                        })
+                    }
+                })
+                arr.sort((a, b) => parseInt(a.tanggal) - parseInt(b.tanggal));
+
+                const keysToRemove = ["jumlah", "InvBarangId", "id"];
+
+                // dynamic column for header
+                let col = arr.map((item) => {
+                    // Create a new object with only the desired keys
+                    let colItem = Object.keys(item).reduce((acc, key) => {
+                        if (!keysToRemove.includes(key)) {
+                        acc[key] = item[key];
+                        }
+                        return acc;
+                    }, {});
+                    return colItem;
+                });
+                col = Array.from(new Set(col.map(JSON.stringify))).map(JSON.parse)
+                setInvHeaderOut(col)
+
+                // foreach jumlah peralatan
+                let dataTable = []
+                d.forEach((dVal, indexD) => {
+                    // foreach detail stok peralatan
+                    let row = []
+                    col.forEach((colVal, indexCol) => {
+                        // cari apakah ada value untuk data peralatan tersebut dan siapa penambahnya
+                        let jml = '-'
+                        arr.forEach((arrVal, indexVal) => {
+                            // eslint-disable-next-line eqeqeq
+                            if((arrVal.nama == colVal.nama)&&(arrVal.tanggal == colVal.tanggal)&&(arrVal.InvBarangId == dVal.id)){
+                                jml = arrVal.jumlah
+                            }
+                        })
+                        row.push(jml)
+                    })
+                    dataTable.push(row)
+                })
+                setDataOut(dataTable)
+            };
+
+            let gudangAktifsDate = result[0]?.InvGudangAktifs[0]?.tanggal ?? ''
+            if(gudangAktifsDate.length > 1){
+                // eslint-disable-next-line no-unused-vars
+                const [Y, m, d] = gudangAktifsDate.split('-');
+                // eslint-disable-next-line eqeqeq
+                if(parseInt(initMonth) > parseInt(m)){
+                    Swal.fire({
+                        title: 'Data perlu diupdate ke bulan ini',
+                        text: "Update data ke bulan ini?",
+                        icon: 'warning',
+                        allowOutsideClick: false,
+                        showCancelButton: false,
+                        confirmButtonColor: '#3085d6',
+                        cancelButtonColor: '#d33',
+                        confirmButtonText: 'Update Bulan'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            updateMonth()
+                            Swal.fire({ title: "Data Inventaris telah diubah ke bulan ini!", icon: "success" }).then(function () {
+                                window.location = "/inventaris?page=3"
+                            })
+                        }
+                    })
+                }
+            }
         };
         dataFetch();
     }, [token, month, year, initMonth, initYear]);
@@ -197,7 +265,7 @@ function InventarisStock() {
 
         let header1 = ['', 'NO', 'NAMA PERALATAN', 'VOLUME', 'SATUAN']
         let header2 = ['', 'b', 'c', 'd', 'e']
-        invHeader.map((item, number) => {
+        invHeaderIn.map((item, number) => {
             header1.push(item?.nama)
             header2.push(item?.tanggal)
             return null
@@ -207,18 +275,117 @@ function InventarisStock() {
 
         let inventoryIn = []
         dataInventoryIn.map((item, number) => {
-            inventoryIn.push([number+1,item.nama, item.totalJumlah, item.unit])
+            inventoryIn.push(['', number+1,item.nama, item.totalJumlah, item.unit, ...dataIn[number]])
             return null
         })
-        let dataSheet1 = [...inventoryIn, ...dataIn]
-        
-        sheet1.addRows(dataSheet1)
-        console.log(dataSheet1)
+        sheet1.addRows(inventoryIn)
+
+        //Loop through all table's row
+        let totalRow1 = sheet1.lastRow.number
+        let totalColumn1 = sheet1.lastColumn.number - 1
+        for (let i = 6; i <= totalRow1; i++) {
+            for (let j = 66; j < 66 + totalColumn1; j++) {
+                let cell = sheet1.getCell(`${String.fromCharCode(j)}${i}`)
+                // eslint-disable-next-line eqeqeq
+                if ((i >= 6)&&(i <= 7)&&(j < 62 + totalColumn1)) {
+                    cell.fill = {
+                        type: 'pattern',
+                        pattern: 'solid',
+                        fgColor: { argb: 'ED7D31' },
+                    }
+                }
+                // eslint-disable-next-line eqeqeq
+                else if ((i >= 6)&&(i <= 7)&&(j >= 62 + totalColumn1)) {
+                    cell.fill = {
+                        type: 'pattern',
+                        pattern: 'solid',
+                        fgColor: { argb: 'E2EFDA' },
+                    }
+                }
+                cell.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true }
+                cell.border = {
+                    top: { style: 'thin', color: { argb: '000000' } },
+                    left: { style: 'thin', color: { argb: '000000' } },
+                    bottom: { style: 'thin', color: { argb: '000000' } },
+                    right: { style: 'thin', color: { argb: '000000' } }
+                }
+            }
+        }
+
+        // Add filter to the worksheet for the specified range
+        sheet1.autoFilter = {
+            from: { row: 7, column: 2 },
+            to: { row: sheet1.rowCount, column: 5 }
+        };
+
         // BARANG KELUAR
+        const sheet2 = wb.addWorksheet("Barang Keluar")
+        sheet2.getColumn('A').width = 2;
+        sheet2.getColumn('B').width = 6;
+        sheet2.getColumn('C').width = 30;
+        sheet2.getColumn('D').width = 9;
+        sheet2.getColumn('E').width = 12;
+        sheet2.getColumn('F').width = 9;
+        sheet2.addRows(Array(5).fill({}));
+
+        header1 = ['', 'NO', 'NAMA PERALATAN', 'VOLUME', 'SATUAN']
+        header2 = ['', 'b', 'c', 'd', 'e']
+        invHeaderOut.map((item, number) => {
+            header1.push(item?.nama)
+            header2.push(item?.tanggal)
+            return null
+        })
+        sheet2.addRow(header1)
+        sheet2.addRow(header2)
+
+        let inventoryOut = []
+        dataInventoryOut.map((item, number) => {
+            inventoryOut.push(['', number+1,item.nama, item.totalJumlah, item.unit, ...dataOut[number]])
+            return null
+        })
+
+        sheet2.addRows(inventoryOut)
+
+        //Loop through all table's row
+        let totalRow2 = sheet2.lastRow.number
+        let totalColumn2 = sheet2.lastColumn.number - 1
+        for (let i = 6; i <= totalRow2; i++) {
+            for (let j = 66; j < 66 + totalColumn2; j++) {
+                let cell = sheet2.getCell(`${String.fromCharCode(j)}${i}`)
+                // eslint-disable-next-line eqeqeq
+                if ((i >= 6)&&(i <= 7)&&(j < 62 + totalColumn1)) {
+                    cell.fill = {
+                        type: 'pattern',
+                        pattern: 'solid',
+                        fgColor: { argb: 'ED7D31' },
+                    }
+                }
+                // eslint-disable-next-line eqeqeq
+                else if ((i >= 6)&&(i <= 7)&&(j >= 62 + totalColumn1)) {
+                    cell.fill = {
+                        type: 'pattern',
+                        pattern: 'solid',
+                        fgColor: { argb: 'FFFF00' },
+                    }
+                }
+                cell.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true }
+                cell.border = {
+                    top: { style: 'thin', color: { argb: '000000' } },
+                    left: { style: 'thin', color: { argb: '000000' } },
+                    bottom: { style: 'thin', color: { argb: '000000' } },
+                    right: { style: 'thin', color: { argb: '000000' } }
+                }
+            }
+        }
+        // Add filter to the worksheet for the specified range
+        sheet2.autoFilter = {
+            from: { row: 7, column: 2 },
+            to: { row: sheet2.rowCount, column: 5 }
+        };
 
         // STOK OPNAM
         const sheet3 = wb.addWorksheet("Stok Opnam")
-        sheet3.getColumn('A').width = 5;
+        sheet3.getColumn('A').width = 2;
         sheet3.getColumn('B').width = 6;
         sheet3.getColumn('C').width = 30;
         sheet3.getColumn('D').width = 9;
@@ -275,7 +442,7 @@ function InventarisStock() {
             return null
         })
 
-        let totalRow = sheet3.lastRow.number + 6
+        let totalRow = sheet3.lastRow.number
         let totalColumn = sheet3.lastColumn.number - 1
         //Loop through all table's row
         for (let i = 6; i <= totalRow; i++) {
@@ -297,9 +464,13 @@ function InventarisStock() {
                 }
             }
         }
-        // for (let i = 0; i < 5; i++) {
-        //     sheet.spliceRows(1, 0, {});
-        // }
+          
+        // Add filter to the worksheet for the specified range
+        sheet3.autoFilter = {
+            from: { row: 9, column: 2 },
+            to: { row: sheet3.rowCount, column: sheet3.columnCount }
+        };
+
         wb.xlsx.writeBuffer().then(function (data) {
             const blob = new Blob([data], {
                 type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -307,7 +478,7 @@ function InventarisStock() {
             const url = window.URL.createObjectURL(blob)
             const anchor = document.createElement("a")
             anchor.href = url
-            anchor.download = "Arsip Aktif.xlsx"
+            anchor.download = "GUDANG HABIS PAKAI "+months[month].toUpperCase()+" "+year+".xlsx"
             anchor.click()
             window.URL.revokeObjectURL(url)
         })

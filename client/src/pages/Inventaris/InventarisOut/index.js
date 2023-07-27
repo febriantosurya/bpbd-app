@@ -53,7 +53,7 @@ function InventarisIn() {
 
     // dynamic data InventarisIn
     const [invHeader, setInvHeader] = useState([])
-    const [dataIn, setDataIn] = useState([])
+    const [dataOut, setDataOut] = useState([])
     const [dataTransaction, setDataTransaction] = useState([])
     const [selectedTransaction, setSelectedTransaction] = useState('')
 
@@ -129,7 +129,7 @@ function InventarisIn() {
                     })
                     dataTable.push(row)
                 })
-                setDataIn(dataTable)
+                setDataOut(dataTable)
             };
         };
         dataFetch();
@@ -329,7 +329,7 @@ function InventarisIn() {
                 return(<td key={num}>{item.tanggal}</td>)
             })
         if(type === "data"){
-            return dataIn.map((row, numRow) =>{
+            return dataOut.map((row, numRow) =>{
                 return(
                     <tr key={numRow}>
                         {
