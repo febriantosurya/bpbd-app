@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-const getRegBencana = async (token, month, year) => {
+const getRegBencanaBaru = async (token, month, year) => {
     try {
         const res = await axios({
-            url: `http://${process.env.REACT_APP_HOST}:5000/api/v1/regbencana/${month}/${year}`,
+            url: `http://${process.env.REACT_APP_HOST}:5000/api/v1/reg-bencana-main/${month}/${year}`,
             method: 'get',
             headers: { Authorization: `Bearer ${token}` }
         })
@@ -14,4 +14,4 @@ const getRegBencana = async (token, month, year) => {
     }
 }
 
-export default getRegBencana
+export default getRegBencanaBaru

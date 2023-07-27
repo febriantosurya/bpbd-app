@@ -218,7 +218,10 @@ function InventarisStock() {
                 setDataOut(dataTable)
             };
 
-            let gudangAktifsDate = result[0]?.InvGudangAktifs[0]?.tanggal ?? ''
+            let gudangAktifsDate = result[0].InvGudangAktifs ?? ''
+            if(gudangAktifsDate !== '') {
+                gudangAktifsDate = gudangAktifsDate[0]?.tanggal ?? ''
+            }
             if(gudangAktifsDate.length > 1){
                 // eslint-disable-next-line no-unused-vars
                 const [Y, m, d] = gudangAktifsDate.split('-');
@@ -287,7 +290,7 @@ function InventarisStock() {
             for (let j = 66; j < 66 + totalColumn1; j++) {
                 let cell = sheet1.getCell(`${String.fromCharCode(j)}${i}`)
                 // eslint-disable-next-line eqeqeq
-                if ((i >= 6)&&(i <= 7)&&(j < 62 + totalColumn1)) {
+                if ((i >= 6)&&(i <= 7)&&(j < 70)) {
                     cell.fill = {
                         type: 'pattern',
                         pattern: 'solid',
@@ -295,7 +298,7 @@ function InventarisStock() {
                     }
                 }
                 // eslint-disable-next-line eqeqeq
-                else if ((i >= 6)&&(i <= 7)&&(j >= 62 + totalColumn1)) {
+                else if ((i >= 6)&&(i <= 7)&&(j >= 70)) {
                     cell.fill = {
                         type: 'pattern',
                         pattern: 'solid',
@@ -353,7 +356,7 @@ function InventarisStock() {
             for (let j = 66; j < 66 + totalColumn2; j++) {
                 let cell = sheet2.getCell(`${String.fromCharCode(j)}${i}`)
                 // eslint-disable-next-line eqeqeq
-                if ((i >= 6)&&(i <= 7)&&(j < 62 + totalColumn1)) {
+                if ((i >= 6)&&(i <= 7)&&(j < 70)) {
                     cell.fill = {
                         type: 'pattern',
                         pattern: 'solid',
@@ -361,7 +364,7 @@ function InventarisStock() {
                     }
                 }
                 // eslint-disable-next-line eqeqeq
-                else if ((i >= 6)&&(i <= 7)&&(j >= 62 + totalColumn1)) {
+                else if ((i >= 6)&&(i <= 7)&&(j >= 70)) {
                     cell.fill = {
                         type: 'pattern',
                         pattern: 'solid',

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Sidebar } from '../../components'
 import './inputRegBencana.scss'
 import '../../assets/style/defaultLayout.scss'
-import addRegBencana from '../../api/reg/addReg'
+import addRegBencana from '../../api/reg/dataBaru/addReg'
 
 // BOOTSTRAP
 import Dropdown from 'react-bootstrap/Dropdown'
@@ -18,6 +18,7 @@ let dataKorban = {
     "jenisBencana": "",
     "keterangan": "",
     "lokasiDetail": "",
+    "desa": "",
     "kecamatan": "",
     "Manusia": "",
     "Hewan": "", 
@@ -35,6 +36,7 @@ let valDataKorban = []
 function InputRegBencana() {
     const [token, setToken] = useState("")
     const [selectedBencana, setSelectedBencana] = useState("Pilih Bencana")
+    const [selectDesa, setSelectDesa] = useState("Pilih Desa")
     const [selectKecamatan, setSelectKecamatan] = useState("Pilih Kecamatan")
     const [selectKorban, setSelectKorban] = useState("Pilih Korban")
     const [descKorban, setDescKorban] = useState("")
@@ -108,6 +110,7 @@ function InputRegBencana() {
         1: "Barat", 2: "Bendo", 3: "Karangrejo", 4: "Karas", 5: "Kartoharjo", 6: "Kawedanan", 7: "Lembeyan", 8: "Magetan", 9: "Maospati", 
         10: "Ngariboyo", 11: "Nguntoronadi", 12: "Panekan", 13: "Parang", 14: "Plaosan", 15: "Poncol", 16: "Sidorejo", 17: "Sukomoro", 18: "Takeran"
     }
+    const desa = {}
     const DropdownVal = ({ data }) => {
         return (
           <>
@@ -129,7 +132,7 @@ function InputRegBencana() {
         async function submitData () {
             await addRegBencana(token, dataKorban)
         }
-        if (selectedBencana === "Pilih Bencana" || selectKecamatan === "Pilih Kecamatan" || lokasiDetail === "") {
+        if (selectedBencana === "Pilih Bencana" || selectKecamatan === "Pilih Kecamatan" || selectDesa === "Pilih Desa" || lokasiDetail === "") {
             Swal.fire(
                 'Error',
                 'Form yang memiliki tanda * wajib diisi!',
@@ -140,6 +143,7 @@ function InputRegBencana() {
         dataKorban["jenisBencana"] = selectedBencana
         dataKorban["keterangan"] = ketBencana
         dataKorban["lokasiDetail"] = lokasiDetail
+        dataKorban["desa"] = selectDesa
         dataKorban["kecamatan"] = selectKecamatan
         dataKorban["totalKerugian"] = totalKerugian
         dataKorban["penyebab"] = penyebab
@@ -197,6 +201,11 @@ function InputRegBencana() {
                     <DropdownVal data={kecamatan} />
                 </DropdownButton>
                 <br/>
+                <h5 style={{textAlign: 'left'}} >Pilih Desa<span style={{color: "#ff0000"}}>*</span></h5>
+                <DropdownButton id="dropdown-basic-button" title={selectDesa} onSelect={function(evt) {setSelectDesa(evt)}}>
+                    <DropdownVal data={desa} />
+                </DropdownButton>
+                <br/>
                 <h5 style={{textAlign: 'left'}} >Lokasi Detail<span style={{color: "#ff0000"}}>*</span></h5>
                 <Form.Control as="textarea" placeholder="Tulis Lokasi Detail" style={{ height: '100px' }} onChange={e=>setLokasiDetail(e.target.value)} />
                 <br/>
@@ -238,7 +247,7 @@ function InputRegBencana() {
                 <h5 style={{textAlign: 'left'}} >Penyebab Kejadian</h5>
                 <Form.Control as="textarea" placeholder="Tulis Penyebab Kejadian" style={{ height: '100px' }} onChange={e=>setPenyebab(e.target.value)} />
                 <br/>
-                <Button variant="success" onClick={e=>handleSubmitForm(e)}>Sumbit</Button>
+                <Button variant="success" onClick={e=>handleSubmitForm(e)}>Submit</Button>
                 <div id="end"/>
             </div>
         </div>
