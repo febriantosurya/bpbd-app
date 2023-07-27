@@ -238,7 +238,7 @@ function InputRegBencana() {
                 <h5 style={{textAlign: 'left'}} >Penyebab Kejadian</h5>
                 <Form.Control as="textarea" placeholder="Tulis Penyebab Kejadian" style={{ height: '100px' }} onChange={e=>setPenyebab(e.target.value)} />
                 <br/>
-                <Button variant="success" onClick={e=>handleSubmitForm(e)}>Sumbit</Button>
+                <Button variant="success" onClick={e=>handleSubmitForm(e)}>Submit</Button>
                 <div id="end"/>
             </div>
         </div>

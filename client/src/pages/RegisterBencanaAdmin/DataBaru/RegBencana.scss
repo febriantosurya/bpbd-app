@@ -1,0 +1,23 @@
+.content {
+    display: flex;
+}
+
+#sidebar {
+    width: 5vh;
+    height: 100vh;
+    background-color: orange;
+}
+
+.input {
+    display: flex;
+    width: 700px;
+    // justify-content: center;
+    // align-items: center;
+}
+
+#dropdown-bulan {
+    width: auto;
+    height: 75%;
+    border-radius: 5px;
+    font-size: small;
+}
