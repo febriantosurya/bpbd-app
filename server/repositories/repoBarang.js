@@ -95,7 +95,7 @@ exports.editTransaction = async (data) => {
 };
 
 exports.addNewItem = async (data) => {
-    const result = await InvBarang.create({nama: data.namaBarang, unit: data.unit});
+    const result = await InvBarang.create({nama: data.namaBarang, unit: data.unit, sumber: data.sumber});
     return result;
 };
 

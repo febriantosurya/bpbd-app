@@ -9,6 +9,10 @@ const InvBarang = sequelize.define('InvBarang', {
   unit: {
     type: DataTypes.STRING,
     allowNull: true
+  },
+  sumber: {
+    type: DataTypes.STRING,
+    allowNull: true
   }
 }, {
   sequelize,

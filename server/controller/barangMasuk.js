@@ -48,6 +48,7 @@ exports.addNewItem = async (req, res) => {
       unit: req.body.unit,
       nama: req.body.namaPenambah,
       jumlah: req.body.jumlah,
+      sumber: req.body.sumber,
       status: "masuk",
       tanggal: new Date()
     };
