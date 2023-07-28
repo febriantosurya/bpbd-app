@@ -269,7 +269,7 @@ function InputRegBencana() {
                 </>
                 <br/>
                 <InputGroup>
-                    <InputGroup.Text>Total Kerugian</InputGroup.Text>
+                    <InputGroup.Text>Tafsir Kerusakan</InputGroup.Text>
                     <Form.Control as="textarea" aria-label="With textarea" onChange={e=>setTotalKerugian(e.target.value)} />
                 </InputGroup>
                 <br/>

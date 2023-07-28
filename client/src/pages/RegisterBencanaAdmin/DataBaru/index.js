@@ -164,7 +164,7 @@ function DataBaru() {
                 width: 15
             },
             {
-                header: "Total Kerugian",
+                header: "Tafsir Kerusakan",
                 key: "totalKerugian",
                 width: 17
             },
@@ -344,7 +344,7 @@ function DataBaru() {
                                 <Form.Control type="text" defaultValue={selectedRow.korbanJalan} onChange={e => setSelectedRow({ ...selectedRow, "korbanJalan": e.target.value })} />
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                                <b><Form.Label>Total Kerugian</Form.Label></b>
+                                <b><Form.Label>TafsirKerusakan</Form.Label></b>
                                 <Form.Control type="text" defaultValue={selectedRow.totalKerugian} onChange={e => setSelectedRow({ ...selectedRow, "totalKerugian": e.target.value })} />
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1" >
@@ -448,7 +448,7 @@ function DataBaru() {
                             <th>Rumah</th>
                             <th>Harta</th>
                             <th>Jalan</th>
-                            <th>Total Kerugian</th>
+                            <th>Tafsir Kerusakan</th>
                             <th>Penyebab Kejadian</th>
                         </tr>
                     </thead>
