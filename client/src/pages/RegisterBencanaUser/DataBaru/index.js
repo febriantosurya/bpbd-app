@@ -164,7 +164,7 @@ function DataBaru() {
                 width: 15
             },
             {
-                header: "Tafsir Kerusakan",
+                header: "Total Kerugian",
                 key: "totalKerugian",
                 width: 17
             },
@@ -344,7 +344,7 @@ function DataBaru() {
                                 <Form.Control type="text" defaultValue={selectedRow.korbanJalan} onChange={e => setSelectedRow({ ...selectedRow, "korbanJalan": e.target.value })} />
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                                <b><Form.Label>TafsirKerusakan</Form.Label></b>
+                                <b><Form.Label>Total Kerugian</Form.Label></b>
                                 <Form.Control type="text" defaultValue={selectedRow.totalKerugian} onChange={e => setSelectedRow({ ...selectedRow, "totalKerugian": e.target.value })} />
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1" >
@@ -419,7 +419,6 @@ function DataBaru() {
                     </Form.Group>
                     <Button style={{ fontSize: "small", width: "auto", fontFamily: "Poppins", height: "75%", borderRadius: "5px", backgroundColor: "orange", marginLeft: "10px" }} onClick={handleEnter}>Enter</Button>
                     <Button style={{ fontSize: "small", width: "auto", fontFamily: "Poppins", height: "75%", borderRadius: "5px", margin: "0px 10px", backgroundColor: "orange" }} onClick={e => handleExportXlsx(e)}>Unduh ke Excel</Button>
-                    <Button style={{ fontSize: "small", width: "auto", fontFamily: "Poppins", height: "75%", borderRadius: "5px", backgroundColor: "orange" }}>Unduh Nota Dinas</Button>
                 </InputGroup>
             </form>
 
@@ -448,7 +447,7 @@ function DataBaru() {
                             <th>Rumah</th>
                             <th>Harta</th>
                             <th>Jalan</th>
-                            <th>Tafsir Kerusakan</th>
+                            <th>Total Kerugian</th>
                             <th>Penyebab Kejadian</th>
                         </tr>
                     </thead>

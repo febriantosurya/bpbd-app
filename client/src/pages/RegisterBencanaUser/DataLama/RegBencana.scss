@@ -1,0 +1,38 @@
+.content {
+    display: flex;
+}
+
+#sidebar {
+    width: 5vh;
+    height: 100vh;
+    background-color: orange;
+}
+
+.input {
+    display: flex;
+    width: 700px;
+    // justify-content: center;
+    // align-items: center;
+}
+
+#dropdown-bulan {
+    width: auto;
+    height: 75%;
+    border-radius: 5px;
+    font-size: small;
+}
+
+.nav2 {
+    overflow: visible;
+    background-color: rgb(255, 249, 240);
+    position: fixed;
+    /* Set the navbar to fixed position */
+    top: 0;
+    /* Position the navbar at the top of the page */
+    width: 100%;
+    /* Full width */
+}
+
+.mainTable{
+    padding-top: 200px;
+}
