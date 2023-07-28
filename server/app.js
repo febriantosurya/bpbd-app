@@ -7,6 +7,9 @@ const userRoute = require('./routes/user');
 const barangMasukRoute = require('./routes/barangMasuk');
 const barangKeluarRoute = require('./routes/barangKeluar');
 const barangStockRoute = require('./routes/barangStock');
+const barangMasukRouteStatic = require('./routes/barangMasukStatic');
+const barangKeluarRouteStatic = require('./routes/barangKeluarStatic');
+const barangStockRouteStatic = require('./routes/barangStockStatic');
 const regBencanaRoute = require('./routes/registerBencana');
 const regBencanaNewRoute = require('./routes/registerBencanaNew');
 const readOnlyRoute = require('./routes/readOnly');
@@ -21,6 +24,9 @@ app.use('/api/v1/', userRoute);
 app.use('/api/v1/inventory', barangMasukRoute);
 app.use('/api/v1/inventory', barangKeluarRoute);
 app.use('/api/v1/inventory', barangStockRoute);
+app.use('/api/v1/inv-static', barangMasukRouteStatic);
+app.use('/api/v1/inv-static', barangKeluarRouteStatic);
+app.use('/api/v1/inv-static', barangStockRouteStatic);
 app.use('/api/v1/regbencana', regBencanaRoute);
 app.use('/api/v1/reg-bencana-main', regBencanaNewRoute);
 app.use('/api/v1/read-only', readOnlyRoute);
@@ -35,6 +41,12 @@ const InvBarang = require('./models/invBarang');
 const InvGudangAktif = require('./models/invGudangAktif');
 const InvGudangLama = require('./models/invGudangLama');
 const InvTransaksiGudang = require('./models/invTransaksiGudang');
+
+const InvBarangStatic = require('./models/invBarangStatic');
+const InvGudangAktifStatic = require('./models/invGudangAktifStatic');
+const InvGudangLamaStatic = require('./models/invGudangLamaStatic');
+const InvTransaksiGudangStatic = require('./models/invTransaksiGudangStatic');
+
 const RegBencana = require('./models/registerBencana');
 const RegBencanaNew = require('./models/registerBencanaNew');
 const ArsipAktif = require('./models/arsipAktif');
@@ -49,6 +61,10 @@ app.listen(5000, async () => {
   await InvGudangAktif.sync({ alter: true });
   await InvGudangLama.sync({ alter: true });
   await InvTransaksiGudang.sync({ alter: true });
+  await InvBarangStatic.sync({ alter: true });
+  await InvGudangAktifStatic.sync({ alter: true });
+  await InvGudangLamaStatic.sync({ alter: true });
+  await InvTransaksiGudangStatic.sync({ alter: true });
   await RegBencana.sync({ alter: true });
   await RegBencanaNew.sync({ alter: true })
   await ArsipAktif.sync({ alter: true });
