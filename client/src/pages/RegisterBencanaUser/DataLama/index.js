@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import './RegBencana.scss'
-import Swal from 'sweetalert2'
 
 //BOOTSTRAP IMPORTING
 import Table from 'react-bootstrap/Table';
@@ -9,15 +8,19 @@ import DropdownButton from 'react-bootstrap/DropdownButton';
 import InputGroup from 'react-bootstrap/InputGroup';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import Modal from 'react-bootstrap/Modal';
 
 //API IMPORTING
-import getRegBencanaBaru from '../../../api/reg/dataBaru/showReg';
-import delReg from '../../../api/reg/dataBaru/delReg';
-import putReg from '../../../api/reg/dataBaru/editReg';
+import getRegBencanaLama from '../../../api/reg/dataLama/showReg';
 
-function DataBaru() {
+// import docx
+import { Document, Packer, Paragraph, ImageRun, Table as TableDoc, TableRow, TableCell } from 'docx';
+import { saveAs } from 'file-saver';
+
+const imageBase64Data = `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`;
+
+function DataLama() {
     const ExcelJS = require('exceljs');
+
     const months = {
         1: "Januari",
         2: "Februari",
@@ -44,7 +47,7 @@ function DataBaru() {
     const token = localStorage.getItem("token")
 
     async function dataFetch() {
-        const response = await getRegBencanaBaru(token, month, year);
+        const response = await getRegBencanaLama(token, month, year);
         if (response.data?.message === "success") {
             setData(response.data.data)
         }
@@ -98,6 +101,7 @@ function DataBaru() {
     };
 
     // DOWNLOAD CONTENT
+    // export excel
     const handleExportXlsx = () => {
         const wb = new ExcelJS.Workbook();
         const sheet = wb.addWorksheet("sheet");
@@ -116,11 +120,6 @@ function DataBaru() {
             {
                 header: "Lokasi Detail",
                 key: "lokasiDetail",
-                width: 15
-            },
-            {
-                header: "Desa",
-                key: "Desa",
                 width: 15
             },
             {
@@ -180,7 +179,6 @@ function DataBaru() {
                 no: number + 1,
                 jenisBencana: item.jenisBencana,
                 lokasiDetail: item.lokasiDetail,
-                desa: item.desa,
                 kecamatan: item.kecamatan,
                 tanggal: item.tanggal,
                 waktu: item.waktu,
@@ -231,135 +229,96 @@ function DataBaru() {
         });
     }
 
-    // DELETE ROW
-    const handleDeleteRows = async (e) => {
-        e.preventDefault()
-        async function delRegRow() {
-            await delReg(token, id)
-        }
-        Swal.fire({
-            title: 'Apakah anda yakin?',
-            text: "Anda dapat mengubah dan menghapus data di laman register bencana",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                delRegRow()
-                Swal.fire({ title: "Data dihapus!", icon: "success" }).then(function () {
-                    window.location = "/register-bencana"
-                })
-            }
-        })
+    // export docx (nota dinas)
+    function ExportToDocx() {
+        const handleExport = () => {
+
+            const document = new Document({
+                sections: [{
+                    properties: {},
+                    children: [
+                        new TableDoc({
+                            rows: [
+                                new TableRow({
+                                    children: [
+                                        new TableCell({
+                                            children: [
+                                                new Paragraph({
+                                                    children: [
+                                                        new ImageRun({
+                                                          data: Uint8Array.from(atob(imageBase64Data), c =>
+                                                            c.charCodeAt(0)
+                                                          ),
+                                                          transformation: {
+                                                            width: 200,
+                                                            height: 100
+                                                          }
+                                                        })
+                                                    ],
+                                                }),
+                                            ], // Replace with your logo image
+                                            width: {
+                                                size: 400,
+                                                type: 'dxa', // width in twips (dxa)
+                                            },
+                                        }),
+                                        new TableCell({
+                                            children: [new Paragraph('Text 1'),new Paragraph('Text 2'),new Paragraph('Text 3')],
+                                            width: {
+                                                size: 1000,
+                                                type: 'dxa',
+                                            },
+                                        }),
+                                    ],
+                                }),
+                            ],
+                        }),
+                    ]
+                }]
+            });
+            Packer.toBlob(document).then(blob => {
+                console.log(blob);
+                saveAs(blob, "example.docx");
+                console.log("Document created successfully");
+            });
+        };
+      
+        return (
+          <div>
+            <Button style={{ fontSize: "small", width: "auto", fontFamily: "Poppins", height: "75%", borderRadius: "5px", backgroundColor: "orange" }} onClick={handleExport}>Unduh Nota Dinas</Button>
+          </div>
+        );
     };
 
-    // MODAL EDIT
-    const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
-
-    function handleEditRows() {
-        async function reqEdit() {
-            await putReg(token, selectedRow)
-        }
-        function handleSave(e) {
-            e.preventDefault()
-            console.log(selectedRow)
-            Swal.fire({
-                title: 'Apakah anda yakin?',
-                text: "Data record akan diubah",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#3085d6',
-                cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    reqEdit()
-                    Swal.fire({ title: "Edit data sukses!", icon: "success" }).then(function () {
-                        window.location = "/register-bencana"
+    function generate() {
+        const doc = new Document({
+          sections: [
+            {
+              children: [
+                new Paragraph("Hello World"),
+                new Paragraph({
+                  children: [
+                    new ImageRun({
+                      data: Uint8Array.from(atob(imageBase64Data), c =>
+                        c.charCodeAt(0)
+                      ),
+                      transformation: {
+                        width: 200,
+                        height: 100
+                      }
                     })
-                }
-            })
-        }
-
-        return (
-            <div>
-                <Button style={{ marginRight: "10px", fontSize: "small", fontFamily: "Poppins", borderRadius: "5px", height:"33px"}} disabled={isChecked} variant="warning" onClick={handleShow}>Ubah</Button>
-                <Modal show={show} onHide={handleClose}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Edit Data</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
-                        <Form >
-                            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                                <b><Form.Label>Jenis Bencana</Form.Label></b>
-                                <Form.Control style={{ borderColor: "red" }} type="text" readOnly={true} defaultValue={selectedRow.jenisBencana} />
-                            </Form.Group>
-                            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                                <b><Form.Label>Lokasi Detail</Form.Label></b>
-                                <Form.Control style={{ borderColor: "red" }} type="text" readOnly={true} defaultValue={selectedRow.lokasiDetail} onChange={e => setSelectedRow({ ...selectedRow, "lokasiDetail": e.target.value })} />
-                            </Form.Group>
-                            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                                <b><Form.Label>Kecamatan</Form.Label></b>
-                                <Form.Control style={{ borderColor: "red" }} type="text" readOnly={true} defaultValue={selectedRow.kecamatan} />
-                            </Form.Group>
-                            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                                <b><Form.Label>Desa</Form.Label></b>
-                                <Form.Control style={{ borderColor: "red" }} type="text" readOnly={true} defaultValue={selectedRow.desa} />
-                            </Form.Group>
-                            <Form.Group className="mb-tanggal" controlId="exampleForm.ControlInput1">
-                                <b><Form.Label>Tanggal</Form.Label></b>
-                                <Form.Control type="datetime-local" defaultValue={`${selectedRow.tanggal}T${selectedRow.waktu}`}
-                                    onChange={e => {
-                                        const datetime = (e.target.value).split("T")
-                                        setSelectedRow({ ...selectedRow, "tanggal": datetime[0], "waktu": datetime[1] })
-                                    }}
-                                />
-                            </Form.Group>
-                            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                                <b><Form.Label>Keterangan</Form.Label></b>
-                                <Form.Control type="text" defaultValue={selectedRow.keterangan} onChange={e => setSelectedRow({ ...selectedRow, "keterangan": e.target.value })} />
-                            </Form.Group>
-                            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                                <b><Form.Label>Korban Manusia</Form.Label></b>
-                                <Form.Control type="text" defaultValue={selectedRow.korbanManusia} onChange={e => setSelectedRow({ ...selectedRow, "korbanManusia": e.target.value })} />
-                            </Form.Group>
-                            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                                <b><Form.Label>Korban Hewan</Form.Label></b>
-                                <Form.Control type="text" defaultValue={selectedRow.korbanHewan} onChange={e => setSelectedRow({ ...selectedRow, "korbanHewan": e.target.value })} />
-                            </Form.Group>
-                            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                                <b><Form.Label>Korban Rumah</Form.Label></b>
-                                <Form.Control type="text" defaultValue={selectedRow.korbanRumah} onChange={e => setSelectedRow({ ...selectedRow, "korbanRumah": e.target.value })} />
-                            </Form.Group>
-                            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                                <b><Form.Label>Korban Harta</Form.Label></b>
-                                <Form.Control type="text" defaultValue={selectedRow.korbanHarta} onChange={e => setSelectedRow({ ...selectedRow, "korbanHarta": e.target.value })} />
-                            </Form.Group>
-                            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                                <b><Form.Label>Korban Jalan</Form.Label></b>
-                                <Form.Control type="text" defaultValue={selectedRow.korbanJalan} onChange={e => setSelectedRow({ ...selectedRow, "korbanJalan": e.target.value })} />
-                            </Form.Group>
-                            <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                                <b><Form.Label>Total Kerugian</Form.Label></b>
-                                <Form.Control type="text" defaultValue={selectedRow.totalKerugian} onChange={e => setSelectedRow({ ...selectedRow, "totalKerugian": e.target.value })} />
-                            </Form.Group>
-                            <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1" >
-                                <b><Form.Label>Peyebab Kejadian</Form.Label></b>
-                                <Form.Control as="textarea" defaultValue={selectedRow.penyebabKejadian} onChange={e => setSelectedRow({ ...selectedRow, "penyebab": e.target.value })} />
-                            </Form.Group>
-                        </Form>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={handleClose}>Close</Button>
-                        <Button variant="primary" onClick={e => handleSave(e)} >Save Changes</Button>
-                    </Modal.Footer>
-                </Modal>
-            </div>
-        )
+                  ]
+                })
+              ]
+            }
+          ]
+        });
+    
+        Packer.toBlob(doc).then(blob => {
+          console.log(blob);
+          saveAs(blob, "example.docx");
+          console.log("Document created successfully");
+        });
     }
 
     // SHOW LIST REG BENCANA
@@ -377,7 +336,6 @@ function DataBaru() {
                     <td>{number + 1}</td>
                     <td>{item.jenisBencana}</td>
                     <td>{item.lokasiDetail}</td>
-                    <td>{item.desa}</td>
                     <td>{item.kecamatan}</td>
                     <td>{item.tanggal} {item.waktu} WIB</td>
                     <td>{item.keterangan}</td>
@@ -396,9 +354,6 @@ function DataBaru() {
     return (
         <div className='col-auto'>
             <h1 style={{ fontSize: "30px", paddingTop:"20px" }}>Daftar Register Bencana</h1>
-            <div style={{ display: "flex", marginBottom: "10px" }}>
-                <Button style={{ fontSize: "medium", width: "auto", justifyContent: "center", borderRadius: "10PX", marginRight: "5px" }} href='/input-reg-bencana'>Tambah Register Bencana</Button>
-            </div>
             <form onSubmit={handleEnter}>
                 <InputGroup >
                     <p style={{ width: "auto", margin: "5px" }}>Bulan :</p>
@@ -419,14 +374,13 @@ function DataBaru() {
                     </Form.Group>
                     <Button style={{ fontSize: "small", width: "auto", fontFamily: "Poppins", height: "75%", borderRadius: "5px", backgroundColor: "orange", marginLeft: "10px" }} onClick={handleEnter}>Enter</Button>
                     <Button style={{ fontSize: "small", width: "auto", fontFamily: "Poppins", height: "75%", borderRadius: "5px", margin: "0px 10px", backgroundColor: "orange" }} onClick={e => handleExportXlsx(e)}>Unduh ke Excel</Button>
-                    <Button style={{ fontSize: "small", width: "auto", fontFamily: "Poppins", height: "75%", borderRadius: "5px", backgroundColor: "orange" }}>Unduh Nota Dinas</Button>
+                    {ExportToDocx()}
+                    
                 </InputGroup>
             </form>
+            <Button  style={{ fontSize: "small", width: "auto", fontFamily: "Poppins", height: "75%", borderRadius: "5px", margin: "0px 10px", backgroundColor: "orange" }} onClick={generate}>Klik dummpy</Button>
+            <Button  style={{ fontSize: "small", width: "auto", fontFamily: "Poppins", height: "75%", borderRadius: "5px", margin: "0px 10px", backgroundColor: "orange" }}>Klik dummpy</Button>
 
-            <div className='my-2' style={{ display: "flex", textAlign: "left"}}>
-                {isChecked ? null : handleEditRows()}
-                {isChecked ? null : <Button style={{fontSize: "small", fontFamily: "Poppins", borderRadius: "5px", height:"33px"}} disabled={isChecked} variant="danger" onClick={(e) => handleDeleteRows(e)}>Hapus</Button>}
-            </div>
             <form>
                 <Table id='tb-reg' striped bordered hover size="sm">
                     <thead className='text-center align-middle'>
@@ -439,7 +393,6 @@ function DataBaru() {
                             <th>No</th>
                             <th>Jenis Bencana</th>
                             <th>Lokasi Detail</th>
-                            <th>Desa</th>
                             <th>Kecamatan</th>
                             <th>Tanggal & Waktu</th>
                             <th>Keterangan</th>
@@ -461,4 +414,4 @@ function DataBaru() {
     )
 }
 
-export default DataBaru
+export default DataLama

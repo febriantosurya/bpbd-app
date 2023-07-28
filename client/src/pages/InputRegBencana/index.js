@@ -13,6 +13,9 @@ import Form from 'react-bootstrap/Form'
 import InputGroup from 'react-bootstrap/InputGroup'
 import Swal from 'sweetalert2'
 
+// get kecamatan desa
+import getKecamatanDesa from '../../api/kecamatanDesa/getKecamatanDesa'
+
 // GLOBAL VAR
 let dataKorban = {
     "jenisBencana": "",
@@ -20,11 +23,11 @@ let dataKorban = {
     "lokasiDetail": "",
     "desa": "",
     "kecamatan": "",
-    "Manusia": "",
-    "Hewan": "", 
-    "Rumah": "", 
-    "Harta": "", 
-    "Jalan": "",
+    "korbanManusia": "",
+    "korbanHewan": "", 
+    "korbanRumah": "", 
+    "korbanHarta": "", 
+    "korbanJalan": "",
     "totalKerugian": "",
     "penyebab": ""
 }
@@ -34,7 +37,7 @@ let valDataKorban = []
 
 
 function InputRegBencana() {
-    const [token, setToken] = useState("")
+    const token = localStorage.getItem("token")
     const [selectedBencana, setSelectedBencana] = useState("Pilih Bencana")
     const [selectDesa, setSelectDesa] = useState("Pilih Desa")
     const [selectKecamatan, setSelectKecamatan] = useState("Pilih Kecamatan")
@@ -49,6 +52,11 @@ function InputRegBencana() {
 
     const [disableDescKorban, setDisableDescKorban] = useState(true)
     const [disAddKorbanBtn, setDisAddKorbanBtn] = useState(true)
+
+    // data kecamatan and desa
+    const [kecamatan, setKecamatan] = useState([])
+    const [desas, setDesas] = useState([])
+    const [desa, setDesa] = useState([])
 
     // Dynamically ADD korban
     const [val, setVal] = useState([])
@@ -68,7 +76,18 @@ function InputRegBencana() {
 
     function handleSelectKorban (event) {
         setDisableDescKorban(false)
-        setSelectKorban(event)
+        setSelectKorban("korban"+event)
+    }
+    
+    const getDesasFromKecamatan = (nama) => {
+        const foundObject = desas.find(item => item.nama === nama);
+        return foundObject ? foundObject.Desas.map(({ nama }) => nama) : null;
+    };
+
+    function handleSelectKecamatan (event) {
+        setSelectKecamatan(event)
+        setDesa(getDesasFromKecamatan(event))
+        console.log(getDesasFromKecamatan(event))
     }
 
     function handleDescKorban (e) {
@@ -87,8 +106,6 @@ function InputRegBencana() {
     function handleSetTanggal (e) {
         // setTanggal(e.target.value)
         const splitVal = (e.target.value).split("T")
-        console.log(splitVal[0])
-        console.log(splitVal[1])
         setTanggal(splitVal[0])
         setJam(splitVal[1])
     }    
@@ -106,11 +123,7 @@ function InputRegBencana() {
         8: "Evakuasi/Pertolongan",
         9: "Bencana Lainnya" 
     }
-    const kecamatan = {
-        1: "Barat", 2: "Bendo", 3: "Karangrejo", 4: "Karas", 5: "Kartoharjo", 6: "Kawedanan", 7: "Lembeyan", 8: "Magetan", 9: "Maospati", 
-        10: "Ngariboyo", 11: "Nguntoronadi", 12: "Panekan", 13: "Parang", 14: "Plaosan", 15: "Poncol", 16: "Sidorejo", 17: "Sukomoro", 18: "Takeran"
-    }
-    const desa = {}
+
     const DropdownVal = ({ data }) => {
         return (
           <>
@@ -149,6 +162,7 @@ function InputRegBencana() {
         dataKorban["penyebab"] = penyebab
         dataKorban["tanggal"] = tanggal
         dataKorban["waktu"] = jam
+        console.log(dataKorban)
         Swal.fire({
             title: 'Apakah anda yakin?',
             text: "Anda dapat mengubah dan menghapus data di laman register bencana",
@@ -177,8 +191,23 @@ function InputRegBencana() {
         )
     }
 
+    // fetch data kecamatan dan desa
+    async function fetchKecamatan() {
+        const response = await getKecamatanDesa(token);
+        if (response.data?.message === "success") {
+            let result = response.data.data;
+            setDesas(result)
+            const kecamatanArray = result.map(({ nama }) => nama);
+            setKecamatan(kecamatanArray)
+        }
+        else {
+            localStorage.removeItem("token");
+            window.location = '/';
+        };
+    };
+
     useEffect(() => {
-        setToken(localStorage.getItem("token"))
+        fetchKecamatan()
     }, [])
 
     return (
@@ -197,7 +226,7 @@ function InputRegBencana() {
                 <Form.Control as="textarea" placeholder="Tulis Keterangan" style={{ height: '100px' }} onChange={e => setKetBencana(e.target.value)}/>
                 <br/>
                 <h5 style={{textAlign: 'left'}} >Pilih Kecamatan<span style={{color: "#ff0000"}}>*</span></h5>
-                <DropdownButton id="dropdown-basic-button" title={selectKecamatan} onSelect={function(evt) {setSelectKecamatan(evt)}}>
+                <DropdownButton id="dropdown-basic-button" title={selectKecamatan} onSelect={event=>handleSelectKecamatan(event)}>
                     <DropdownVal data={kecamatan} />
                 </DropdownButton>
                 <br/>
