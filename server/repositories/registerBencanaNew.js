@@ -1,7 +1,6 @@
 const sequelize = require('../configs/database');
 const { Op } = require('sequelize');
 const RegBencanaNew = require('../models/registerBencanaNew');
-const RegImages = require('../models/regImages');
 
 // GET DATA
 exports.getAllRegBencana = async (data) => {
@@ -11,10 +10,6 @@ exports.getAllRegBencana = async (data) => {
         sequelize.fn('EXTRACT(MONTH from "tanggal") =', data.month),
         sequelize.fn('EXTRACT(YEAR from "tanggal") =', data.year)
       ]
-    },
-    include: {
-      model: RegImages,
-      attributes: ['path']
     }
   });
   if (!result) return null;
@@ -34,8 +29,8 @@ exports.getRegBencana = async (id) => {
 // END
 
 exports.addRegisterBencana = async (data) => {
-  const result = await RegBencanaNew.create(data);
-  return result;
+  await RegBencanaNew.create(data);
+  return;
 };
 
 exports.editRegisterBencana = async (data) => {
@@ -58,7 +53,6 @@ exports.editRegisterBencana = async (data) => {
   data_stored.korbanJalan = data.korbanJalan;
   data_stored.totalKerugian = data.totalKerugian;
   data_stored.penyebabKejadian = data.penyebabKejadian;
-  data_stored.nomorSurat = data.nomorSurat;
   data_stored.save();
   return;
 };
@@ -68,14 +62,6 @@ exports.deleteRegBencana = async (id) => {
     where: {
       id: id
     }
-  });
-  return;
-};
-
-exports.addImage = async (data) => {
-  await RegImages.create({
-    path: data.path,
-    RegBencanaNewId: data.id
   });
   return;
 };

@@ -30,21 +30,9 @@ exports.addRegBencana = async (req, res) => {
       korbanHarta: req.body.korbanHarta,
       korbanJalan: req.body.korbanJalan,
       totalKerugian: req.body.totalKerugian,
-      penyebabKejadian: req.body.penyebabKejadian,
-      nomorSurat: req.body.nomorSurat
+      penyebabKejadian: req.body.penyebabKejadian
     };
-    const addedData = await regBencanaNewRepo.addRegisterBencana(data);
-    const images = req.files;
-    let dataImg = {}
-    let folder = ''
-    for (let i = 0; i < images.length; i++) {
-      folder = (images[i].destination).split('/public/')
-      dataImg = {
-        path: `${folder[1]}/${images[i].filename}`,
-        id: addedData.dataValues.id
-      }
-      await regBencanaNewRepo.addImage(dataImg)
-    }
+    await regBencanaNewRepo.addRegisterBencana(data);
     return res.status(200).json({ message: 'success' });
   }
   catch (error) {
@@ -69,8 +57,7 @@ exports.editRegBencana = async (req, res) => {
       korbanHarta: req.body.korbanHarta,
       korbanJalan: req.body.korbanJalan,
       totalKerugian: req.body.totalKerugian,
-      penyebabKejadian: req.body.penyebabKejadian,
-      nomorSurat: req.body.nomorSurat
+      penyebabKejadian: req.body.penyebabKejadian
     };
     const dataRecord = await regBencanaNewRepo.getRegBencana(data.id);
     if (!dataRecord) {
