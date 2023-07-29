@@ -27,6 +27,10 @@ exports.setShowInTransaction = async (month, year, status) => {
 };
 
 exports.setAddInTransaction = async (data) => {
+  const check = await repo.checkNamaBarang(data);
+  if (check === false) {
+    return false;
+  };
   await repo.addTransaction(data);
   await utils.updateVolumeInvenActiveStatic();
   return;

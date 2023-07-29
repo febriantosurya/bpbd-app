@@ -23,7 +23,10 @@ exports.addOutTransaction = async (req, res) => {
       tanggal: new Date(),
       idBarang: req.body.idBarang
     };
-    await barangKeluarRepo.setAddOutTransaction(data);
+    const result = await barangKeluarRepo.setAddOutTransaction(data);
+    if (result === false) {
+      return res.status(403).json({message: 'name failed'})
+    }
     return res.status(200).json({ message: 'success' });
   }
   catch (error) {
