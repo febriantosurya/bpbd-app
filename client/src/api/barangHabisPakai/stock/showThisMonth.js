@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-const getInventaris = async (token, month, year) => {
+const showThisMonth = async (token) => {
     try {
         const res = await axios({
-            url: `http://${process.env.REACT_APP_HOST}:5000/api/v1/inv-static/${month}/${year}`,
+            url: `http://${process.env.REACT_APP_HOST}:5000/api/v1/inventory`,
             method: 'get',
             headers: { Authorization: `Bearer ${token}` }
         })
@@ -14,4 +14,4 @@ const getInventaris = async (token, month, year) => {
     }
 }
 
-export default getInventaris
+export default showThisMonth

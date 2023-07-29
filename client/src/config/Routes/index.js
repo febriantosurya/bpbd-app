@@ -13,7 +13,8 @@ import {
     DashboardUser,
     ArchiveActive,
     ArchiveInactive,
-    Inventaris
+    Inventaris,
+    HabisPakai
 } from '../../pages'
 const router = createBrowserRouter([
     {
@@ -59,6 +60,10 @@ const router = createBrowserRouter([
     {
         path: "/arsip-inaktif",
         element: checkLoggedMiddleware(<ArchiveInactive />)
+    },
+    {
+        path: "/habispakai",
+        element: checkLoggedMiddleware(<HabisPakai />)
     },
     {
         path: "/inventaris",

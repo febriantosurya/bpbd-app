@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import {Gap} from '../../../components'
-import './Inventaris.scss'
+import './HabisPakai.scss'
 
 // BOOTSTRAP IMPORTING
 import Table from 'react-bootstrap/Table';
@@ -14,18 +14,26 @@ import Modal from 'react-bootstrap/Modal';
 import Swal from 'sweetalert2'
 
 // API IMPORTING
-import getData from '../../../api/inventaris/out/getData';
-import addData from '../../../api/inventaris/out/addData';
-import putData from '../../../api/inventaris/out/editData';
+import getData from '../../../api/barangHabisPakai/in/getData';
+import addItem from '../../../api/barangHabisPakai/in/addItem'
+import addData from '../../../api/barangHabisPakai/in/addData'
+import putData from '../../../api/barangHabisPakai/in/editData';
 
 // GLOBAL VAR
+let inventoryItem = {
+    "namaBarang": "",
+    "unit": "",
+    "namaPenambah": "",
+    "sumber": "",
+    "jumlah": 0
+}
 let inventoryData = {
     "nama": "",
     "jumlah": 0,
     "idBarang": 0
 }
 
-function InventarisIn() {
+function HabisPakaiIn() {
     const months = {
         1: "Januari",
         2: "Februari",
@@ -53,18 +61,23 @@ function InventarisIn() {
 
     // dynamic data InventarisIn
     const [invHeader, setInvHeader] = useState([])
-    const [dataOut, setDataOut] = useState([])
+    const [dataIn, setDataIn] = useState([])
     const [dataTransaction, setDataTransaction] = useState([])
     const [selectedTransaction, setSelectedTransaction] = useState('')
 
     // variabel input item
+    const [namaBarang,setNamaBarang] = useState("")
+    const [unit,setUnit] = useState("")
     const [namaPenambah,setNamaPenambah] = useState("")
+    const [sumber,setSumber] = useState("")
     const [jumlah,setJumlah] = useState(0)
 
     // variabel input data
     const [barang, setBarang] = useState([])
     const [selectedBarang, setSelectedBarang] = useState('')
 
+
+    const [showModalItem, setShowModalItem] = useState(false);
     const [showModalData, setShowModalData] = useState(false);
 
     useEffect(() => {
@@ -82,9 +95,16 @@ function InventarisIn() {
                 let arr = []
                 // eslint-disable-next-line array-callback-return
                 response.data.data.map((item) => {
-                    if('InvTransaksiGudangStatics' in item) {
+                    let bulanLalu = {
+                        'nama': 'Stok Bulan Lalu',
+                        'jumlah': (item['stokBulanLalu'] == null) ? 0 : item['stokBulanLalu'],
+                        'tanggal': '01',
+                        'InvBarangId': item['id']
+                    }
+                    arr.push(bulanLalu)
+                    if('InvTransaksiGudangs' in item) {
                         // eslint-disable-next-line array-callback-return
-                        item['InvTransaksiGudangStatics'].map((dt) => {
+                        item['InvTransaksiGudangs'].map((dt) => {
                             // eslint-disable-next-line no-unused-vars
                             const [Y, m, d] = dt['tanggal'].split('-');
                             dt['tanggal'] = d;
@@ -94,7 +114,7 @@ function InventarisIn() {
                 })
                 arr.sort((a, b) => parseInt(a.tanggal) - parseInt(b.tanggal));
 
-                const keysToRemove = ["jumlah", "InvBarangStaticId", "id"];
+                const keysToRemove = ["jumlah", "InvBarangId", "id"];
 
                 // dynamic column for header
                 let col = arr.map((item) => {
@@ -109,6 +129,12 @@ function InventarisIn() {
                 });
                 col = Array.from(new Set(col.map(JSON.stringify))).map(JSON.parse)
                 setInvHeader(col)
+                // console.log("d")
+                // console.log(d)
+                // console.log("col")
+                // console.log(col)
+                // console.log("arr")
+                // console.log(arr)
                 setDataTransaction(arr)
 
                 // foreach jumlah peralatan
@@ -121,7 +147,7 @@ function InventarisIn() {
                         let jml = '-'
                         arr.forEach((arrVal, indexVal) => {
                             // eslint-disable-next-line eqeqeq
-                            if((arrVal.nama == colVal.nama)&&(arrVal.tanggal == colVal.tanggal)&&(arrVal.InvBarangStaticId == dVal.id)){
+                            if((arrVal.nama == colVal.nama)&&(arrVal.tanggal == colVal.tanggal)&&(arrVal.InvBarangId == dVal.id)){
                                 jml = arrVal.jumlah
                             }
                         })
@@ -129,12 +155,36 @@ function InventarisIn() {
                     })
                     dataTable.push(row)
                 })
-                setDataOut(dataTable)
+                setDataIn(dataTable)
             };
         };
         dataFetch();
     }, [token, month, year]);
 
+    // Modal Add Item
+    const handleOpenModalItem = () => {
+        setShowModalItem(true)
+    };
+    const handleCloseModalItem = () => {
+        setShowModalItem(false)
+        setNamaBarang('')
+        setUnit('')
+        setNamaPenambah('')
+        setJumlah('')
+    };
+    async function handleSubmitFormItem (e) {
+        e.preventDefault()
+        inventoryItem["namaBarang"] = namaBarang
+        inventoryItem["unit"] = unit
+        inventoryItem["namaPenambah"] = namaPenambah
+        inventoryItem["sumber"] = sumber
+        inventoryItem["jumlah"] = jumlah
+        addItem(token, inventoryItem)
+        handleCloseModalItem()
+        Swal.fire({ title: "Item ditambahkan!", icon: "success" }).then(function () {
+            window.location = "/inventaris?page=1"
+        })
+    };
     // Modal Add Data
     async function handleOpenModalData() {
         setShowModalData(true)
@@ -154,7 +204,7 @@ function InventarisIn() {
         addData(token, inventoryData)
         handleCloseModalData()
         Swal.fire({ title: "Data ditambahkan!", icon: "success" }).then(function () {
-            window.location = "/inventaris?page=2"
+            window.location = "/inventaris?page=1"
         })
     };
 
@@ -191,13 +241,13 @@ function InventarisIn() {
                 if (result.isConfirmed) {
                     inventoryInEdit(selectedTransaction, jumlah)
                     Swal.fire({ title: "Edit data sukses!", icon: "success" }).then(function () {
-                        window.location = "/inventaris?page=2"
+                        window.location = "/inventaris?page=1"
                     })
                 }
             })
         }
 
-        let selectionItem = dataTransaction.filter(item => item.InvBarangStaticId === selectedRow.id && item.nama !== "Stok Bulan Lalu");
+        let selectionItem = dataTransaction.filter(item => item.InvBarangId === selectedRow.id && item.nama !== "Stok Bulan Lalu");
         
         // Add event listener to the select box
         const handleSelectPenambahChange = (event) => {
@@ -226,7 +276,7 @@ function InventarisIn() {
                                 value={selectedTransaction}
                                 onChange={handleSelectPenambahChange}
                             >
-                                <option key={0} value={0}>Pilih Penerima</option>
+                                <option key={0} value={0}>Pilih Penambah</option>
                                 {selectionItem.map((item) => (
                                 <option key={item.id} value={item.id}>
                                     {item.nama}
@@ -313,7 +363,7 @@ function InventarisIn() {
                     <td>{item.nama}</td>
                     <td>{item.totalJumlah}</td>
                     <td>{item.unit}</td>
-                    {/* <td>{item.InvGudang[0].keterangan}</td> */}
+                    <td>{item.sumber}</td>
                 </tr>
             )
         })
@@ -329,7 +379,7 @@ function InventarisIn() {
                 return(<td key={num}>{item.tanggal}</td>)
             })
         if(type === "data"){
-            return dataOut.map((row, numRow) =>{
+            return dataIn.map((row, numRow) =>{
                 return(
                     <tr key={numRow}>
                         {
@@ -402,9 +452,11 @@ function InventarisIn() {
                     </Form.Group>
                 </InputGroup>
             </form>
-
             <div className='row mb-1'>
                 <div className='col-auto'>{handleEditRows()}</div>
+                <div className='col-auto'>
+                    <Button variant="Primary" style={{ backgroundColor: "orange", marginBottom: "10px" }} onClick={handleOpenModalItem} >Tambah Item</Button>
+                </div>
                 <div className='col-auto'>
                     <Button variant="Primary" style={{ backgroundColor: "orange", marginBottom: "10px" }} onClick={handleOpenModalData} >Tambah Data</Button>
                 </div>
@@ -421,6 +473,7 @@ function InventarisIn() {
                                     <th>Nama Peralatan</th>
                                     <th>Volume</th>
                                     <th>Satuan</th>
+                                    <th>Sumber</th>
                                 </tr>
                                 <tr className='text-nowrap'>
                                     <th>a</th>
@@ -428,23 +481,51 @@ function InventarisIn() {
                                     <th>c</th>
                                     <th>d</th>
                                     <th>e</th>
+                                    <th>f</th>
                                 </tr>
                             </thead>
-                            <tbody id="tb-reg" style={{ borderTopLeftRadius: '0' }}>{showTable()}</tbody>
+                            <tbody id="tb-reg">{showTable()}</tbody>
                         </Table>
                         </form>
                     </div>
                     <div className='col px-0' style={{ overflowX: 'auto' }}>
                         <Table id="tb-reg" striped bordered style={{ borderTopLeftRadius: '0' }}>
                             <thead>
-                                <tr className='text-nowrap'>{showDataInventory("title")}</tr>
+                                <tr className="text-nowrap">{showDataInventory("title")}</tr>
                                 <tr>{showDataInventory("tanggal")}</tr>
                             </thead>
                             <tbody>{showDataInventory("data")}</tbody>
                         </Table>
                     </div>
-            </div>
+                </div>
 
+
+            <Modal show={showModalItem} onHide={handleCloseModalItem}>
+                <Modal.Header closeButton>
+                <Modal.Title>Tambah Item Baru</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <label style={{fontWeight: 'bold', textAlign: 'left'}}>Nama Barang</label>
+                    <Form.Control placeholder="Masukan Nama Barang" onChange={e => setNamaBarang(e.target.value)}/>
+                    <label style={{fontWeight: 'bold', marginTop: '20px', textAlign: 'left'}}>Unit / Satuan</label>
+                    <Form.Control placeholder="Masukan Satuan" onChange={e => setUnit(e.target.value)}/>
+                    <label style={{fontWeight: 'bold', marginTop: '20px', textAlign: 'left'}}>Nama Penambah</label>
+                    <Form.Control placeholder="Masukan Nama Penambah" onChange={e => setNamaPenambah(e.target.value)}/>
+                    <label style={{fontWeight: 'bold', marginTop: '20px', textAlign: 'left'}}>Jumlah</label>
+                    <Form.Control type="number" placeholder="Masukan Jumlah" onChange={e => setJumlah(e.target.value)}/>
+                    <label style={{fontWeight: 'bold', marginTop: '20px', textAlign: 'left'}}>Sumber</label>
+                    <Form.Control placeholder="Masukan Nama Sumber" onChange={e => setSumber(e.target.value.toUpperCase())}/>
+                </Modal.Body>
+                <Modal.Footer>
+                <Button variant="secondary" onClick={handleCloseModalItem}>
+                    Close
+                </Button>
+                <Button onClick={handleSubmitFormItem}
+                    style={{backgroundColor: "orange"}}>
+                    Simpan
+                </Button>
+                </Modal.Footer>
+            </Modal>
             <Modal show={showModalData} onHide={handleCloseModalData}>
                 <Modal.Header closeButton>
                 <Modal.Title>Tambah Data</Modal.Title>
@@ -462,8 +543,8 @@ function InventarisIn() {
                         </option>
                         ))}
                     </Form.Select>
-                    <label style={{fontWeight: 'bold', marginTop: '20px', textAlign: 'left'}}>Nama </label>
-                    <Form.Control placeholder="Masukan Nama" onChange={e => setNamaPenambah(e.target.value)}/>
+                    <label style={{fontWeight: 'bold', marginTop: '20px', textAlign: 'left'}}>Nama Penambah</label>
+                    <Form.Control placeholder="Masukan Nama Penambah" onChange={e => setNamaPenambah(e.target.value)}/>
                     <label style={{fontWeight: 'bold', marginTop: '20px', textAlign: 'left'}}>Jumlah</label>
                     <Form.Control type="number" placeholder="Masukan Jumlah" onChange={e => setJumlah(e.target.value)}/>
                 </Modal.Body>
@@ -481,4 +562,4 @@ function InventarisIn() {
     )
 }
 
-export default InventarisIn
+export default HabisPakaiIn

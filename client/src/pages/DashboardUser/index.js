@@ -23,7 +23,7 @@ function DashboardUser() {
     const handleShowSideBar = () => setShowSideBar(true);
     function sideBar() {
         return (
-            <Sidebar handleShow={handleShowSideBar} handleClose={handleCloseSideBar} show={showSideBar} btn1="/dashboard-user" btn2="/register-bencana-user" btn3="/inventaris" btn4="/arsip-aktif"/>
+            <Sidebar handleShow={handleShowSideBar} handleClose={handleCloseSideBar} show={showSideBar} btn1="/dashboard-user" btn2="/register-bencana-user" btn3="/inventaris" btn4="/habispakai" btn5="/arsip-aktif"/>
         )
     }
 

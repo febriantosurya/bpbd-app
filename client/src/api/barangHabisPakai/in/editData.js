@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-const updateMonth = async (token) => {
+const putData = async (token, data) => {
     try {
-        const res = await axios.post(`http://${process.env.REACT_APP_HOST}:5000/api/v1/inv-static/update`, {
+        const res = await axios.put(`http://${process.env.REACT_APP_HOST}:5000/api/v1/inventory/in/edit-data`, data, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
@@ -13,5 +13,4 @@ const updateMonth = async (token) => {
         return error
     }
 }
-
-export default updateMonth
+export default putData;

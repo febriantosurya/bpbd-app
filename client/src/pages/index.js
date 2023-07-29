@@ -8,6 +8,7 @@ import ErrorHandler from "./ErrorHandler";
 import ArchiveActive from "./ArchiveActive";
 import ArchiveInactive from "./ArchiveInactive";
 import Inventaris from "./Inventaris";
+import HabisPakai from "./HabisPakai";
 
 // USER READ ONLY
 import DashboardUser from "./DashboardUser";
@@ -18,6 +19,7 @@ export {
   KelolaUser,
   Dashboard,
   Inventaris,
+  HabisPakai,
   DashboardUser,
   RegisterBencanaAdmin,
   RegisterBencanaUser,

@@ -1,0 +1,47 @@
+.container-regbencana {
+    background-image: url("../../assets/image/GOopacity30.png");
+    height: 100vh;
+    margin-left: 25%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: rgb(255, 249, 240);
+    background-attachment: fixed;
+    background-position-x: 70%;
+    padding: 20px;
+}
+
+.header {
+    background-color: orange;
+    border-radius: 10px;
+    font-size: 20px;
+    padding: 5px 15px;
+    font-family: 'Poppins';
+}
+
+.input {
+    display: flex;
+    // justify-content: center;
+    // align-items: center;
+}
+
+#dropdown-bulan {
+    width: auto;
+    height: 58%;
+    font-size: small;
+}
+
+.tab {
+    border: 0;
+    padding: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    background-color: rgb(186, 186, 186);
+    font-size: 18px;
+}
+
+.tab-active {
+    border-bottom: 3px solid rgba(0, 0, 0, 0.511);
+    background-color: orange;
+    font-weight: bold;
+    font-size: 20px;
+}

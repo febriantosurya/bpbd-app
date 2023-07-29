@@ -13,15 +13,15 @@ import Modal from 'react-bootstrap/Modal';
 import Swal from 'sweetalert2'
 
 // API IMPORTING
-import showPastMonth from '../../../api/inventaris/stock/showPastMonth'
-import showThisMonth from '../../../api/inventaris/stock/showThisMonth'
-import updateNote from '../../../api/inventaris/stock/updateNote'
-import updateMonth from '../../../api/inventaris/stock/updateMonth';
+import showPastMonth from '../../../api/barangHabisPakai/stock/showPastMonth'
+import showThisMonth from '../../../api/barangHabisPakai/stock/showThisMonth'
+import updateNote from '../../../api/barangHabisPakai/stock/updateNote'
+import updateMonth from '../../../api/barangHabisPakai/stock/updateMonth';
 // API IMPORTING IN OUT
-import getDataIn from '../../../api/inventaris/in/getData';
-import getDataOut from '../../../api/inventaris/out/getData';
+import getDataIn from '../../../api/barangHabisPakai/in/getData';
+import getDataOut from '../../../api/barangHabisPakai/out/getData';
 
-function InventarisStock() {
+function HabisPakaiStock() {
     const months = {
         1: "Januari",
         2: "Februari",
@@ -49,8 +49,7 @@ function InventarisStock() {
 
     // variabel edit note
     const [id, setId] = useState(0)
-    const [kondisi, setKondisi] = useState("BAIK")
-    const [keterangan, setKeterangan] = useState("")
+    const [noteData, setNoteData] = useState("BAIK")
     const [selectedItem, setSelectedItem] = useState(0);
 
     // data InventarisIn
@@ -81,10 +80,10 @@ function InventarisStock() {
             }
             else {
                 for(let i=0;i<response.data.data.length;i++){
-                    if('InvGudangAktifStatics' in response.data.data[i])
-                        response.data.data[i]['InvGudangStatic'] = structuredClone(response.data.data[i].InvGudangAktifStatics);
+                    if('InvGudangAktifs' in response.data.data[i])
+                        response.data.data[i]['InvGudang'] = structuredClone(response.data.data[i].InvGudangAktifs);
                     else
-                        response.data.data[i]['InvGudangStatic'] = structuredClone(response.data.data[i].InvGudangLamaStatics);
+                        response.data.data[i]['InvGudang'] = structuredClone(response.data.data[i].InvGudangLamas);
                 }
                 result = response.data.data.sort((a, b) => a.nama.localeCompare(b.nama));
                 setData(result)
@@ -103,15 +102,15 @@ function InventarisStock() {
                 // eslint-disable-next-line array-callback-return
                 responseIn.data.data.map((item) => {
                     let bulanLalu = {
-                        'nama': 'Stok Awal',
+                        'nama': 'Stok Bulan Lalu',
                         'jumlah': (item['stokBulanLalu'] == null) ? 0 : item['stokBulanLalu'],
                         'tanggal': '01',
-                        'InvBarangStaticId': item['id']
+                        'InvBarangId': item['id']
                     }
                     arr.push(bulanLalu)
-                    if('InvTransaksiGudangStatics' in item) {
+                    if('InvTransaksiGudangs' in item) {
                         // eslint-disable-next-line array-callback-return
-                        item['InvTransaksiGudangStatics'].map((dt) => {
+                        item['InvTransaksiGudangs'].map((dt) => {
                             // eslint-disable-next-line no-unused-vars
                             const [Y, m, d] = dt['tanggal'].split('-');
                             dt['tanggal'] = d;
@@ -121,7 +120,7 @@ function InventarisStock() {
                 })
                 arr.sort((a, b) => parseInt(a.tanggal) - parseInt(b.tanggal));
 
-                const keysToRemove = ["jumlah", "InvBarangStaticId", "id"];
+                const keysToRemove = ["jumlah", "InvBarangId", "id"];
 
                 // dynamic column for header
                 let col = arr.map((item) => {
@@ -147,7 +146,7 @@ function InventarisStock() {
                         let jml = '-'
                         arr.forEach((arrVal, indexVal) => {
                             // eslint-disable-next-line eqeqeq
-                            if((arrVal.nama == colVal.nama)&&(arrVal.tanggal == colVal.tanggal)&&(arrVal.InvBarangStaticId == dVal.id)){
+                            if((arrVal.nama == colVal.nama)&&(arrVal.tanggal == colVal.tanggal)&&(arrVal.InvBarangId == dVal.id)){
                                 jml = arrVal.jumlah
                             }
                         })
@@ -170,9 +169,9 @@ function InventarisStock() {
                 let arr = []
                 // eslint-disable-next-line array-callback-return
                 responseOut.data.data.map((item) => {
-                    if('InvTransaksiGudangStatics' in item) {
+                    if('InvTransaksiGudangs' in item) {
                         // eslint-disable-next-line array-callback-return
-                        item['InvTransaksiGudangStatics'].map((dt) => {
+                        item['InvTransaksiGudangs'].map((dt) => {
                             // eslint-disable-next-line no-unused-vars
                             const [Y, m, d] = dt['tanggal'].split('-');
                             dt['tanggal'] = d;
@@ -182,7 +181,7 @@ function InventarisStock() {
                 })
                 arr.sort((a, b) => parseInt(a.tanggal) - parseInt(b.tanggal));
 
-                const keysToRemove = ["jumlah", "InvBarangStaticId", "id"];
+                const keysToRemove = ["jumlah", "InvBarangId", "id"];
 
                 // dynamic column for header
                 let col = arr.map((item) => {
@@ -208,7 +207,7 @@ function InventarisStock() {
                         let jml = '-'
                         arr.forEach((arrVal, indexVal) => {
                             // eslint-disable-next-line eqeqeq
-                            if((arrVal.nama == colVal.nama)&&(arrVal.tanggal == colVal.tanggal)&&(arrVal.InvBarangStaticId == dVal.id)){
+                            if((arrVal.nama == colVal.nama)&&(arrVal.tanggal == colVal.tanggal)&&(arrVal.InvBarangId == dVal.id)){
                                 jml = arrVal.jumlah
                             }
                         })
@@ -219,7 +218,7 @@ function InventarisStock() {
                 setDataOut(dataTable)
             };
 
-            let gudangAktifsDate = result[0].InvGudangAktifStatics ?? ''
+            let gudangAktifsDate = result[0].InvGudangAktifs ?? ''
             if(gudangAktifsDate !== '') {
                 gudangAktifsDate = gudangAktifsDate[0]?.tanggal ?? ''
             }
@@ -259,7 +258,7 @@ function InventarisStock() {
 
         // BARANG MASUK
         const sheet1 = wb.addWorksheet("Barang Masuk")
-        sheet1.getColumn('A').width = 50;
+        sheet1.getColumn('A').width = 10;
         sheet1.getColumn('B').width = 6;
         sheet1.getColumn('C').width = 30;
         sheet1.getColumn('D').width = 9;
@@ -267,7 +266,7 @@ function InventarisStock() {
         sheet1.getColumn('F').width = 9;
         sheet1.addRows(Array(5).fill({}));
 
-        let header1 = ['JENIS', 'NO', 'NAMA PERALATAN', 'VOLUME', 'SATUAN']
+        let header1 = ['SUMBER', 'NO', 'NAMA PERALATAN', 'VOLUME', 'SATUAN']
         let header2 = ['a', 'b', 'c', 'd', 'e']
         invHeaderIn.map((item, number) => {
             header1.push(item?.nama)
@@ -279,7 +278,7 @@ function InventarisStock() {
 
         let inventoryIn = []
         dataInventoryIn.map((item, number) => {
-            inventoryIn.push([item.jenis, number+1,item.nama, item.totalJumlah, item.unit, ...dataIn[number]])
+            inventoryIn.push([item.sumber, number+1,item.nama, item.totalJumlah, item.unit, ...dataIn[number]])
             return null
         })
         sheet1.addRows(inventoryIn)
@@ -324,7 +323,7 @@ function InventarisStock() {
 
         // BARANG KELUAR
         const sheet2 = wb.addWorksheet("Barang Keluar")
-        sheet2.getColumn('A').width = 50;
+        sheet2.getColumn('A').width = 2;
         sheet2.getColumn('B').width = 6;
         sheet2.getColumn('C').width = 30;
         sheet2.getColumn('D').width = 9;
@@ -332,8 +331,8 @@ function InventarisStock() {
         sheet2.getColumn('F').width = 9;
         sheet2.addRows(Array(5).fill({}));
 
-        header1 = ['JENIS', 'NO', 'NAMA PERALATAN', 'VOLUME', 'SATUAN']
-        header2 = ['a', 'b', 'c', 'd', 'e']
+        header1 = ['', 'NO', 'NAMA PERALATAN', 'VOLUME', 'SATUAN']
+        header2 = ['', 'b', 'c', 'd', 'e']
         invHeaderOut.map((item, number) => {
             header1.push(item?.nama)
             header2.push(item?.tanggal)
@@ -344,7 +343,7 @@ function InventarisStock() {
 
         let inventoryOut = []
         dataInventoryOut.map((item, number) => {
-            inventoryOut.push([item.jenis, number+1,item.nama, item.totalJumlah, item.unit, ...dataOut[number]])
+            inventoryOut.push(['', number+1,item.nama, item.totalJumlah, item.unit, ...dataOut[number]])
             return null
         })
 
@@ -352,9 +351,9 @@ function InventarisStock() {
 
         //Loop through all table's row
         let totalRow2 = sheet2.lastRow.number
-        let totalColumn2 = sheet2.lastColumn.number
+        let totalColumn2 = sheet2.lastColumn.number - 1
         for (let i = 6; i <= totalRow2; i++) {
-            for (let j = 65; j < 65 + totalColumn2; j++) {
+            for (let j = 66; j < 66 + totalColumn2; j++) {
                 let cell = sheet2.getCell(`${String.fromCharCode(j)}${i}`)
                 // eslint-disable-next-line eqeqeq
                 if ((i >= 6)&&(i <= 7)&&(j < 70)) {
@@ -389,7 +388,7 @@ function InventarisStock() {
 
         // STOK OPNAM
         const sheet3 = wb.addWorksheet("Stok Opnam")
-        sheet3.getColumn('A').width = 50;
+        sheet3.getColumn('A').width = 10;
         sheet3.getColumn('B').width = 6;
         sheet3.getColumn('C').width = 30;
         sheet3.getColumn('D').width = 9;
@@ -398,8 +397,6 @@ function InventarisStock() {
         sheet3.getColumn('G').width = 8;
         sheet3.getColumn('H').width = 8;
         sheet3.getColumn('I').width = 8;
-        sheet3.getColumn('J').width = 15;
-        sheet3.getColumn('K').width = 15;
         sheet3.addRows(Array(5).fill({}));
 
         sheet3.mergeCells('A6:A8')
@@ -410,10 +407,8 @@ function InventarisStock() {
         sheet3.mergeCells('F6:I6')
         sheet3.mergeCells('G7:I7')
         sheet3.mergeCells('F7:F8')
-        sheet3.mergeCells('J6:J8')
-        sheet3.mergeCells('K6:K8')
 
-        sheet3.getCell('A6').value = "JENIS"
+        sheet3.getCell('A6').value = "SUMBER"
         sheet3.getCell('B6').value = "NO"
         sheet3.getCell('C6').value = "NAMA PERALATAN"
         sheet3.getCell('D6').value = "VOLUME"
@@ -424,8 +419,6 @@ function InventarisStock() {
         sheet3.getCell('G8').value = "RINGAN"
         sheet3.getCell('H8').value = "SEDANG"
         sheet3.getCell('I8').value = "BERAT"
-        sheet3.getCell('J6').value = "KETERANGAN"
-        sheet3.getCell('K6').value = "SUMBER"
         
         // Define the range you want to set as bold
         const startCell = sheet3.getCell('A6');
@@ -435,23 +428,20 @@ function InventarisStock() {
             for (let col = startCell.col; col <= endCell.col; col++) 
                 sheet3.getCell(row, col).font = { bold: true };
 
-        sheet3.addRow(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k'])
+        sheet3.addRow(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'])
 
         data.map((item, number) => {
-            let kondisi = item?.InvGudangStatic[0]?.kondisi?.toString().toUpperCase() ?? ''
-            let keterangan = item?.InvGudangStatic[0]?.keterangan?.toString() ?? ''
+            let kondisi = item?.InvGudang[0]?.keterangan?.toString().toUpperCase() ?? ''
             sheet3.addRow([
-                item.jenis,
+                item.sumber,
                 number + 1,
                 item.nama,
-                item?.InvGudangStatic[0]?.jumlah,
+                item?.InvGudang[0]?.jumlah,
                 item.unit,
                 (kondisi === "BAIK") ? '√':'',
                 (kondisi === "RUSAK RINGAN") ? '√':'',
                 (kondisi === "RUSAK SEDANG") ? '√':'',
-                (kondisi === "RUSAK BERAT") ? '√':'',
-                keterangan,
-                item.sumber,
+                (kondisi === "RUSAK BERAT") ? '√':''
             ]
             )
             return null
@@ -511,11 +501,10 @@ function InventarisStock() {
     }
 
     function handleEditNote() {
-        async function noteInEdit(id, kondisi, keterangan) {
+        async function noteInEdit(id, data) {
             const dataSubmit = {
                 "idGudangAktif": id,
-                "kondisi": kondisi,
-                "note": keterangan
+                "note": data
             };
             await updateNote(token, dataSubmit)
         }
@@ -531,7 +520,7 @@ function InventarisStock() {
                 confirmButtonText: 'Yes'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    noteInEdit(selectedItem, kondisi, keterangan)
+                    noteInEdit(selectedItem, noteData)
                     Swal.fire({ title: "Edit data sukses!", icon: "success" }).then(function () {
                         window.location = "/inventaris?page=3"
                     })
@@ -539,7 +528,7 @@ function InventarisStock() {
             })
         }
         const handleSelectKondisi = (event) => {
-            setKondisi(event.target.value)
+            setNoteData(event.target.value)
         };
         return (
             <div>
@@ -555,22 +544,15 @@ function InventarisStock() {
                                 <Form.Label>Nama Peralatan</Form.Label>
                                 <Form.Control type="text" readOnly={true} defaultValue={selectedRow.nama} />
                             </Form.Group>
-                            <Form.Group className="mb-3" controlId="exampleForm.ControlInput2">
-                                <Form.Label>Kondisi</Form.Label>
-                                <Form.Select
-                                    value={kondisi}
-                                    onChange={handleSelectKondisi}
-                                >
-                                    <option key={0} value={"BAIK"}>BAIK</option>
-                                    <option key={1} value={"RUSAK RINGAN"}>RUSAK RINGAN</option>
-                                    <option key={2} value={"RUSAK SEDANG"}>RUSAK SEDANG</option>
-                                    <option key={3} value={"RUSAK BERAT"}>RUSAK BERAT</option>
-                                </Form.Select>
-                            </Form.Group>
-                            <Form.Group className="mb-3" controlId="exampleForm.ControlInput3">
-                                <Form.Label>Keterangan</Form.Label>
-                                <Form.Control type="text" onChange={e => setKeterangan(e.target.value)}/>
-                            </Form.Group>
+                            <Form.Select
+                                value={noteData}
+                                onChange={handleSelectKondisi}
+                            >
+                                <option key={0} value={"BAIK"}>BAIK</option>
+                                <option key={1} value={"RUSAK RINGAN"}>RUSAK RINGAN</option>
+                                <option key={2} value={"RUSAK SEDANG"}>RUSAK SEDANG</option>
+                                <option key={3} value={"RUSAK BERAT"}>RUSAK BERAT</option>
+                            </Form.Select>
                         </Form>
                     </Modal.Body>
                     <Modal.Footer>
@@ -610,7 +592,7 @@ function InventarisStock() {
         const isChecked = event.target.checked;
         if (isChecked) {
             setId(parseInt(rowData.id))
-            setSelectedItem(parseInt(rowData?.InvGudangStatic[0].id))
+            setSelectedItem(parseInt(rowData?.InvGudang[0].id))
             setSelectedRow(rowData)
         } else {
             setId(0)
@@ -622,8 +604,7 @@ function InventarisStock() {
     // show list static column
     const showTable = () => {
         return data.map((item, number) => {
-            let kondisi = item?.InvGudangStatic[0]?.kondisi?.toString().toUpperCase() ?? ''
-            let keterangan = item?.InvGudangStatic[0]?.keterangan?.toString() ?? ''
+            let kondisi = item?.InvGudang[0]?.keterangan?.toString().toUpperCase() ?? ''
             return (
                 <tr key={number}>
                     <td> {
@@ -648,16 +629,14 @@ function InventarisStock() {
                         )
                     } </td>
                     <td>{number + 1}</td>
-                    <td>{item.jenis}</td>
                     <td>{item.nama}</td>
-                    <td>{item?.InvGudangStatic[0]?.jumlah}</td>
+                    <td>{item?.InvGudang[0]?.jumlah}</td>
                     <td>{item.unit}</td>
+                    <td>{item.sumber}</td>
                     <td>{(kondisi === "BAIK")? '\u2713' :""}</td>
                     <td>{(kondisi === "RUSAK RINGAN")? '\u2713':""}</td>
                     <td>{(kondisi === "RUSAK SEDANG")? '\u2713':""}</td>
                     <td>{(kondisi === "RUSAK BERAT")? '\u2713':""}</td>
-                    <td>{keterangan}</td>
-                    <td>{item.sumber}</td>
                 </tr>
             )
         })
@@ -731,13 +710,11 @@ function InventarisStock() {
                         <tr className='text-nowrap'>
                             <th rowSpan={3}>#</th>
                             <th rowSpan={3}>NO</th>
-                            <th rowSpan={3}>JENIS</th>
                             <th rowSpan={3}>NAMA PERALATAN</th>
                             <th rowSpan={3}>VOLUME</th>
                             <th rowSpan={3}>SATUAN</th>
-                            <th colSpan={4}>KONDISI</th>
-                            <th rowSpan={3}>KETERANGAN</th>
                             <th rowSpan={3}>SUMBER</th>
+                            <th colSpan={4}>KONDISI</th>
                         </tr>
                         <tr style={{ backgroundColor: 'orange'}}>
                             <th rowSpan={2}>BAIK</th>
@@ -749,7 +726,6 @@ function InventarisStock() {
                             <th>BERAT</th>
                         </tr>
                         <tr className='text-nowrap'>
-                            <th> </th>
                             <th>a</th>
                             <th>b</th>
                             <th>c</th>
@@ -760,7 +736,6 @@ function InventarisStock() {
                             <th>h</th>
                             <th>i</th>
                             <th>j</th>
-                            <th>k</th>
                         </tr>
                     </thead>
                     <tbody id="tb-reg">{showTable()}</tbody>
@@ -770,4 +745,4 @@ function InventarisStock() {
     )
 }
 
-export default InventarisStock
+export default HabisPakaiStock
