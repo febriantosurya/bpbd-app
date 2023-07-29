@@ -3,7 +3,7 @@ import { ImageLogo, Logout, BurgerMenu } from '../../assets';
 import Button from 'react-bootstrap/Button';
 
 function Sidebar(props) {
-    const { show, handleClose, handleShow, btn1, btn2, btn3,btn4 } = props
+    const { show, handleClose, handleShow, btn1, btn2, btn3, btn4, btn5 } = props
     const handleLogout = () => {
         localStorage.removeItem('token');
         window.location = '/';
@@ -25,10 +25,11 @@ function Sidebar(props) {
                     <hr size="10px" style={{ width: "75%", margin: "auto", color: "white" }}></hr>
                 </div>
                 <Offcanvas.Body style={{ "display": "grid" }}>
-                    <a href={btn1} className='btn'><Button className='mainBtn-sidebar' type='submit'>Dashboard</Button></a>
-                    <a href={btn2} className='btn'><Button className='mainBtn-sidebar' type='submit'>Register Bencana</Button></a>
-                    <a href={btn3} className='btn'><Button className='mainBtn-sidebar' type='submit'>Inventaris Barang</Button></a>
-                    <a href={btn4} className='btn'><Button className='mainBtn-sidebar' type='submit'>Arsip</Button></a>
+                    <a href={btn1} className='btn py-1'><Button className='mainBtn-sidebar' type='submit'>Dashboard</Button></a>
+                    <a href={btn2} className='btn py-1'><Button className='mainBtn-sidebar' type='submit'>Register Bencana</Button></a>
+                    <a href={btn3} className='btn py-1'><Button className='mainBtn-sidebar' type='submit'>Inventaris</Button></a>
+                    <a href={btn4} className='btn py-1'><Button className='mainBtn-sidebar' type='submit'>Barang Habis Pakai</Button></a>
+                    <a href={btn5} className='btn py-1'><Button className='mainBtn-sidebar' type='submit'>Arsip</Button></a>
                     <a href="/" className="btn" style={{ paddingBottom: "10px", marginTop: "auto" }}>
                         <Button onClick={handleLogout} style={{ width: "auto", borderRadius: "10px" }} type='submit'><img src={Logout} alt="img" /> Keluar</Button>
                     </a>

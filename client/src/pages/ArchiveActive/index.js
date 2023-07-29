@@ -62,7 +62,8 @@ function Arsip() {
                 show={showSideBar} btn1="/dashboard" 
                 btn2="/register-bencana" 
                 btn3="/inventaris" 
-                btn4="/arsip-aktif"/>
+                btn4="/habispakai" 
+                btn5="/arsip-aktif"/>
         )
     }
     // CHECKBOX

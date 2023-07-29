@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import {Gap} from '../../../components'
-import './Inventaris.scss'
+import './HabisPakai.scss'
 
 // BOOTSTRAP IMPORTING
 import Table from 'react-bootstrap/Table';
@@ -14,9 +14,9 @@ import Modal from 'react-bootstrap/Modal';
 import Swal from 'sweetalert2'
 
 // API IMPORTING
-import getData from '../../../api/inventaris/out/getData';
-import addData from '../../../api/inventaris/out/addData';
-import putData from '../../../api/inventaris/out/editData';
+import getData from '../../../api/barangHabisPakai/out/getData';
+import addData from '../../../api/barangHabisPakai/out/addData';
+import putData from '../../../api/barangHabisPakai/out/editData';
 
 // GLOBAL VAR
 let inventoryData = {
@@ -25,7 +25,7 @@ let inventoryData = {
     "idBarang": 0
 }
 
-function InventarisIn() {
+function HabisPakaiIn() {
     const months = {
         1: "Januari",
         2: "Februari",
@@ -82,9 +82,9 @@ function InventarisIn() {
                 let arr = []
                 // eslint-disable-next-line array-callback-return
                 response.data.data.map((item) => {
-                    if('InvTransaksiGudangStatics' in item) {
+                    if('InvTransaksiGudangs' in item) {
                         // eslint-disable-next-line array-callback-return
-                        item['InvTransaksiGudangStatics'].map((dt) => {
+                        item['InvTransaksiGudangs'].map((dt) => {
                             // eslint-disable-next-line no-unused-vars
                             const [Y, m, d] = dt['tanggal'].split('-');
                             dt['tanggal'] = d;
@@ -94,7 +94,7 @@ function InventarisIn() {
                 })
                 arr.sort((a, b) => parseInt(a.tanggal) - parseInt(b.tanggal));
 
-                const keysToRemove = ["jumlah", "InvBarangStaticId", "id"];
+                const keysToRemove = ["jumlah", "InvBarangId", "id"];
 
                 // dynamic column for header
                 let col = arr.map((item) => {
@@ -121,7 +121,7 @@ function InventarisIn() {
                         let jml = '-'
                         arr.forEach((arrVal, indexVal) => {
                             // eslint-disable-next-line eqeqeq
-                            if((arrVal.nama == colVal.nama)&&(arrVal.tanggal == colVal.tanggal)&&(arrVal.InvBarangStaticId == dVal.id)){
+                            if((arrVal.nama == colVal.nama)&&(arrVal.tanggal == colVal.tanggal)&&(arrVal.InvBarangId == dVal.id)){
                                 jml = arrVal.jumlah
                             }
                         })
@@ -197,7 +197,7 @@ function InventarisIn() {
             })
         }
 
-        let selectionItem = dataTransaction.filter(item => item.InvBarangStaticId === selectedRow.id && item.nama !== "Stok Bulan Lalu");
+        let selectionItem = dataTransaction.filter(item => item.InvBarangId === selectedRow.id && item.nama !== "Stok Bulan Lalu");
         
         // Add event listener to the select box
         const handleSelectPenambahChange = (event) => {
@@ -481,4 +481,4 @@ function InventarisIn() {
     )
 }
 
-export default InventarisIn
+export default HabisPakaiIn

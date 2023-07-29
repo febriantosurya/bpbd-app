@@ -22,8 +22,10 @@ import getData from '../../../api/inventaris/in/getData';
 // GLOBAL VAR
 let inventoryItem = {
     "namaBarang": "",
+    "jenis": "",
     "unit": "",
     "namaPenambah": "",
+    "sumber": "",
     "jumlah": 0
 }
 let inventoryData = {
@@ -66,8 +68,10 @@ function InventarisIn() {
 
     // variabel input item
     const [namaBarang,setNamaBarang] = useState("")
+    const [jenis,setJenis] = useState("")
     const [unit,setUnit] = useState("")
     const [namaPenambah,setNamaPenambah] = useState("")
+    const [sumber,setSumber] = useState("")
     const [jumlah,setJumlah] = useState(0)
 
     // variabel input data
@@ -94,15 +98,15 @@ function InventarisIn() {
                 // eslint-disable-next-line array-callback-return
                 response.data.data.map((item) => {
                     let bulanLalu = {
-                        'nama': 'Stok Bulan Lalu',
+                        'nama': 'Stok Awal',
                         'jumlah': (item['stokBulanLalu'] == null) ? 0 : item['stokBulanLalu'],
                         'tanggal': '01',
-                        'InvBarangId': item['id']
+                        'InvBarangStaticId': item['id']
                     }
                     arr.push(bulanLalu)
-                    if('InvTransaksiGudangs' in item) {
+                    if('InvTransaksiGudangStatics' in item) {
                         // eslint-disable-next-line array-callback-return
-                        item['InvTransaksiGudangs'].map((dt) => {
+                        item['InvTransaksiGudangStatics'].map((dt) => {
                             // eslint-disable-next-line no-unused-vars
                             const [Y, m, d] = dt['tanggal'].split('-');
                             dt['tanggal'] = d;
@@ -112,7 +116,7 @@ function InventarisIn() {
                 })
                 arr.sort((a, b) => parseInt(a.tanggal) - parseInt(b.tanggal));
 
-                const keysToRemove = ["jumlah", "InvBarangId", "id"];
+                const keysToRemove = ["jumlah", "InvBarangStaticId", "id"];
 
                 // dynamic column for header
                 let col = arr.map((item) => {
@@ -145,7 +149,7 @@ function InventarisIn() {
                         let jml = '-'
                         arr.forEach((arrVal, indexVal) => {
                             // eslint-disable-next-line eqeqeq
-                            if((arrVal.nama == colVal.nama)&&(arrVal.tanggal == colVal.tanggal)&&(arrVal.InvBarangId == dVal.id)){
+                            if((arrVal.nama == colVal.nama)&&(arrVal.tanggal == colVal.tanggal)&&(arrVal.InvBarangStaticId == dVal.id)){
                                 jml = arrVal.jumlah
                             }
                         })
@@ -153,6 +157,7 @@ function InventarisIn() {
                     })
                     dataTable.push(row)
                 })
+                console.log(dataTable)
                 setDataIn(dataTable)
             };
         };
@@ -169,12 +174,15 @@ function InventarisIn() {
         setUnit('')
         setNamaPenambah('')
         setJumlah('')
+        setJenis('')
     };
     async function handleSubmitFormItem (e) {
         e.preventDefault()
         inventoryItem["namaBarang"] = namaBarang
+        inventoryItem["jenis"] = jenis
         inventoryItem["unit"] = unit
         inventoryItem["namaPenambah"] = namaPenambah
+        inventoryItem["sumber"] = sumber
         inventoryItem["jumlah"] = jumlah
         addItem(token, inventoryItem)
         handleCloseModalItem()
@@ -244,7 +252,7 @@ function InventarisIn() {
             })
         }
 
-        let selectionItem = dataTransaction.filter(item => item.InvBarangId === selectedRow.id && item.nama !== "Stok Bulan Lalu");
+        let selectionItem = dataTransaction.filter(item => item.InvBarangStaticId === selectedRow.id && item.nama !== "Stok Bulan Lalu");
         
         // Add event listener to the select box
         const handleSelectPenambahChange = (event) => {
@@ -357,10 +365,11 @@ function InventarisIn() {
                         )
                     } </td>
                     <td>{number + 1}</td>
+                    <td>{item.jenis}</td>
                     <td>{item.nama}</td>
                     <td>{item.totalJumlah}</td>
                     <td>{item.unit}</td>
-                    {/* <td>{item.InvGudang[0].keterangan}</td> */}
+                    <td>{item.sumber}</td>
                 </tr>
             )
         })
@@ -392,28 +401,32 @@ function InventarisIn() {
 
 
     return (
-        <div>
+        <div className='pb-4'>
             <Gap height={10}/>
 
             <form className='input'>
-                <p style={
-                    {
-                        width: "80px",
-                        textAlign: "center",
-                        justifyContent: "center",
-                        marginTop: "2px"
-                    }
-                }>Bulan :
-                </p>
-                <DropdownButton id="dropdown-bulan"
-                    title={displayMonth}
-                    onSelect={
-                        (event) => {
-                            handleBulan(event)
-                        }
-                }>
-                <DropdownMonth data={months}/></DropdownButton>
                 <InputGroup size="sm" className="mb-3">
+                    <p style={
+                        {
+                            width: "60px",
+                            textAlign: "center",
+                            justifyContent: "center",
+                            marginTop: "2px"
+                        }
+                    }>Bulan :</p>
+                    <DropdownButton id="dropdown-bulan"
+                        title={displayMonth}
+                        onSelect={(event) => {handleBulan(event)}}
+                        style={
+                            {
+                                width: "80px",
+                                textAlign: "center",
+                                justifyContent: "center",
+                            }
+                        }
+                    >
+                    <DropdownMonth data={months}/>
+                    </DropdownButton>
                     <p style={
                         {
                             width: "60px",
@@ -463,9 +476,11 @@ function InventarisIn() {
                                 <tr className='text-nowrap'>
                                     <th>#</th>
                                     <th>No</th>
+                                    <th>Jenis</th>
                                     <th>Nama Peralatan</th>
                                     <th>Volume</th>
                                     <th>Satuan</th>
+                                    <th>Sumber</th>
                                 </tr>
                                 <tr className='text-nowrap'>
                                     <th>a</th>
@@ -473,6 +488,8 @@ function InventarisIn() {
                                     <th>c</th>
                                     <th>d</th>
                                     <th>e</th>
+                                    <th>f</th>
+                                    <th>g</th>
                                 </tr>
                             </thead>
                             <tbody id="tb-reg">{showTable()}</tbody>
@@ -496,7 +513,9 @@ function InventarisIn() {
                 <Modal.Title>Tambah Item Baru</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <label style={{fontWeight: 'bold', textAlign: 'left'}}>Nama Barang</label>
+                    <label style={{fontWeight: 'bold', textAlign: 'left'}}>Jenis</label>
+                    <Form.Control placeholder="Masukan Jenis Barang" onChange={e => setJenis(e.target.value.toUpperCase())}/>
+                    <label style={{fontWeight: 'bold', marginTop: '20px', textAlign: 'left'}}>Nama Barang</label>
                     <Form.Control placeholder="Masukan Nama Barang" onChange={e => setNamaBarang(e.target.value)}/>
                     <label style={{fontWeight: 'bold', marginTop: '20px', textAlign: 'left'}}>Unit / Satuan</label>
                     <Form.Control placeholder="Masukan Satuan" onChange={e => setUnit(e.target.value)}/>
@@ -504,6 +523,8 @@ function InventarisIn() {
                     <Form.Control placeholder="Masukan Nama Penambah" onChange={e => setNamaPenambah(e.target.value)}/>
                     <label style={{fontWeight: 'bold', marginTop: '20px', textAlign: 'left'}}>Jumlah</label>
                     <Form.Control type="number" placeholder="Masukan Jumlah" onChange={e => setJumlah(e.target.value)}/>
+                    <label style={{fontWeight: 'bold', marginTop: '20px', textAlign: 'left'}}>Sumber</label>
+                    <Form.Control placeholder="Masukan Nama Sumber" onChange={e => setSumber(e.target.value.toUpperCase())}/>
                 </Modal.Body>
                 <Modal.Footer>
                 <Button variant="secondary" onClick={handleCloseModalItem}>

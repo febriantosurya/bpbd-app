@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom'
 import { Sidebar } from '../../components'
-import './RegisterBencanaAdmin.scss'
+import './HabisPakai.scss'
 
-import DataBaru from './DataBaru';
-import DataLama from './DataLama';
+import HabisPakaiIn from './HabisPakaiIn';
+import HabisPakaiOut from './HabisPakaiOut';
+import HabisPakaiStock from './HabisPakaiStock';
 
-const RegisterBencanaAdmin = () => {
+const HabisPakai = () => {
     const location = useLocation();
     const queryParams = new URLSearchParams(location.search);
     const page = queryParams.get('page');
@@ -45,17 +46,21 @@ const RegisterBencanaAdmin = () => {
             <div className='container-default pt-2'>
                 <div className="row mb-3">
                     <button className={activeTab === '1' ? 'col mx-1 tab tab-active' : 'col mx-1 tab'} onClick={() => changeTab('1')}>
-                        Register Bencana - Data Baru
+                        Barang Habis Pakai - Masuk
                     </button>
                     <button className={activeTab === '2' ? 'col mx-1 tab tab-active' : 'col mx-1 tab'} onClick={() => changeTab('2')}>
-                        Register Bencana - Data Lama
+                        Barang Habis Pakai - Keluar
+                    </button>
+                    <button className={activeTab === '3' ? 'col mx-1 tab tab-active' : 'col mx-1 tab'} onClick={() => changeTab('3')}>
+                        Stok Barang Habis Pakai
                     </button>
                 </div>
-                {activeTab === '1' && <DataBaru />}
-                {activeTab === '2' && <DataLama />}
+                {activeTab === '1' && <HabisPakaiIn />}
+                {activeTab === '2' && <HabisPakaiOut />}
+                {activeTab === '3' && <HabisPakaiStock />}
             </div>
         </div >
     )
 }
 
-export default RegisterBencanaAdmin
+export default HabisPakai

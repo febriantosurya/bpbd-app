@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const putData = async (token, data) => {
     try {
-        const res = await axios.put(`http://${process.env.REACT_APP_HOST}:5000/api/v1/inventory/out/edit-data`, data, {
+        const res = await axios.put(`http://${process.env.REACT_APP_HOST}:5000/api/v1/inv-static/out/edit-data`, data, {
             headers: {
                 Authorization: `Bearer ${token}`
             }
