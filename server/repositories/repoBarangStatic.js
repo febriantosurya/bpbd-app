@@ -64,6 +64,21 @@ exports.getVolumePastMonth = async (pastMonth, year, idBarang) => {
 };
 
 // add & edit data
+exports.checkNamaBarang = async (data) => {
+    const result = await InvTransaksiGudangStatic.findOne({
+        where: {
+            status: data.status,
+            nama: data.nama
+        }
+    });
+    if (!result) {
+        return true
+    }
+    else {
+        return false
+    }
+}
+
 exports.addTransaction = async (data) => {
     await InvTransaksiGudangStatic.create({
         jumlah: data.jumlah,

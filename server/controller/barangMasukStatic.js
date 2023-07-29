@@ -19,7 +19,10 @@ exports.addInTransaction = async (req, res) => {
       tanggal: new Date(),
       idBarang: req.body.idBarang
     };
-    await barangMasukRepo.setAddInTransaction(data);
+    const result = await barangMasukRepo.setAddInTransaction(data);
+    if (result === false) {
+      return res.status(403).json({message: 'name failed'})
+    }
     return res.status(200).json({ message: 'success' });
   }
   catch (error) {
