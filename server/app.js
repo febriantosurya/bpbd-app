@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors')
+const path = require("path");
 
 const app = express();
 
@@ -20,6 +21,8 @@ const locationData = require('./routes/dataDesKec');
 
 app.use(express.json());
 app.use(cors());
+app.use(express.static(path.join(__dirname, '../public')))
+
 app.use('/api/v1/', userRoute);
 app.use('/api/v1/inventory', barangMasukRoute);
 app.use('/api/v1/inventory', barangKeluarRoute);
@@ -49,6 +52,8 @@ const InvTransaksiGudangStatic = require('./models/invTransaksiGudangStatic');
 
 const RegBencana = require('./models/registerBencana');
 const RegBencanaNew = require('./models/registerBencanaNew');
+const RegImages = require('./models/regImages');
+
 const ArsipAktif = require('./models/arsipAktif');
 const ArsipInaktif = require('./models/arsipInaktif');
 const Desa = require('./models/dataDesa');
@@ -67,6 +72,7 @@ app.listen(5000, async () => {
   await InvTransaksiGudangStatic.sync({ alter: true });
   await RegBencana.sync({ alter: true });
   await RegBencanaNew.sync({ alter: true })
+  await RegImages.sync({ alte: true });
   await ArsipAktif.sync({ alter: true });
   await ArsipInaktif.sync({ alter: true }); 
   await Desa.sync({ alter: true });
