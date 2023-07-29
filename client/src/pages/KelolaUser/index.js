@@ -213,12 +213,29 @@ function KelolaUser() {
     // function : Update admin datas (PUT)
     async function handleSubmit(event) {
         event.preventDefault()
-        const username = event.target.elements.username.value
-        const password = event.target.elements.password.value
-        const name = event.target.elements.name.value
-        await putData(token, updateState, username, password, name)
-        window.location = '/kelolauser'
-        setUpdateState(-1)
+        async function editUser() {
+            const username = event.target.elements.username.value
+            const password = event.target.elements.password.value
+            const name = event.target.elements.name.value
+            await putData(token, updateState, username, password, name)
+        }
+        Swal.fire({
+            title: 'Apakah anda yakin?',
+            text: "Anda dapat mengubah dan menghapus data di laman kelola admin",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                editUser()
+                Swal.fire({ title: "Data diubah!", icon: "success" }).then(function () {
+                    setUpdateState(-1)
+                    window.location = '/kelolauser'
+                })
+            }
+        })
     }
 
     //Function : Get all admin (GET)
