@@ -5,8 +5,8 @@ require('dotenv').config();
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const folderImage = `${process.env.PATH_IMAGE_FOLDER}/images`
-    const directory = `${folderImage}/${req.body.tanggal}-${req.body.desa}`;
+    const folderImage = `${process.env.PATH_IMAGE_FOLDER}`+"\\images"
+    const directory = `${folderImage}\\${req.body.tanggal}-${req.body.desa}`;
     if (!fs.existsSync(folderImage)) {
       fs.mkdirSync(folderImage);
       if (!fs.existsSync(directory)) {
