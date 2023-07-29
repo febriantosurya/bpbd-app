@@ -57,6 +57,10 @@ const RegBencanaNew = sequelize.define('RegBencanaNew', {
   penyebabKejadian: {
     type: DataTypes.TEXT,
     allowNull: true
+  },
+  nomorSurat: {
+    type: DataTypes.STRING,
+    allowNull: true
   }
 }, {
   sequelize,
