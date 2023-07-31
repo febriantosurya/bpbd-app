@@ -10,7 +10,7 @@ if (!fs.existsSync(folderImage)) {
 
 const storage = multer.diskStorage({ 
   destination: (req, file, cb) => {
-    const directory = `${folderImage}/${req.body.tanggal}-${req.body.desa}`;
+    const directory = `${folderImage}\\${req.body.tanggal}-${req.body.desa}`;
     if (!fs.existsSync(directory)) {
       fs.mkdirSync(directory)
     };
