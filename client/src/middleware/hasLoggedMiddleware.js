@@ -5,7 +5,7 @@ export default function hasLoggedMiddleware(page) {
         const token = localStorage.getItem('token')
         const level = localStorage.getItem('level')
         if (token) {
-            if (level === 0) {
+            if (level === "0") {
                 return <Navigate to="/kelolaadmin" replace />
             }
             else {
