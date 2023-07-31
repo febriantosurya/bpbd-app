@@ -212,7 +212,7 @@ function InventarisIn() {
         };
         return (
             <div>
-                <Button variant="Primary" style={{ backgroundColor: "orange", marginBottom: "10px" }} onClick={handleShow} className={`${level==='2' ? 'd-none' : 'row mb-1'}`} >Edit Data</Button>
+                <Button variant="Primary" style={{ backgroundColor: "orange", marginBottom: "10px" }} onClick={handleShow} className={`${level==='2' ? 'd-none' : ''}`} >Edit Data</Button>
                 <Modal show={show} onHide={handleClose}>
                     <Modal.Header closeButton>
                         <Modal.Title>Edit Data</Modal.Title>

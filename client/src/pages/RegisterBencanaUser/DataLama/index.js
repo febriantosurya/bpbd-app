@@ -276,9 +276,7 @@ function DataLama() {
                 }]
             });
             Packer.toBlob(document).then(blob => {
-                console.log(blob);
                 saveAs(blob, "example.docx");
-                console.log("Document created successfully");
             });
         };
       
@@ -314,9 +312,7 @@ function DataLama() {
         });
     
         Packer.toBlob(doc).then(blob => {
-          console.log(blob);
           saveAs(blob, "example.docx");
-          console.log("Document created successfully");
         });
     }
 

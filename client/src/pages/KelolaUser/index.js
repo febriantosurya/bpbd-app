@@ -189,8 +189,7 @@ function KelolaUser() {
     //Function : Delete admin (DELETE)
     function handleDelete(username) {
         async function delUser() {
-            const res = await delData(token, username)
-            console.log(res)
+            await delData(token, username)
         }
         Swal.fire({
             title: 'Apakah anda yakin?',

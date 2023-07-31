@@ -544,7 +544,7 @@ function InventarisStock() {
         };
         return (
             <div>
-                <Button variant="Primary" style={{ backgroundColor: "orange", marginBottom: "10px", marginRight: "4px" }} onClick={handleShow} className={`${level==='2' ? 'd-none' : 'row mb-1'}`}>Edit Kondisi</Button>
+                <Button variant="Primary" style={{ backgroundColor: "orange", marginBottom: "10px", marginRight: "4px" }} onClick={handleShow} className={`${level==='2' ? 'd-none' : ''}`}>Edit Kondisi</Button>
                 <Button variant="Primary" style={{ backgroundColor: "orange", marginBottom: "10px", marginLeft: "4px" }} onClick={e=>handleExportXlsx(e)} >Unduh ke Excel</Button>
                 <Modal show={show} onHide={handleClose}>
                     <Modal.Header closeButton>

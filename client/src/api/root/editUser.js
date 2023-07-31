@@ -12,7 +12,6 @@ const putUser = async (token, id, username, password, name) => {
                 Authorization: `Bearer ${token}`
             }
         })
-        console.log(res)
         return res
     }
     catch (error) {

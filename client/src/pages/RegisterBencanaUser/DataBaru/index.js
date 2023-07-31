@@ -266,7 +266,6 @@ function DataBaru() {
         }
         function handleSave(e) {
             e.preventDefault()
-            console.log(selectedRow)
             Swal.fire({
                 title: 'Apakah anda yakin?',
                 text: "Data record akan diubah",

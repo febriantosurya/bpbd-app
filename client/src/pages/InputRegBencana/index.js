@@ -70,7 +70,6 @@ function InputRegBencana() {
     function handleSelectKecamatan (event) {
         setSelectKecamatan(event)
         setDesa(getDesasFromKecamatan(event))
-        console.log(getDesasFromKecamatan(event))
     }
 
     function handleDescKorban (e) {
@@ -133,7 +132,7 @@ function InputRegBencana() {
         e.preventDefault()
         let formData = new FormData();
         async function submitData () {
-            console.log(await addRegBencana(token, formData))
+            await addRegBencana(token, formData)
         }
         if (selectedBencana === "Pilih Bencana" || selectKecamatan === "Pilih Kecamatan" || selectDesa === "Pilih Desa" || lokasiDetail === "") {
             Swal.fire(
@@ -159,7 +158,6 @@ function InputRegBencana() {
         for (let i=0;i<keyDataKorban.length;i++){
             formData.append('korban'+keyDataKorban[i], valDataKorban[i])
         }
-        console.log(formData)
         Swal.fire({
             title: 'Apakah anda yakin?',
             text: "Anda dapat mengubah dan menghapus data di laman register bencana",

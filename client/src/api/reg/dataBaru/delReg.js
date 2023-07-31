@@ -8,7 +8,6 @@ const delReg = async (token, id) => {
             },
             data: { id: id }
         })
-        console.log(res.message)
         return res
     }
     catch (error) {
