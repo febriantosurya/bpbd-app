@@ -46,7 +46,7 @@ function HabisPakaiStock() {
     const [selectedRow, setSelectedRow] = useState({})
     // eslint-disable-next-line no-unused-vars
     const [token, setToken] = useState(localStorage.getItem("token"))
-    const [level, setLevel] = useState(localStorage.getItem("level"))
+    const level = localStorage.getItem("level")
 
     // variabel edit note
     const [id, setId] = useState(0)

@@ -188,24 +188,23 @@ function InputRegBencana() {
         )
     }
 
-    // fetch data kecamatan dan desa
-    async function fetchKecamatan() {
-        const response = await getKecamatanDesa(token);
-        if (response.data?.message === "success") {
-            let result = response.data.data;
-            setDesas(result)
-            const kecamatanArray = result.map(({ nama }) => nama);
-            setKecamatan(kecamatanArray)
-        }
-        else {
-            localStorage.removeItem("token");
-            window.location = '/';
-        };
-    };
-
     useEffect(() => {
+        // fetch data kecamatan dan desa
+        async function fetchKecamatan() {
+            const response = await getKecamatanDesa(token);
+            if (response.data?.message === "success") {
+                let result = response.data.data;
+                setDesas(result)
+                const kecamatanArray = result.map(({ nama }) => nama);
+                setKecamatan(kecamatanArray)
+            }
+            else {
+                localStorage.removeItem("token");
+                window.location = '/';
+            };
+        };
         fetchKecamatan()
-    }, [])
+    }, [token])
 
     return (
         <div className='content'>

@@ -50,7 +50,7 @@ function InventarisIn() {
     const [selectedRow, setSelectedRow] = useState({})
     const [id, setId] = useState(0)
     const [token, setToken] = useState(localStorage.getItem("token"))
-    const [level, setLevel] = useState(localStorage.getItem("level"))
+    const level = localStorage.getItem("level")
 
     // dynamic data InventarisIn
     const [invHeader, setInvHeader] = useState([])

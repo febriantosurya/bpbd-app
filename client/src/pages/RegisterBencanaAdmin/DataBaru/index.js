@@ -41,6 +41,7 @@ function DataBaru() {
     const [year, setYear] = useState(String(initYear))
     const [selectedRow, setSelectedRow] = useState({})
     const [id, setId] = useState(0)
+    const level = localStorage.getItem("level")
     const token = localStorage.getItem("token")
 
     async function dataFetch() {
@@ -266,7 +267,6 @@ function DataBaru() {
         }
         function handleSave(e) {
             e.preventDefault()
-            console.log(selectedRow)
             Swal.fire({
                 title: 'Apakah anda yakin?',
                 text: "Data record akan diubah",
@@ -437,9 +437,8 @@ function DataBaru() {
                     <Button style={{ fontSize: "small", width: "auto", fontFamily: "Poppins", height: "75%", borderRadius: "5px", backgroundColor: "orange" }}>Unduh Nota Dinas</Button>
                 </InputGroup>
             </form>
-
-            <div className='my-2' style={{ display: "flex", textAlign: "left"}}>
-                <Button style={{ fontSize: "small", fontFamily: "Poppins", width: "auto", borderRadius: "5px", marginRight: "10px" }} href='/input-reg-bencana'>Tambah Register Bencana</Button>
+            <div style={{ display: "flex", textAlign: "left"}} className={`${level==='2' ? 'd-none' : 'my-2'}`}>
+                <Button style={{ fontSize: "small", fontFamily: "Poppins", width: "auto", borderRadius: "5px", marginRight: "10px" }} href='/input-reg-bencana'>Tambah Register Bencana Test</Button>
                 {isChecked ? null : handleEditRows()}
                 {isChecked ? null : <Button style={{fontSize: "small", fontFamily: "Poppins", borderRadius: "5px", height:"33px"}} disabled={isChecked} variant="danger" onClick={(e) => handleDeleteRows(e)}>Hapus</Button>}
             </div>
