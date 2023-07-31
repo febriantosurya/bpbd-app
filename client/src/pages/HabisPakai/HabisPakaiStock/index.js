@@ -46,6 +46,7 @@ function HabisPakaiStock() {
     const [selectedRow, setSelectedRow] = useState({})
     // eslint-disable-next-line no-unused-vars
     const [token, setToken] = useState(localStorage.getItem("token"))
+    const level = localStorage.getItem("level")
 
     // variabel edit note
     const [id, setId] = useState(0)
@@ -532,7 +533,7 @@ function HabisPakaiStock() {
         };
         return (
             <div>
-                <Button variant="Primary" style={{ backgroundColor: "orange", marginBottom: "10px", marginRight: "4px" }} onClick={handleShow} >Edit Kondisi</Button>
+                <Button variant="Primary" style={{ backgroundColor: "orange", marginBottom: "10px", marginRight: "4px" }} onClick={handleShow} className={`${level==='2' ? 'd-none' : ''}`}>Edit Kondisi</Button>
                 <Button variant="Primary" style={{ backgroundColor: "orange", marginBottom: "10px", marginLeft: "4px" }} onClick={e=>handleExportXlsx(e)} >Unduh ke Excel</Button>
                 <Modal show={show} onHide={handleClose}>
                     <Modal.Header closeButton>
@@ -544,10 +545,7 @@ function HabisPakaiStock() {
                                 <Form.Label>Nama Peralatan</Form.Label>
                                 <Form.Control type="text" readOnly={true} defaultValue={selectedRow.nama} />
                             </Form.Group>
-                            <Form.Select
-                                value={noteData}
-                                onChange={handleSelectKondisi}
-                            >
+                            <Form.Select value={noteData} onChange={handleSelectKondisi}>
                                 <option key={0} value={"BAIK"}>BAIK</option>
                                 <option key={1} value={"RUSAK RINGAN"}>RUSAK RINGAN</option>
                                 <option key={2} value={"RUSAK SEDANG"}>RUSAK SEDANG</option>
@@ -644,103 +642,106 @@ function HabisPakaiStock() {
 
 
     return (
-        <div className="col-auto pb-4">
+        <div style={{ display: 'flex', flexDirection: 'column', height: '89vh' }}>
             <Gap height={10}/>
-
-            <form className='input'>
-                <InputGroup size="sm" className="mb-3">
-                    <p style={
-                        {
-                            width: "60px",
-                            textAlign: "center",
-                            justifyContent: "center",
-                            marginTop: "2px"
-                        }
-                    }>Bulan :</p>
-                    <DropdownButton id="dropdown-bulan"
-                        title={displayMonth}
-                        onSelect={(event) => {handleBulan(event)}}
-                        style={
+            <div style={{ flex: '0 0 auto' }}>
+                <form className='input'>
+                    <InputGroup size="sm" className="mb-3">
+                        <p style={
                             {
-                                width: "80px",
+                                width: "60px",
                                 textAlign: "center",
                                 justifyContent: "center",
+                                marginTop: "2px"
                             }
-                        }
-                    >
-                    <DropdownMonth data={months}/>
-                    </DropdownButton>
-                    <p style={
-                        {
-                            width: "60px",
-                            textAlign: "center",
-                            justifyContent: "center",
-                            marginTop: "2px"
-                        }
-                    }>Tahun :</p>
-                    <Form.Group id="mb-4" controlId="controlinput"
-                        style={
-                        {
-                            width: "10%"
-                        }
-                    }>
-                        <Form.Control style={
+                        }>Bulan :</p>
+                        <DropdownButton id="dropdown-bulan"
+                            title={displayMonth}
+                            onSelect={(event) => {handleBulan(event)}}
+                            style={
                                 {
-                                    fontFamily: "Poppins",
-                                    fontSize: "small",
-                                    width: "80px"
+                                    width: "80px",
+                                    textAlign: "center",
+                                    justifyContent: "center",
                                 }
                             }
-                            defaultValue={year}
-                            onChange={
-                                (e) => {
-                                    setYear(e.target.value)
-                                }
+                        >
+                        <DropdownMonth data={months}/>
+                        </DropdownButton>
+                        <p style={
+                            {
+                                width: "60px",
+                                textAlign: "center",
+                                justifyContent: "center",
+                                marginTop: "2px"
                             }
-                            type="number"/>
-                    </Form.Group>
-                </InputGroup>
-            </form>
-            <div className='row mb-2 text-start'>
-                {handleEditNote()}
+                        }>Tahun :</p>
+                        <Form.Group id="mb-4" controlId="controlinput"
+                            style={
+                            {
+                                width: "10%"
+                            }
+                        }>
+                            <Form.Control style={
+                                    {
+                                        fontFamily: "Poppins",
+                                        fontSize: "small",
+                                        width: "80px"
+                                    }
+                                }
+                                defaultValue={year}
+                                onChange={
+                                    (e) => {
+                                        setYear(e.target.value)
+                                    }
+                                }
+                                type="number"/>
+                        </Form.Group>
+                    </InputGroup>
+                </form>
+                <div className='row mb-2 text-start'>
+                    {handleEditNote()}
+                </div>
             </div>
-            <form>
-                <Table id="tb-reg" striped bordered>
-                    <thead className='text-center align-middle'>
-                        <tr className='text-nowrap'>
-                            <th rowSpan={3}>#</th>
-                            <th rowSpan={3}>NO</th>
-                            <th rowSpan={3}>NAMA PERALATAN</th>
-                            <th rowSpan={3}>VOLUME</th>
-                            <th rowSpan={3}>SATUAN</th>
-                            <th rowSpan={3}>SUMBER</th>
-                            <th colSpan={4}>KONDISI</th>
-                        </tr>
-                        <tr style={{ backgroundColor: 'orange'}}>
-                            <th rowSpan={2}>BAIK</th>
-                            <th colSpan={3}>RUSAK</th>
-                        </tr>
-                        <tr>
-                            <th>RINGAN</th>
-                            <th>SEDANG</th>
-                            <th>BERAT</th>
-                        </tr>
-                        <tr className='text-nowrap'>
-                            <th>a</th>
-                            <th>b</th>
-                            <th>c</th>
-                            <th>d</th>
-                            <th>e</th>
-                            <th>f</th>
-                            <th>g</th>
-                            <th>h</th>
-                            <th>i</th>
-                            <th>j</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tb-reg">{showTable()}</tbody>
-                </Table>
-            </form>
+            <div style={{ flex: '1 1 auto', overflowY: 'auto' }}>
+                <form>
+                    <Table id="tb-reg" striped bordered>
+                        <thead className='text-center align-middle'>
+                            <tr className='text-nowrap'>
+                                <th rowSpan={3}>#</th>
+                                <th rowSpan={3}>NO</th>
+                                <th rowSpan={3}>NAMA PERALATAN</th>
+                                <th rowSpan={3}>VOLUME</th>
+                                <th rowSpan={3}>SATUAN</th>
+                                <th rowSpan={3}>SUMBER</th>
+                                <th colSpan={4}>KONDISI</th>
+                            </tr>
+                            <tr style={{ backgroundColor: 'orange'}}>
+                                <th rowSpan={2}>BAIK</th>
+                                <th colSpan={3}>RUSAK</th>
+                            </tr>
+                            <tr>
+                                <th>RINGAN</th>
+                                <th>SEDANG</th>
+                                <th>BERAT</th>
+                            </tr>
+                            <tr className='text-nowrap'>
+                                <th>a</th>
+                                <th>b</th>
+                                <th>c</th>
+                                <th>d</th>
+                                <th>e</th>
+                                <th>f</th>
+                                <th>g</th>
+                                <th>h</th>
+                                <th>i</th>
+                                <th>j</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tb-reg">{showTable()}</tbody>
+                    </Table>
+                </form>
+            </div>
         </div>
     )
 }

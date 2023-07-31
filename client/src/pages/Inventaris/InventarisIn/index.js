@@ -59,6 +59,7 @@ function InventarisIn() {
     const [selectedRow, setSelectedRow] = useState({})
     const [id, setId] = useState(0)
     const [token, setToken] = useState(localStorage.getItem("token"))
+    const level = localStorage.getItem("level")
 
     // dynamic data InventarisIn
     const [invHeader, setInvHeader] = useState([])
@@ -131,12 +132,6 @@ function InventarisIn() {
                 });
                 col = Array.from(new Set(col.map(JSON.stringify))).map(JSON.parse)
                 setInvHeader(col)
-                // console.log("d")
-                // console.log(d)
-                // console.log("col")
-                // console.log(col)
-                // console.log("arr")
-                // console.log(arr)
                 setDataTransaction(arr)
 
                 // foreach jumlah peralatan
@@ -157,7 +152,6 @@ function InventarisIn() {
                     })
                     dataTable.push(row)
                 })
-                console.log(dataTable)
                 setDataIn(dataTable)
             };
         };
@@ -266,9 +260,9 @@ function InventarisIn() {
         };
         return (
             <div>
-                <Button variant="Primary" style={{ backgroundColor: "orange", marginBottom: "10px" }} onClick={handleShow} >Edit Data</Button>
+                <Button variant="Primary"  style={{ backgroundColor: "orange", marginBottom: "10px" }} className={`${level==='2' ? 'd-none' : ''}`} onClick={handleShow} >Edit Data</Button>
                 <Modal show={show} onHide={handleClose}>
-                    <Modal.Header closeButton>
+                    <Modal.Header closeButton >
                         <Modal.Title>Edit Data</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
@@ -295,8 +289,8 @@ function InventarisIn() {
                         </Form>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={handleClose}>Batal</Button>
-                        <Button onClick={handleSave} style={{backgroundColor: "orange"}}>Simpan</Button>
+                        <Button variant="secondary" onClick={handleClose} >Batal</Button>
+                        <Button onClick={handleSave} style={{backgroundColor: "orange"}} >Simpan</Button>
                     </Modal.Footer>
                 </Modal>
             </div>
@@ -401,111 +395,112 @@ function InventarisIn() {
 
 
     return (
-        <div className='pb-4'>
+        <div style={{ display: 'flex', flexDirection: 'column', height: '89vh' }}>
             <Gap height={10}/>
-
-            <form className='input'>
-                <InputGroup size="sm" className="mb-3">
-                    <p style={
-                        {
-                            width: "60px",
-                            textAlign: "center",
-                            justifyContent: "center",
-                            marginTop: "2px"
-                        }
-                    }>Bulan :</p>
-                    <DropdownButton id="dropdown-bulan"
-                        title={displayMonth}
-                        onSelect={(event) => {handleBulan(event)}}
-                        style={
+            <div style={{ flex: '0 0 auto' }}>
+                <form className='input'>
+                    <InputGroup size="sm" className="mb-3">
+                        <p style={
                             {
-                                width: "80px",
+                                width: "60px",
                                 textAlign: "center",
                                 justifyContent: "center",
+                                marginTop: "2px"
                             }
-                        }
-                    >
-                    <DropdownMonth data={months}/>
-                    </DropdownButton>
-                    <p style={
-                        {
-                            width: "60px",
-                            textAlign: "center",
-                            justifyContent: "center",
-                            marginTop: "2px"
-                        }
-                    }>Tahun :</p>
-                    <Form.Group id="mb-4" controlId="controlinput"
-                        style={
-                        {
-                            width: "10%"
-                        }
-                    }>
-                        <Form.Control style={
+                        }>Bulan :</p>
+                        <DropdownButton id="dropdown-bulan"
+                            title={displayMonth}
+                            onSelect={(event) => {handleBulan(event)}}
+                            style={
                                 {
-                                    fontFamily: "Poppins",
-                                    fontSize: "small",
-                                    width: "80px"
+                                    width: "80px",
+                                    textAlign: "center",
+                                    justifyContent: "center",
                                 }
                             }
-                            defaultValue={year}
-                            onChange={
-                                (e) => {
-                                    setYear(e.target.value)
-                                }
+                        >
+                        <DropdownMonth data={months}/>
+                        </DropdownButton>
+                        <p style={
+                            {
+                                width: "60px",
+                                textAlign: "center",
+                                justifyContent: "center",
+                                marginTop: "2px"
                             }
-                            type="number"/>
-                    </Form.Group>
-                </InputGroup>
-            </form>
-            <div className='row mb-1'>
-                <div className='col-auto'>{handleEditRows()}</div>
-                <div className='col-auto'>
-                    <Button variant="Primary" style={{ backgroundColor: "orange", marginBottom: "10px" }} onClick={handleOpenModalItem} >Tambah Item</Button>
-                </div>
-                <div className='col-auto'>
-                    <Button variant="Primary" style={{ backgroundColor: "orange", marginBottom: "10px" }} onClick={handleOpenModalData} >Tambah Data</Button>
+                        }>Tahun :</p>
+                        <Form.Group id="mb-4" controlId="controlinput"
+                            style={
+                            {
+                                width: "10%"
+                            }
+                        }>
+                            <Form.Control style={
+                                    {
+                                        fontFamily: "Poppins",
+                                        fontSize: "small",
+                                        width: "80px"
+                                    }
+                                }
+                                defaultValue={year}
+                                onChange={
+                                    (e) => {
+                                        setYear(e.target.value)
+                                    }
+                                }
+                                type="number"/>
+                        </Form.Group>
+                    </InputGroup>
+                </form>
+                <div className={`${level==='2' ? 'd-none' : 'row mb-1'}`}>
+                    <div className='col-auto'>{handleEditRows()}</div>
+                    <div className='col-auto'>
+                        <Button variant="Primary" style={{ backgroundColor: "orange", marginBottom: "10px" }} onClick={handleOpenModalItem} >Tambah Item</Button>
+                    </div>
+                    <div className='col-auto'>
+                        <Button variant="Primary" style={{ backgroundColor: "orange", marginBottom: "10px" }} onClick={handleOpenModalData} >Tambah Data</Button>
+                    </div>
                 </div>
             </div>
             
-            <div className='row'>
-                    <div className='col-auto pe-0' style={{ overflowX: 'auto' }}>
-                        <form>
-                        <Table id="tb-reg" striped bordered style={{ tableLayout: 'auto', borderTopRightRadius: '0' }}>
-                            <thead className='text-center align-middle'>
-                                <tr className='text-nowrap'>
-                                    <th>#</th>
-                                    <th>No</th>
-                                    <th>Jenis</th>
-                                    <th>Nama Peralatan</th>
-                                    <th>Volume</th>
-                                    <th>Satuan</th>
-                                    <th>Sumber</th>
-                                </tr>
-                                <tr className='text-nowrap'>
-                                    <th>a</th>
-                                    <th>b</th>
-                                    <th>c</th>
-                                    <th>d</th>
-                                    <th>e</th>
-                                    <th>f</th>
-                                    <th>g</th>
-                                </tr>
-                            </thead>
-                            <tbody id="tb-reg">{showTable()}</tbody>
-                        </Table>
-                        </form>
-                    </div>
-                    <div className='col px-0' style={{ overflowX: 'auto' }}>
-                        <Table id="tb-reg" striped bordered style={{ borderTopLeftRadius: '0' }}>
-                            <thead>
-                                <tr className="text-nowrap">{showDataInventory("title")}</tr>
-                                <tr>{showDataInventory("tanggal")}</tr>
-                            </thead>
-                            <tbody>{showDataInventory("data")}</tbody>
-                        </Table>
-                    </div>
+            <div style={{ flex: '1 1 auto', overflowY: 'auto' }}>
+                <div className='col-auto pe-0' style={{ overflowX: 'auto' }}>
+                    <form>
+                    <Table id="tb-reg" striped bordered style={{ tableLayout: 'auto', borderTopRightRadius: '0' }}>
+                        <thead className='text-center align-middle'>
+                            <tr className='text-nowrap'>
+                                <th>#</th>
+                                <th>No</th>
+                                <th>Jenis</th>
+                                <th>Nama Peralatan</th>
+                                <th>Volume</th>
+                                <th>Satuan</th>
+                                <th>Sumber</th>
+                            </tr>
+                            <tr className='text-nowrap'>
+                                <th>a</th>
+                                <th>b</th>
+                                <th>c</th>
+                                <th>d</th>
+                                <th>e</th>
+                                <th>f</th>
+                                <th>g</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tb-reg">{showTable()}</tbody>
+                    </Table>
+                    </form>
                 </div>
+                <div className='col px-0' style={{ overflowX: 'auto' }}>
+                    <Table id="tb-reg" striped bordered style={{ borderTopLeftRadius: '0' }}>
+                        <thead>
+                            <tr className="text-nowrap">{showDataInventory("title")}</tr>
+                            <tr>{showDataInventory("tanggal")}</tr>
+                        </thead>
+                        <tbody>{showDataInventory("data")}</tbody>
+                    </Table>
+                </div>
+            </div>
 
 
             <Modal show={showModalItem} onHide={handleCloseModalItem}>

@@ -42,7 +42,6 @@ function DataLama() {
     const [month, setMonth] = useState(String(initMonth));
     const [displayMonth, setDisplayMonth] = useState(months[initMonth])
     const [year, setYear] = useState(String(initYear))
-    const [selectedRow, setSelectedRow] = useState({})
     const [id, setId] = useState(0)
     const token = localStorage.getItem("token")
 
@@ -87,16 +86,16 @@ function DataLama() {
     }
 
     // CHECKBOX
-    const [isChecked, setIsChecked] = useState(true)
+    // const [isChecked, setIsChecked] = useState(true)
     const handleCheckboxChange = (event, rowData) => {
-        setIsChecked(!(event.target.checked))
+        // setIsChecked(!(event.target.checked))
         if (event.target.checked) {
             setId(parseInt(rowData.id))
-            setSelectedRow(rowData)
+            // setSelectedRow(rowData)
         }
         else {
             setId(0)
-            setSelectedRow({})
+            // setSelectedRow({})
         }
     };
 
@@ -277,9 +276,7 @@ function DataLama() {
                 }]
             });
             Packer.toBlob(document).then(blob => {
-                console.log(blob);
                 saveAs(blob, "example.docx");
-                console.log("Document created successfully");
             });
         };
       
@@ -315,9 +312,7 @@ function DataLama() {
         });
     
         Packer.toBlob(doc).then(blob => {
-          console.log(blob);
           saveAs(blob, "example.docx");
-          console.log("Document created successfully");
         });
     }
 

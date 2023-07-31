@@ -12,7 +12,6 @@ const postUserAdmin = async (token, username, password, name) => {
                 Authorization: `Bearer ${token}`
             }
         })
-        console.log(res)
         return res
     }
     catch (error) {
