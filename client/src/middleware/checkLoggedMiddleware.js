@@ -5,7 +5,7 @@ export default function checkLoggedMiddleware(page) {
     try {
         const token = localStorage.getItem('token')
         if (!token) {
-            return <Navigate to="/login" replace />
+            return <Navigate to="/" replace />
         } else {
             return page;
         }

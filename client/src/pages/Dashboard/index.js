@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Sidebar, DoughnutChart } from '../../components';
+import { Sidebar, DoughnutChart } from '../../components'
 import getDashboardData from '../../api/dashboard/dashboard'
 import '../../assets/style/dashboard.scss'
 
@@ -16,12 +16,12 @@ function Dashboard() {
                 backgroundColor: ['#ff6384', '#36a2eb', '#ffce56', '#40c060', '#be29ec', '#242862', '#333e48', '#06e4d1', '#bb1116'],
             },
         ],
-    };
+    }
 
     // SIDEBAR
-    const [showSideBar, setShowSideBar] = useState(false);
-    const handleCloseSideBar = () => setShowSideBar(false);
-    const handleShowSideBar = () => setShowSideBar(true);
+    const [showSideBar, setShowSideBar] = useState(false)
+    const handleCloseSideBar = () => setShowSideBar(false)
+    const handleShowSideBar = () => setShowSideBar(true)
     function sideBar() {
         return (
             <Sidebar handleShow={handleShowSideBar} handleClose={handleCloseSideBar} show={showSideBar} btn1="/dashboard" btn2="/register-bencana" btn3="/inventaris" btn4="/habispakai" btn5="/arsip-aktif"/>
@@ -33,12 +33,12 @@ function Dashboard() {
             const token = localStorage.getItem("token")
             let response = await getDashboardData(token)
             if (response.data?.message !== "success") {
-                localStorage.removeItem("token");
-                window.location = '/';
+                localStorage.removeItem("token")
+                window.location = '/'
             }
             else {
                 response = response.data?.data
-            };
+            }
             const keys = Object.keys(response)
             const values = Object.keys(response).map(function (key) { return response[key] })
             setData(values)
