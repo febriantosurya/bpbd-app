@@ -48,4 +48,4 @@ exports.setAddNewItem = async (data) => {
   await repo.addTransaction(data);
   await repo.addInvenActive(data);
   return;
-}
+};

@@ -4,7 +4,7 @@ const barangMasukController = require('../controller/barangMasukStatic');
 
 const router = express.Router();
 
-router.get('/in/:month/:year', middleware.checkAdminAuthorization, barangMasukController.showInTransaction);
+router.get('/in/:month/:year', middleware.checkAdminAndUser, barangMasukController.showInTransaction);
 router.post('/in/add-data', middleware.checkAdminAuthorization, barangMasukController.addInTransaction);
 router.put('/in/edit-data', middleware.checkAdminAuthorization, barangMasukController.editVolInTransaction);
 router.post('/in/new-item', middleware.checkAdminAuthorization, barangMasukController.addNewItem);
