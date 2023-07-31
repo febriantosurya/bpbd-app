@@ -14,6 +14,7 @@ function Login() {
         const response = await login(username, password);
         if (response.data?.message === "success") {
             localStorage.setItem("token", response.data.token);
+            localStorage.setItem("level", response.data.level);
             if (response.data.level === 0) {
                 window.location = "/kelolaadmin"
             } else if (response.data.level === 1) {
