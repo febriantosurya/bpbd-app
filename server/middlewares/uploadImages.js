@@ -3,15 +3,16 @@ const fs = require('fs');
 const path = require("path");
 require('dotenv').config();
 
-const storage = multer.diskStorage({
+const folderImage = `${process.env.PATH_IMAGE_FOLDER}\\images`
+if (!fs.existsSync(folderImage)) {
+  fs.mkdirSync(folderImage);
+};
+
+const storage = multer.diskStorage({ 
   destination: (req, file, cb) => {
-    const folderImage = `${process.env.PATH_IMAGE_FOLDER}`+"\\images"
-    const directory = `${folderImage}\\${req.body.tanggal}-${req.body.desa}`;
-    if (!fs.existsSync(folderImage)) {
-      fs.mkdirSync(folderImage);
-      if (!fs.existsSync(directory)) {
-        fs.mkdirSync(directory)
-      }
+    const directory = `${folderImage}/${req.body.tanggal}-${req.body.desa}`;
+    if (!fs.existsSync(directory)) {
+      fs.mkdirSync(directory)
     };
     cb(null, directory);
   },

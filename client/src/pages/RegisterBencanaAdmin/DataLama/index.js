@@ -945,7 +945,7 @@ function DataLama() {
                 right: { style: BorderStyle.NONE },  
                 insideVertical: { style: BorderStyle.NONE},  
               },
-          });
+            });
             const document = new Document({
                 defaultFontName: "Arial",
                 sections: [{
@@ -1052,9 +1052,13 @@ function DataLama() {
     }
 
     return (
-        <div className='col-auto'>
-            <h1 style={{ fontSize: "30px", paddingTop:"20px" }}>Daftar Register Bencana</h1>
-            <form onSubmit={handleEnter}>
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          height: '89vh', // Set the container height to fill the viewport height
+        }}>
+            <h1 style={{ fontSize: "30px", padding:"10px 0px" }}>Daftar Register Bencana</h1>
+            <form onSubmit={handleEnter} style={{ flex: '0 0 auto' }}>
                 <InputGroup >
                     <p style={{ width: "auto", margin: "5px" }}>Bulan :</p>
                     <DropdownButton id="dropdown-bulan" title={displayMonth} onSelect={(event) => { handleBulan(event) }}>
@@ -1077,28 +1081,34 @@ function DataLama() {
                     {ExportToDocx()}
                 </InputGroup>
             </form>
+            <div
+              style={{
+                flex: '1 1 auto',
+                overflowY: 'auto',
+              }}
+            >
             <form>
-                <Table id='tb-reg' striped bordered hover size="sm">
+                <Table id='tb-reg' striped bordered hover size="sm" >
                     <thead className='text-center align-middle'>
                         <tr>
-                            <th colSpan="7"></th>
+                            <th rowSpan="3">#</th>
+                            <th rowSpan="3">No</th>
+                            <th rowSpan="3">Jenis Bencana</th>
+                            <th rowSpan="3">Lokasi Detail</th>
+                            <th rowSpan="3">Kecamatan</th>
+                            <th rowSpan="3">Tanggal & Waktu</th>
+                            <th rowSpan="3">Keterangan</th>
                             <th colSpan="5">Korban</th>
+                            <th rowSpan="3">Tafsir Kerusakan</th>
+                            <th rowSpan="3">Penyebab Kejadian</th>
                         </tr>
+                        <tr></tr>
                         <tr>
-                            <th>#</th>
-                            <th>No</th>
-                            <th>Jenis Bencana</th>
-                            <th>Lokasi Detail</th>
-                            <th>Kecamatan</th>
-                            <th>Tanggal & Waktu</th>
-                            <th>Keterangan</th>
                             <th>Manusia</th>
                             <th>Hewan</th>
                             <th>Rumah</th>
                             <th>Harta</th>
                             <th>Jalan</th>
-                            <th>Tafsir Kerusakan</th>
-                            <th>Penyebab Kejadian</th>
                         </tr>
                     </thead>
                     <tbody id="tb-reg">
@@ -1106,6 +1116,7 @@ function DataLama() {
                     </tbody>
                 </Table>
             </form>
+            </div>
         </div>
     )
 }

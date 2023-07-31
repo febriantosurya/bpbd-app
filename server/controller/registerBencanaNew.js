@@ -38,12 +38,15 @@ exports.addRegBencana = async (req, res) => {
     let dataImg = {}
     let folder = ''
     for (let i = 0; i < images.length; i++) {
+      console.log(images[i].destination)
       folder = (images[i].destination).split("\\public\\")
+      console.log(folder)
       dataImg = {
         path: `${folder[1]}\\${images[i].filename}`,
         id: addedData.dataValues.id
       }
-      await regBencanaNewRepo.addImage(dataImg)
+      console.log(dataImg)
+      console.log(await regBencanaNewRepo.addImage(dataImg))
     }
     return res.status(200).json({ message: 'success' });
   }

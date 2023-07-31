@@ -29,6 +29,7 @@ function InputRegBencana() {
     const [ketBencana, setKetBencana] = useState("")
     const [lokasiDetail, setLokasiDetail] = useState("")
     const [penyebab, setPenyebab] = useState("")
+    const [nomorSurat, setNomorSurat] = useState("")
     const [totalKerugian, setTotalKerugian] = useState(0)
     const [tanggal, setTanggal] = useState(null)
     const [jam, setJam] = useState(". . . .")
@@ -149,6 +150,7 @@ function InputRegBencana() {
         formData.append("kecamatan", selectKecamatan);
         formData.append("totalKerugian", totalKerugian);
         formData.append("penyebabKejadian", penyebab);
+        formData.append("nomorSurat", nomorSurat);
         formData.append("tanggal", tanggal);
         formData.append("waktu", jam);
         for (let image of selectedImages) {
@@ -276,7 +278,10 @@ function InputRegBencana() {
                     <Form.Control type="file" multiple onChange={handleImageChange} />
                 </Form.Group>
                 <br/>
-                <Button variant="success" onClick={e=>handleSubmitForm(e)}>Submit</Button>
+                <h5 style={{textAlign: 'left'}} >Nomor Surat</h5>
+                <Form.Control as="textarea" rows={1} placeholder="Masukan Nomor Surat (opsional)" onChange={e=>setNomorSurat(e.target.value)} />
+                <br/>
+                <Button variant="success" className='my-3' onClick={e=>handleSubmitForm(e)}>Submit</Button>
                 <div id="end"/>
             </div>
         </div>
