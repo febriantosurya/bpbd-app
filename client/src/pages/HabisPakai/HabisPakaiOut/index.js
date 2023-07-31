@@ -411,7 +411,7 @@ function HabisPakaiIn() {
                     </div>
                 </div>
             </div>
-            <div style={{ flex: '1 1 auto', overflowY: 'auto' }}>
+            <div style={{ flex: '1 1 auto', overflowY: 'auto' }} className='row'>
                 <div className='col-auto pe-0' style={{ overflowX: 'auto' }}>
                     <form>
                     <Table id="tb-reg" striped bordered style={{ tableLayout: 'auto', borderTopRightRadius: '0' }}>
