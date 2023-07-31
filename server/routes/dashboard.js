@@ -1,6 +1,6 @@
 const express = require('express');
 const dashboardController = require('../controller/dashboard');
-const { checkAdminAuthorization, checkUserAuthorization, checkAdminAndUser } = require('../middlewares/authorization');
+const { checkAdminAndUser } = require('../middlewares/authorization');
 
 const router = express.Router();
 

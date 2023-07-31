@@ -1,4 +1,4 @@
-const RegBencana = require('../models/registerBencana');
+const RegBencana = require('../models/registerBencanaNew');
 const sequelize = require('../configs/database');
 const { Op } = require('sequelize');
 
