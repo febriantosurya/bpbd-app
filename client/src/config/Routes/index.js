@@ -10,7 +10,6 @@ import {
     RegisterBencanaUser,
     InputRegBencana,
     ErrorHandler,
-    DashboardUser,
     ArchiveActive,
     ArchiveInactive,
     Inventaris,
@@ -36,10 +35,6 @@ const router = createBrowserRouter([
     {
         path: "/dashboard",
         element: checkLoggedMiddleware(<Dashboard />)
-    },
-    {
-        path: "/dashboard-user",
-        element: checkLoggedMiddleware(<DashboardUser />)
     },
     {
         path: "/register-bencana",

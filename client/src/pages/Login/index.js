@@ -20,7 +20,7 @@ function Login() {
                 window.location = "/dashboard"
             }
             else if (response.data.level === 2) {
-                window.location = "/dashboard-user"
+                window.location = "/dashboard"
             }
         } else {
             Swal.fire(
