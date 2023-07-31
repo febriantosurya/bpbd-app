@@ -4,7 +4,7 @@ const barangKeluarController = require('../controller/barangKeluar');
 
 const router = express.Router();
 
-router.get('/out/:month/:year', middleware.checkAdminAuthorization, barangKeluarController.showOutTransaction);
+router.get('/out/:month/:year', middleware.checkAdminAndUser, barangKeluarController.showOutTransaction);
 router.post('/out/add-data', middleware.checkAdminAuthorization, barangKeluarController.addOutTransaction);
 router.put('/out/edit-data', middleware.checkAdminAuthorization, barangKeluarController.editVolOutTransaction);
 
