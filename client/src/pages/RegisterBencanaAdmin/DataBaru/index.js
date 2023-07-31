@@ -438,7 +438,7 @@ function DataBaru() {
                 </InputGroup>
             </form>
             <div style={{ display: "flex", textAlign: "left"}} className={`${level==='2' ? 'd-none' : 'my-2'}`}>
-                <Button style={{ fontSize: "small", fontFamily: "Poppins", width: "auto", borderRadius: "5px", marginRight: "10px" }} href='/input-reg-bencana'>Tambah Register Bencana Test</Button>
+                <Button style={{ fontSize: "small", fontFamily: "Poppins", width: "auto", borderRadius: "5px", marginRight: "10px" }} href='/input-reg-bencana'>Tambah Register Bencana</Button>
                 {isChecked ? null : handleEditRows()}
                 {isChecked ? null : <Button style={{fontSize: "small", fontFamily: "Poppins", borderRadius: "5px", height:"33px"}} disabled={isChecked} variant="danger" onClick={(e) => handleDeleteRows(e)}>Hapus</Button>}
             </div>
