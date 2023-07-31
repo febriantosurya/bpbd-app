@@ -16,25 +16,8 @@ import Swal from 'sweetalert2'
 // get kecamatan desa
 import getKecamatanDesa from '../../api/kecamatanDesa/getKecamatanDesa'
 
-// GLOBAL VAR
-let dataKorban = {
-    "jenisBencana": "",
-    "keterangan": "",
-    "lokasiDetail": "",
-    "desa": "",
-    "kecamatan": "",
-    "korbanManusia": "",
-    "korbanHewan": "", 
-    "korbanRumah": "", 
-    "korbanHarta": "", 
-    "korbanJalan": "",
-    "totalKerugian": "",
-    "penyebab": ""
-}
-
 let keyDataKorban = []
 let valDataKorban = []
-
 
 function InputRegBencana() {
     const token = localStorage.getItem("token")
@@ -46,9 +29,11 @@ function InputRegBencana() {
     const [ketBencana, setKetBencana] = useState("")
     const [lokasiDetail, setLokasiDetail] = useState("")
     const [penyebab, setPenyebab] = useState("")
-    const [totalKerugian, setTotalKerugian] = useState("")
+    const [nomorSurat, setNomorSurat] = useState("")
+    const [totalKerugian, setTotalKerugian] = useState(0)
     const [tanggal, setTanggal] = useState(null)
     const [jam, setJam] = useState(". . . .")
+    const [selectedImages, setSelectedImages] = useState([]);
 
     const [disableDescKorban, setDisableDescKorban] = useState(true)
     const [disAddKorbanBtn, setDisAddKorbanBtn] = useState(true)
@@ -64,19 +49,17 @@ function InputRegBencana() {
         e.preventDefault()
         const element = [...val, []]
         setVal(element)
-        dataKorban[selectKorban] = descKorban
         keyDataKorban.push(selectKorban)
         valDataKorban.push(descKorban)
         setSelectKorban("Pilih Korban")
         setDescKorban("")
         setDisableDescKorban(true)
         setDisAddKorbanBtn(true)
-        console.log(dataKorban)
     }
 
     function handleSelectKorban (event) {
         setDisableDescKorban(false)
-        setSelectKorban("korban"+event)
+        setSelectKorban(event)
     }
     
     const getDesasFromKecamatan = (nama) => {
@@ -139,11 +122,18 @@ function InputRegBencana() {
           </>
         )
     }
+
+    // handle image input 
+    const handleImageChange = (e) => {
+        const files = e.target.files;
+        setSelectedImages(files);
+    };
     
     async function handleSubmitForm (e) {
         e.preventDefault()
+        let formData = new FormData();
         async function submitData () {
-            await addRegBencana(token, dataKorban)
+            console.log(await addRegBencana(token, formData))
         }
         if (selectedBencana === "Pilih Bencana" || selectKecamatan === "Pilih Kecamatan" || selectDesa === "Pilih Desa" || lokasiDetail === "") {
             Swal.fire(
@@ -153,16 +143,23 @@ function InputRegBencana() {
             )
             return
         }
-        dataKorban["jenisBencana"] = selectedBencana
-        dataKorban["keterangan"] = ketBencana
-        dataKorban["lokasiDetail"] = lokasiDetail
-        dataKorban["desa"] = selectDesa
-        dataKorban["kecamatan"] = selectKecamatan
-        dataKorban["totalKerugian"] = totalKerugian
-        dataKorban["penyebab"] = penyebab
-        dataKorban["tanggal"] = tanggal
-        dataKorban["waktu"] = jam
-        console.log(dataKorban)
+        formData.append("jenisBencana", selectedBencana);
+        formData.append("keterangan", ketBencana);
+        formData.append("lokasiDetail", lokasiDetail);
+        formData.append("desa", selectDesa);
+        formData.append("kecamatan", selectKecamatan);
+        formData.append("totalKerugian", totalKerugian);
+        formData.append("penyebabKejadian", penyebab);
+        formData.append("nomorSurat", nomorSurat);
+        formData.append("tanggal", tanggal);
+        formData.append("waktu", jam);
+        for (let image of selectedImages) {
+            formData.append('images', image);
+        }
+        for (let i=0;i<keyDataKorban.length;i++){
+            formData.append('korban'+keyDataKorban[i], valDataKorban[i])
+        }
+        console.log(formData)
         Swal.fire({
             title: 'Apakah anda yakin?',
             text: "Anda dapat mengubah dan menghapus data di laman register bencana",
@@ -270,13 +267,21 @@ function InputRegBencana() {
                 <br/>
                 <InputGroup>
                     <InputGroup.Text>Tafsir Kerusakan</InputGroup.Text>
-                    <Form.Control as="textarea" aria-label="With textarea" onChange={e=>setTotalKerugian(e.target.value)} />
+                    <Form.Control type="number" onChange={e=>setTotalKerugian(e.target.value)} />
                 </InputGroup>
                 <br/>
                 <h5 style={{textAlign: 'left'}} >Penyebab Kejadian</h5>
                 <Form.Control as="textarea" placeholder="Tulis Penyebab Kejadian" style={{ height: '100px' }} onChange={e=>setPenyebab(e.target.value)} />
                 <br/>
-                <Button variant="success" onClick={e=>handleSubmitForm(e)}>Submit</Button>
+                <h5 style={{textAlign: 'left'}} >Tambah Gambar</h5>
+                <Form.Group controlId="images">
+                    <Form.Control type="file" multiple onChange={handleImageChange} />
+                </Form.Group>
+                <br/>
+                <h5 style={{textAlign: 'left'}} >Nomor Surat</h5>
+                <Form.Control as="textarea" rows={1} placeholder="Masukan Nomor Surat (opsional)" onChange={e=>setNomorSurat(e.target.value)} />
+                <br/>
+                <Button variant="success" className='my-3' onClick={e=>handleSubmitForm(e)}>Submit</Button>
                 <div id="end"/>
             </div>
         </div>

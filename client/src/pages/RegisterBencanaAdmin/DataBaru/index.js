@@ -348,8 +348,12 @@ function DataBaru() {
                                 <Form.Control type="text" defaultValue={selectedRow.totalKerugian} onChange={e => setSelectedRow({ ...selectedRow, "totalKerugian": e.target.value })} />
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1" >
-                                <b><Form.Label>Peyebab Kejadian</Form.Label></b>
+                                <b><Form.Label>Penyebab Kejadian</Form.Label></b>
                                 <Form.Control as="textarea" defaultValue={selectedRow.penyebabKejadian} onChange={e => setSelectedRow({ ...selectedRow, "penyebab": e.target.value })} />
+                            </Form.Group>
+                            <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1" >
+                                <b><Form.Label>Nomor Surat</Form.Label></b>
+                                <Form.Control type="text" defaultValue={selectedRow.nomorSurat} onChange={e => setSelectedRow({ ...selectedRow, "nomorSurat": e.target.value })} />
                             </Form.Group>
                         </Form>
                     </Modal.Body>
@@ -388,18 +392,29 @@ function DataBaru() {
                     <td>{item.korbanJalan}</td>
                     <td>{item.totalKerugian}</td>
                     <td>{item.penyebabKejadian}</td>
+                    <td>{item.nomorSurat}</td>
+                    <td>
+                        {item.RegImages.map((image, index) => (
+                            <div key={index}>
+                                <a href={`http://${process.env.REACT_APP_HOST}:5000/`+image.path} target="_blank" rel="noopener noreferrer" className='text-dark fw-bold'>
+                                    Gambar {index + 1}
+                                </a>
+                            </div>
+                        ))}
+                    </td>
                 </tr>
             )
         })
     }
 
     return (
-        <div className='col-auto'>
-            <h1 style={{ fontSize: "30px", paddingTop:"20px" }}>Daftar Register Bencana</h1>
-            <div style={{ display: "flex", marginBottom: "10px" }}>
-                <Button style={{ fontSize: "medium", width: "auto", justifyContent: "center", borderRadius: "10PX", marginRight: "5px" }} href='/input-reg-bencana'>Tambah Register Bencana</Button>
-            </div>
-            <form onSubmit={handleEnter}>
+        <div style={{
+            display: 'flex',
+            flexDirection: 'column',
+            height: '89vh', // Set the container height to fill the viewport height
+          }}>
+            <h1 style={{ fontSize: "30px", padding:"10px 0px" }}>Daftar Register Bencana</h1>
+            <form onSubmit={handleEnter} style={{ flex: '0 0 auto' }}>
                 <InputGroup >
                     <p style={{ width: "auto", margin: "5px" }}>Bulan :</p>
                     <DropdownButton id="dropdown-bulan" title={displayMonth} onSelect={(event) => { handleBulan(event) }}>
@@ -424,32 +439,41 @@ function DataBaru() {
             </form>
 
             <div className='my-2' style={{ display: "flex", textAlign: "left"}}>
+                <Button style={{ fontSize: "small", fontFamily: "Poppins", width: "auto", borderRadius: "5px", marginRight: "10px" }} href='/input-reg-bencana'>Tambah Register Bencana</Button>
                 {isChecked ? null : handleEditRows()}
                 {isChecked ? null : <Button style={{fontSize: "small", fontFamily: "Poppins", borderRadius: "5px", height:"33px"}} disabled={isChecked} variant="danger" onClick={(e) => handleDeleteRows(e)}>Hapus</Button>}
             </div>
+            <div
+              style={{
+                flex: '1 1 auto',
+                overflowY: 'auto',
+              }}
+            >
             <form>
                 <Table id='tb-reg' striped bordered hover size="sm">
                     <thead className='text-center align-middle'>
                         <tr>
-                            <th colSpan="7"></th>
+                            <th rowSpan="3">#</th>
+                            <th rowSpan="3">No</th>
+                            <th rowSpan="3">Jenis Bencana</th>
+                            <th rowSpan="3">Lokasi Detail</th>
+                            <th rowSpan="3">Desa</th>
+                            <th rowSpan="3">Kecamatan</th>
+                            <th rowSpan="3">Tanggal & Waktu</th>
+                            <th rowSpan="3">Keterangan</th>
                             <th colSpan="5">Korban</th>
+                            <th rowSpan="3">Tafsir Kerusakan</th>
+                            <th rowSpan="3">Penyebab Kejadian</th>
+                            <th rowSpan="3">Nomor Surat</th>
+                            <th rowSpan="3">Gambar</th>
                         </tr>
+                        <tr></tr>
                         <tr>
-                            <th>#</th>
-                            <th>No</th>
-                            <th>Jenis Bencana</th>
-                            <th>Lokasi Detail</th>
-                            <th>Desa</th>
-                            <th>Kecamatan</th>
-                            <th>Tanggal & Waktu</th>
-                            <th>Keterangan</th>
                             <th>Manusia</th>
                             <th>Hewan</th>
                             <th>Rumah</th>
                             <th>Harta</th>
                             <th>Jalan</th>
-                            <th>Tafsir Kerusakan</th>
-                            <th>Penyebab Kejadian</th>
                         </tr>
                     </thead>
                     <tbody id="tb-reg">
@@ -457,6 +481,7 @@ function DataBaru() {
                     </tbody>
                 </Table>
             </form>
+            </div>
         </div>
     )
 }

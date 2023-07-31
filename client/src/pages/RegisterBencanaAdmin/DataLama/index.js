@@ -113,109 +113,86 @@ function DataLama() {
 
     // DOWNLOAD CONTENT
     // export excel
-    const handleExportXlsx = () => {
+    const handleExportXlsx = (e) => {
+        e.preventDefault()
         const wb = new ExcelJS.Workbook();
         const sheet = wb.addWorksheet("sheet");
+        
+        sheet.addRows(Array(3).fill({}));
 
-        sheet.columns = [
-            {
-                header: "No",
-                key: "no",
-                width: 4,
-            },
-            {
-                header: "Jenis Bencana",
-                key: "jenisBencana",
-                width: 15,
-            },
-            {
-                header: "Lokasi Detail",
-                key: "lokasiDetail",
-                width: 15
-            },
-            {
-                header: "Kecamatan",
-                key: "kecamatan",
-                width: 15
-            },
-            {
-                header: "Tanggal",
-                key: "tanggal",
-                width: 11
-            },
-            {
-                header: "Waktu",
-                key: "waktu",
-                width: 8
-            },
-            {
-                header: "Keterangan",
-                key: "keterangan",
-                width: 20
-            },
-            {
-                header: "Korban Manusia",
-                key: "korbanManusia",
-                width: 15
-            },
-            {
-                header: "Korban Rumah",
-                key: "korbanRumah",
-                width: 15
-            },
-            {
-                header: "Korban Hewan",
-                key: "korbanHewan",
-                width: 15
-            },
-            {
-                header: "Korban Harta",
-                key: "korbanHarta",
-                width: 15
-            },
-            {
-                header: "Tafsir Kerusakan",
-                key: "totalKerugian",
-                width: 17
-            },
-            {
-                header: "Penyebab Kejadian",
-                key: "penyebabKejadian",
-                width: 30,
-            },
-        ];
+        sheet.getColumn('A').width = 6;
+        sheet.getColumn('B').width = 20;
+        sheet.getColumn('C').width = 30;
+        sheet.getColumn('D').width = 10;
+        sheet.getColumn('E').width = 15;
+        sheet.getColumn('F').width = 10;
+        sheet.getColumn('G').width = 30;
+        sheet.getColumn('H').width = 30;
+        sheet.getColumn('I').width = 30;
+        sheet.getColumn('J').width = 30;
+        sheet.getColumn('K').width = 30;
+        sheet.getColumn('L').width = 30;
+        sheet.getColumn('M').width = 15;
+        sheet.getColumn('N').width = 70;
+
+        sheet.mergeCells('A4:A5')
+        sheet.mergeCells('B4:B5')
+        sheet.mergeCells('C4:C5')
+        sheet.mergeCells('D4:D5')
+        sheet.mergeCells('E4:E5')
+        sheet.mergeCells('F4:F5')
+        sheet.mergeCells('G4:G5')
+        sheet.mergeCells('H4:L4')
+        sheet.mergeCells('M4:M5')
+        sheet.mergeCells('N4:N5')
+
+        sheet.getCell('A4').value = "No"
+        sheet.getCell('B4').value = "Jenis Bencana"
+        sheet.getCell('C4').value = "Lokasi Detail"
+        sheet.getCell('D4').value = "Kecamatan"
+        sheet.getCell('E4').value = "Tanggal"
+        sheet.getCell('F4').value = "Waktu"
+        sheet.getCell('G4').value = "Keterangan"
+        sheet.getCell('H4').value = "Korban"
+        sheet.getCell('H5').value = "Manusia"
+        sheet.getCell('I5').value = "Rumah"
+        sheet.getCell('J5').value = "Hewan"
+        sheet.getCell('K5').value = "Harta"
+        sheet.getCell('L5').value = "Jalan"
+        sheet.getCell('M4').value = "Tafsir Kerusakan"
+        sheet.getCell('N4').value = "Penyebab Kejadian"
 
         data.map((item, number) => {
-            sheet.addRow({
-                no: number + 1,
-                jenisBencana: item.jenisBencana,
-                lokasiDetail: item.lokasiDetail,
-                kecamatan: item.kecamatan,
-                tanggal: item.tanggal,
-                waktu: item.waktu,
-                keterangan: item.keterangan,
-                korbanManusia: item.korbanManusia,
-                korbanHewan: item.korbanHewan,
-                korbanRumah: item.korbanRumah,
-                korbanHarta: item.korbanHarta,
-                korbanJalan: item.korbanJalan,
-                totalKerugian: item.totalKerugian,
-                penyebabKejadian: item.penyebabKejadian
-            });
+            sheet.addRow([
+                number+1,
+                item.jenisBencana,
+                item.lokasiDetail,
+                item.kecamatan,
+                item.tanggal,
+                item.waktu,
+                item.keterangan,
+                item.korbanManusia,
+                item.korbanHewan,
+                item.korbanRumah,
+                item.korbanHarta,
+                item.korbanJalan,
+                item.totalKerugian,
+                item.penyebabKejadian
+            ])
             return null
         })
 
         let totalRow = sheet.lastRow.number
         let totalColumn = sheet.lastColumn.number
         //Loop through all table's row
-        for (let i = 1; i <= totalRow; i++) {
+        for (let i = 4; i <= totalRow; i++) {
             for (let j = 65; j < 65 + totalColumn; j++) {
                 let cell = sheet.getCell(`${String.fromCharCode(j)}${i}`)
-                if (i === 1) {
+                if ((i > 5)&&(j >= 66)) {
                     cell.fill = {
                         type: 'pattern',
                         pattern: 'solid',
-                        fgColor: { argb: 'FDFD02' },
+                        fgColor: { argb: 'FFFF00' },
                     };
                 }
                 cell.alignment = { vertical: 'middle', horizontal: 'center', wrapText: true };
@@ -227,6 +204,11 @@ function DataLama() {
                 };
             }
         }
+
+        sheet.autoFilter = {
+          from: { row: 5, column: 1 },
+          to: { row: sheet.rowCount, column: 14 }
+        };
         wb.xlsx.writeBuffer().then(function (data) {
             const blob = new Blob([data], {
                 type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
@@ -234,7 +216,7 @@ function DataLama() {
             const url = window.URL.createObjectURL(blob);
             const anchor = document.createElement("a");
             anchor.href = url;
-            anchor.download = displayMonth + " " + year + ".xlsx";
+            anchor.download = "REGISTER BENCANA ALAM " + displayMonth + " " + year + ".xlsx";
             anchor.click();
             window.URL.revokeObjectURL(url);
         });
@@ -945,7 +927,7 @@ function DataLama() {
                 right: { style: BorderStyle.NONE },  
                 insideVertical: { style: BorderStyle.NONE},  
               },
-          });
+            });
             const document = new Document({
                 defaultFontName: "Arial",
                 sections: [{
@@ -1052,9 +1034,13 @@ function DataLama() {
     }
 
     return (
-        <div className='col-auto'>
-            <h1 style={{ fontSize: "30px", paddingTop:"20px" }}>Daftar Register Bencana</h1>
-            <form onSubmit={handleEnter}>
+        <div style={{
+          display: 'flex',
+          flexDirection: 'column',
+          height: '89vh', // Set the container height to fill the viewport height
+        }}>
+            <h1 style={{ fontSize: "30px", padding:"10px 0px" }}>Daftar Register Bencana</h1>
+            <form onSubmit={handleEnter} style={{ flex: '0 0 auto' }}>
                 <InputGroup >
                     <p style={{ width: "auto", margin: "5px" }}>Bulan :</p>
                     <DropdownButton id="dropdown-bulan" title={displayMonth} onSelect={(event) => { handleBulan(event) }}>
@@ -1077,28 +1063,34 @@ function DataLama() {
                     {ExportToDocx()}
                 </InputGroup>
             </form>
+            <div
+              style={{
+                flex: '1 1 auto',
+                overflowY: 'auto',
+              }}
+            >
             <form>
-                <Table id='tb-reg' striped bordered hover size="sm">
+                <Table id='tb-reg' striped bordered hover size="sm" >
                     <thead className='text-center align-middle'>
                         <tr>
-                            <th colSpan="7"></th>
+                            <th rowSpan="3">#</th>
+                            <th rowSpan="3">No</th>
+                            <th rowSpan="3">Jenis Bencana</th>
+                            <th rowSpan="3">Lokasi Detail</th>
+                            <th rowSpan="3">Kecamatan</th>
+                            <th rowSpan="3">Tanggal & Waktu</th>
+                            <th rowSpan="3">Keterangan</th>
                             <th colSpan="5">Korban</th>
+                            <th rowSpan="3">Tafsir Kerusakan</th>
+                            <th rowSpan="3">Penyebab Kejadian</th>
                         </tr>
+                        <tr></tr>
                         <tr>
-                            <th>#</th>
-                            <th>No</th>
-                            <th>Jenis Bencana</th>
-                            <th>Lokasi Detail</th>
-                            <th>Kecamatan</th>
-                            <th>Tanggal & Waktu</th>
-                            <th>Keterangan</th>
                             <th>Manusia</th>
                             <th>Hewan</th>
                             <th>Rumah</th>
                             <th>Harta</th>
                             <th>Jalan</th>
-                            <th>Tafsir Kerusakan</th>
-                            <th>Penyebab Kejadian</th>
                         </tr>
                     </thead>
                     <tbody id="tb-reg">
@@ -1106,6 +1098,7 @@ function DataLama() {
                     </tbody>
                 </Table>
             </form>
+            </div>
         </div>
     )
 }
