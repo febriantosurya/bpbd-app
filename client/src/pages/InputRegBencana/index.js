@@ -30,7 +30,7 @@ function InputRegBencana() {
     const [lokasiDetail, setLokasiDetail] = useState("")
     const [penyebab, setPenyebab] = useState("")
     const [nomorSurat, setNomorSurat] = useState("")
-    const [totalKerugian, setTotalKerugian] = useState(0)
+    const [totalKerugian, setTotalKerugian] = useState("")
     const [tanggal, setTanggal] = useState(null)
     const [jam, setJam] = useState(". . . .")
     const [selectedImages, setSelectedImages] = useState([]);
@@ -147,7 +147,7 @@ function InputRegBencana() {
         formData.append("lokasiDetail", lokasiDetail);
         formData.append("desa", selectDesa);
         formData.append("kecamatan", selectKecamatan);
-        formData.append("totalKerugian", totalKerugian);
+        formData.append("totalKerugian", parseInt(totalKerugian));
         formData.append("penyebabKejadian", penyebab);
         formData.append("nomorSurat", nomorSurat);
         formData.append("tanggal", tanggal);

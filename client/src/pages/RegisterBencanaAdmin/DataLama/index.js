@@ -121,7 +121,7 @@ function DataLama() {
         sheet.getColumn('A').width = 6;
         sheet.getColumn('B').width = 20;
         sheet.getColumn('C').width = 30;
-        sheet.getColumn('D').width = 10;
+        sheet.getColumn('D').width = 18;
         sheet.getColumn('E').width = 15;
         sheet.getColumn('F').width = 10;
         sheet.getColumn('G').width = 30;
