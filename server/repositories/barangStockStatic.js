@@ -18,6 +18,7 @@ exports.setUpdateInvenPerMonth = async (data) => {
       data = {
         tanggal: invenDatas[i].tanggal,
         jumlah: invenDatas[i].jumlah,
+        kondisi: invenDatas[i].kondisi,
         keterangan: invenDatas[i].keterangan,
         idBarang: invenDatas[i].InvBarangStaticId
       }

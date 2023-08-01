@@ -167,7 +167,7 @@ exports.updateInvenActive = async (data) => {
 };
 
 exports.addInvenDump = async (data) => {
-    await InvGudangLamaStatic.create({tanggal: data.tanggal, jumlah: data.jumlah, keterangan: data.keterangan, InvBarangStaticId: data.idBarang});
+    await InvGudangLamaStatic.create({tanggal: data.tanggal, jumlah: data.jumlah, kondisi: data.kondisi, keterangan: data.keterangan, InvBarangStaticId: data.idBarang});
     return;
 };
 
