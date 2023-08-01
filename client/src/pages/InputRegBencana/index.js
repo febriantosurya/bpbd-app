@@ -30,9 +30,9 @@ function InputRegBencana() {
     const [lokasiDetail, setLokasiDetail] = useState("")
     const [penyebab, setPenyebab] = useState("")
     const [nomorSurat, setNomorSurat] = useState("")
-    const [totalKerugian, setTotalKerugian] = useState("")
+    const [totalKerugian, setTotalKerugian] = useState("0")
     const [tanggal, setTanggal] = useState(null)
-    const [jam, setJam] = useState(". . . .")
+    const [jam, setJam] = useState("")
     const [selectedImages, setSelectedImages] = useState([]);
 
     const [disableDescKorban, setDisableDescKorban] = useState(true)
@@ -134,7 +134,7 @@ function InputRegBencana() {
         async function submitData () {
             await addRegBencana(token, formData)
         }
-        if (selectedBencana === "Pilih Bencana" || selectKecamatan === "Pilih Kecamatan" || selectDesa === "Pilih Desa" || lokasiDetail === "") {
+        if (selectedBencana === "Pilih Bencana" || selectKecamatan === "Pilih Kecamatan" || selectDesa === "Pilih Desa" || lokasiDetail === "" || tanggal === null || jam === "") {
             Swal.fire(
                 'Error',
                 'Form yang memiliki tanda * wajib diisi!',
@@ -234,7 +234,6 @@ function InputRegBencana() {
                 <br/>
                 <h5 style={{textAlign: 'left'}} >Waktu<span style={{color: "#ff0000"}}>*</span></h5>
                 <div style={{textAlign: 'left'}}>
-                    <p>Tanggal memiliki format <b style={{color: "#ff0000"}}>bulan/tanggal/tahun</b></p>
                     <p>Konversi format 24 jam = <b style={{color: "#ff0000"}}>{jam} WIB</b></p>
                 </div>
                 <Form.Control style={{width: "25%"}} type="datetime-local" onChange={e => handleSetTanggal(e)}/>

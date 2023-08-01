@@ -172,6 +172,14 @@ function InventarisIn() {
     };
     async function handleSubmitFormItem (e) {
         e.preventDefault()
+        if (namaBarang === '' || jenis === '' || unit === '' || namaPenambah === '' || sumber === '' || jumlah === '') {
+            Swal.fire(
+                'Error',
+                'Semua form wajib diisi!',
+                'error'
+            )
+            return
+        }
         inventoryItem["namaBarang"] = namaBarang
         inventoryItem["jenis"] = jenis
         inventoryItem["unit"] = unit
@@ -197,6 +205,14 @@ function InventarisIn() {
     };
     async function handleSubmitFormData (e) {
         e.preventDefault()
+        if (selectedBarang === '' || namaPenambah === '' || jumlah === 0) {
+            Swal.fire(
+                'Error',
+                'Semua form wajib diisi!',
+                'error'
+            )
+            return
+        }
         inventoryData["idBarang"] = selectedBarang
         inventoryData["nama"] = namaPenambah
         inventoryData["jumlah"] = jumlah
@@ -216,6 +232,12 @@ function InventarisIn() {
         else {
             Swal.fire({ title: "Pilih data yang ingin diubah!", icon: "warning" })
         }
+    }
+
+    const handleKeyDown = (e) => {
+        if (e.key === "e" || e.key === "E" || e.key === "+" || e.key === "-" || e.key === ".") {
+              e.preventDefault();
+          }
     }
 
     function handleEditRows() {
@@ -260,10 +282,10 @@ function InventarisIn() {
         };
         return (
             <div>
-                <Button variant="Primary"  style={{ backgroundColor: "orange", marginBottom: "10px" }} className={`${level==='2' ? 'd-none' : ''}`} onClick={handleShow} >Edit Data</Button>
+                <Button variant="Primary"  style={{ backgroundColor: "orange", marginBottom: "10px" }} className={`${level==='2' ? 'd-none' : ''}`} onClick={handleShow} >Perbarui Data</Button>
                 <Modal show={show} onHide={handleClose}>
                     <Modal.Header closeButton >
-                        <Modal.Title>Edit Data</Modal.Title>
+                        <Modal.Title>Perbarui Data</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <Form >
@@ -289,8 +311,8 @@ function InventarisIn() {
                         </Form>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={handleClose} >Batal</Button>
-                        <Button onClick={handleSave} style={{backgroundColor: "orange"}} >Simpan</Button>
+                        <Button variant="danger" onClick={handleClose} >Batal</Button>
+                        <Button variant='success' onClick={handleSave} >Simpan</Button>
                     </Modal.Footer>
                 </Modal>
             </div>
@@ -522,11 +544,10 @@ function InventarisIn() {
                     <Form.Control placeholder="Masukan Nama Sumber" onChange={e => setSumber(e.target.value.toUpperCase())}/>
                 </Modal.Body>
                 <Modal.Footer>
-                <Button variant="secondary" onClick={handleCloseModalItem}>
-                    Close
+                <Button variant='danger' onClick={handleCloseModalItem}>
+                    Batal
                 </Button>
-                <Button onClick={handleSubmitFormItem}
-                    style={{backgroundColor: "orange"}}>
+                <Button variant='success' onClick={handleSubmitFormItem}>
                     Simpan
                 </Button>
                 </Modal.Footer>
@@ -551,14 +572,13 @@ function InventarisIn() {
                     <label style={{fontWeight: 'bold', marginTop: '20px', textAlign: 'left'}}>Nama Penambah</label>
                     <Form.Control placeholder="Masukan Nama Penambah" onChange={e => setNamaPenambah(e.target.value)}/>
                     <label style={{fontWeight: 'bold', marginTop: '20px', textAlign: 'left'}}>Jumlah</label>
-                    <Form.Control type="number" placeholder="Masukan Jumlah" onChange={e => setJumlah(e.target.value)}/>
+                    <Form.Control type="number" placeholder="Masukan Jumlah" onKeyDown={handleKeyDown} onChange={e => setJumlah(e.target.value)}/>
                 </Modal.Body>
                 <Modal.Footer>
-                <Button variant="secondary" onClick={handleCloseModalData}>
-                    Close
+                <Button variant="danger" onClick={handleCloseModalData}>
+                    Batal
                 </Button>
-                <Button className='btn btn-primary' onClick={handleSubmitFormData}
-                    style={{backgroundColor: "orange"}}>
+                <Button variant="success" onClick={handleSubmitFormData}>
                         Simpan
                 </Button>
                 </Modal.Footer>

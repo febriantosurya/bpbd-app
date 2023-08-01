@@ -1145,12 +1145,13 @@ function DataBaru() {
         }
         Swal.fire({
             title: 'Apakah anda yakin?',
-            text: "Anda dapat mengubah dan menghapus data di laman register bencana",
+            text: "Data akan dihapus secara permanen",
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#3085d6',
             cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes'
+            cancelButtonText: 'Batal',
+            confirmButtonText: 'Ya'
         }).then((result) => {
             if (result.isConfirmed) {
                 delRegRow()
@@ -1180,7 +1181,8 @@ function DataBaru() {
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes'
+                cancelButtonText: 'Batal',
+                confirmButtonText: 'Ya'
             }).then((result) => {
                 if (result.isConfirmed) {
                     reqEdit()
@@ -1191,12 +1193,18 @@ function DataBaru() {
             })
         }
 
+        const handleKeyDown = (e) => {
+          if (e.key === "e" || e.key === "E" || e.key === "+" || e.key === "-" || e.key === ".") {
+                e.preventDefault();
+            }
+        }
+
         return (
             <div>
                 <Button style={{ marginRight: "10px", fontSize: "small", fontFamily: "Poppins", borderRadius: "5px", height:"33px"}} disabled={isChecked} variant="warning" onClick={handleShow}>Ubah</Button>
                 <Modal show={show} onHide={handleClose}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Edit Data</Modal.Title>
+                        <Modal.Title>Perbarui Data</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <Form >
@@ -1250,8 +1258,8 @@ function DataBaru() {
                                 <Form.Control type="text" defaultValue={edit.korbanJalan} onChange={e => setEdit({ ...edit, "korbanJalan": e.target.value })} />
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-                                <b><Form.Label>TafsirKerusakan</Form.Label></b>
-                                <Form.Control type="text" defaultValue={edit.totalKerugian} onChange={e => setEdit({ ...edit, "totalKerugian": e.target.value })} />
+                                <b><Form.Label>Tafsir Kerusakan</Form.Label></b>
+                                <Form.Control type="number" defaultValue={edit.totalKerugian} onKeyDown={handleKeyDown} onChange={e => setEdit({ ...edit, "totalKerugian": e.target.value })} />
                             </Form.Group>
                             <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1" >
                                 <b><Form.Label>Penyebab Kejadian</Form.Label></b>
@@ -1264,8 +1272,8 @@ function DataBaru() {
                         </Form>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={handleClose}>Close</Button>
-                        <Button variant="primary" onClick={e => handleSave(e)} >Save Changes</Button>
+                        <Button variant="danger" onClick={handleClose}>Batal</Button>
+                        <Button variant="success" onClick={e => handleSave(e)} >Simpan</Button>
                     </Modal.Footer>
                 </Modal>
             </div>

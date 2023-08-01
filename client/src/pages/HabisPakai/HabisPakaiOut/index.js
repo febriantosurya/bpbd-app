@@ -72,7 +72,6 @@ function HabisPakaiIn() {
         setToken(localStorage.getItem("token"));
         async function dataFetch() {
             let response = await getData(token, month, year);
-            // const response = await getInventaris(token, month, year)
             if (response.data?.message !== "success") {
                 localStorage.removeItem("token");
                 window.location = '/';
@@ -149,17 +148,31 @@ function HabisPakaiIn() {
     };
     async function handleSubmitFormData (e) {
         e.preventDefault()
+        if (selectedBarang === "" || namaPenambah === "" || jumlah === "" || jumlah === 0) {
+            Swal.fire(
+                'Error',
+                'Form wajib diisi!',
+                'error'
+            )
+            return
+        }
         inventoryData["idBarang"] = selectedBarang
         inventoryData["nama"] = namaPenambah
         inventoryData["jumlah"] = jumlah
         addData(token, inventoryData)
         handleCloseModalData()
         Swal.fire({ title: "Data ditambahkan!", icon: "success" }).then(function () {
-            window.location = "/inventaris?page=2"
+            window.location = "/habispakai?page=2"
         })
     };
 
     // Modal Edit Data
+    const handleKeyDown = (e) => {
+        if (e.key === "e" || e.key === "E" || e.key === "+" || e.key === "-" || e.key === ".") {
+            e.preventDefault();
+        }
+    }
+
     const [show, setShow] = useState(false);
     const handleClose = () => setShow(false);
     async function handleShow(){
@@ -180,6 +193,14 @@ function HabisPakaiIn() {
         }
         function handleSave(e) {
             e.preventDefault()
+            if (selectedTransaction === '' || jumlah === "") {
+                Swal.fire(
+                    'Error',
+                    'Form wajib diisi!',
+                    'error'
+                )
+                return
+            }
             Swal.fire({
                 title: 'Apakah anda yakin?',
                 text: "Data akan diubah",
@@ -187,12 +208,13 @@ function HabisPakaiIn() {
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes'
+                cancelButtonText: 'Batal',
+                confirmButtonText: 'Ya'
             }).then((result) => {
                 if (result.isConfirmed) {
                     inventoryInEdit(selectedTransaction, jumlah)
                     Swal.fire({ title: "Edit data sukses!", icon: "success" }).then(function () {
-                        window.location = "/inventaris?page=2"
+                        window.location = "/habispakai?page=2"
                     })
                 }
             })
@@ -212,10 +234,10 @@ function HabisPakaiIn() {
         };
         return (
             <div>
-                <Button variant="Primary" style={{ backgroundColor: "orange", marginBottom: "10px" }} onClick={handleShow} className={`${level==='2' ? 'd-none' : ''}`}>Edit Data</Button>
+                <Button variant="Primary" style={{ backgroundColor: "orange", marginBottom: "10px" }} onClick={handleShow} className={`${level==='2' ? 'd-none' : ''}`}>Perbarui Data</Button>
                 <Modal show={show} onHide={handleClose}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Edit Data</Modal.Title>
+                        <Modal.Title>Perbarui Data</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <Form >
@@ -236,13 +258,13 @@ function HabisPakaiIn() {
                             </Form.Select>
                             <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
                                 <Form.Label>Jumlah</Form.Label>
-                                <Form.Control type="number" value={jumlah} onChange={e => setJumlah(e.target.value)} />
+                                <Form.Control type="number" value={jumlah} onKeyDown={handleKeyDown} onChange={e => setJumlah(e.target.value)} />
                             </Form.Group>
                         </Form>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={handleClose}>Batal</Button>
-                        <Button onClick={handleSave} style={{backgroundColor: "orange"}}>Simpan</Button>
+                        <Button variant='danger' onClick={handleClose}>Batal</Button>
+                        <Button variant='success' onClick={handleSave}>Simpan</Button>
                     </Modal.Footer>
                 </Modal>
             </div>
@@ -466,15 +488,14 @@ function HabisPakaiIn() {
                     <label style={{fontWeight: 'bold', marginTop: '20px', textAlign: 'left'}}>Nama </label>
                     <Form.Control placeholder="Masukan Nama" onChange={e => setNamaPenambah(e.target.value)}/>
                     <label style={{fontWeight: 'bold', marginTop: '20px', textAlign: 'left'}}>Jumlah</label>
-                    <Form.Control type="number" placeholder="Masukan Jumlah" onChange={e => setJumlah(e.target.value)}/>
+                    <Form.Control type="number" placeholder="Masukan Jumlah" onKeyDown={handleKeyDown} onChange={e => setJumlah(e.target.value)}/>
                 </Modal.Body>
                 <Modal.Footer>
-                <Button variant="secondary" onClick={handleCloseModalData}>
-                    Close
+                <Button variant='danger' onClick={handleCloseModalData}>
+                    Batal
                 </Button>
-                <Button className='btn btn-primary' onClick={handleSubmitFormData}
-                    style={{backgroundColor: "orange"}}>
-                        Simpan
+                <Button variant='success' onClick={handleSubmitFormData}>
+                    Simpan
                 </Button>
                 </Modal.Footer>
             </Modal>

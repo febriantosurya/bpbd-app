@@ -240,8 +240,8 @@ function HabisPakaiStock() {
                     }).then((result) => {
                         if (result.isConfirmed) {
                             updateMonth()
-                            Swal.fire({ title: "Data Inventaris telah diubah ke bulan ini!", icon: "success" }).then(function () {
-                                window.location = "/inventaris?page=3"
+                            Swal.fire({ title: "Data gudang habis pakai telah diubah ke bulan ini!", icon: "success" }).then(function () {
+                                window.location = "/habispakai?page=3"
                             })
                         }
                     })
@@ -518,12 +518,13 @@ function HabisPakaiStock() {
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
                 cancelButtonColor: '#d33',
-                confirmButtonText: 'Yes'
+                cancelButtonText: 'Batal',
+                confirmButtonText: 'Ya'
             }).then((result) => {
                 if (result.isConfirmed) {
                     noteInEdit(selectedItem, noteData)
                     Swal.fire({ title: "Edit data sukses!", icon: "success" }).then(function () {
-                        window.location = "/inventaris?page=3"
+                        window.location = "/habispakai?page=3"
                     })
                 }
             })
@@ -533,11 +534,11 @@ function HabisPakaiStock() {
         };
         return (
             <div>
-                <Button variant="Primary" style={{ backgroundColor: "orange", marginBottom: "10px", marginRight: "4px" }} onClick={handleShow} className={`${level==='2' ? 'd-none' : ''}`}>Edit Kondisi</Button>
+                <Button variant="Primary" style={{ backgroundColor: "orange", marginBottom: "10px", marginRight: "4px" }} onClick={handleShow} className={`${level==='2' ? 'd-none' : ''}`}>Perbarui Kondisi</Button>
                 <Button variant="Primary" style={{ backgroundColor: "orange", marginBottom: "10px", marginLeft: "4px" }} onClick={e=>handleExportXlsx(e)} >Unduh ke Excel</Button>
                 <Modal show={show} onHide={handleClose}>
                     <Modal.Header closeButton>
-                        <Modal.Title>Edit Note</Modal.Title>
+                        <Modal.Title>Perbarui Kondisi</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                         <Form >
@@ -554,8 +555,8 @@ function HabisPakaiStock() {
                         </Form>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="secondary" onClick={handleClose}>Batal</Button>
-                        <Button onClick={handleSave} style={{backgroundColor: "orange"}}>Simpan</Button>
+                        <Button variant='danger' onClick={handleClose}>Batal</Button>
+                        <Button variant='success' onClick={handleSave}>Simpan</Button>
                     </Modal.Footer>
                 </Modal>
             </div>
