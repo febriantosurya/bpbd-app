@@ -1,0 +1,19 @@
+.container-dashboard {
+  padding-top: 30px;
+  height: 100vh;
+  width: 200vh;
+  background-color: rgb(255, 249, 240);
+  text-align: center;
+}
+  
+.main-sidebar {
+  background: linear-gradient(360deg, #F89C35 40.6%, rgba(248, 156, 53, 0) 100%);
+  position: fixed;
+  height: 100%;
+  overflow: auto;
+}
+
+.chart {
+  width: 40%;
+  margin: auto;
+}

@@ -1,0 +1,34 @@
+.container-root {
+    background-image: url("../../assets/image/logo.png");
+    height: 150vh;
+    margin-left: 25%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #fff9f0;
+    background-blend-mode: soft-light;
+    background-attachment: fixed;
+    background-position-x: 75%;
+    padding: 20px;
+}
+
+.button-wrapper {
+    display: flex;
+    padding-bottom: 30px;
+}
+
+
+
+.sidebar {
+    width: 25%;
+    background: linear-gradient(360deg, #F89C35 40.6%, rgba(248, 156, 53, 0) 100%);
+    position: fixed;
+    height: 100%;
+    overflow: auto;
+}
+
+.sidebar a {
+    display: block;
+    color: black;
+    padding: 10px;
+    text-decoration: none;
+}

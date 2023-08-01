@@ -1,0 +1,24 @@
+.container-default {
+  height: 100vh;
+  margin-left: 5vh;
+  width: 100%;
+  background-color: rgb(255, 249, 240);
+  text-align: center;
+  padding:0px 20px
+}
+
+.sidebar-secondary {
+  width: 5vh;
+  height: 100vh;
+  padding-top: 10px;
+  position: fixed;
+  background-color: orange;
+}
+
+.header {
+  background-color: #F89C35;
+  border-radius: 10px;
+  font-size: 25px;
+  padding: 5px 15px;
+  font-family: 'Poppins';
+}
