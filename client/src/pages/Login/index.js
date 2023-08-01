@@ -52,7 +52,7 @@ function Login() {
                     <Gap height={40} />
                     <Button className="btn-login" title="Login"/>
                     <Gap height={25} />
-                    <p style={{ "textAlign": "center" }} >Belum punya akun? Hubungi <a href='https://wa.me/6283111725891?text=Halo,%20saya%20ingin%20membuat%20akun%20BencanaGO'>admin BPBD</a></p>
+                    <p style={{ "textAlign": "center" }} >Belum punya akun? Hubungi <a href='https://wa.me/6281336430086?text=Halo,%20saya%20ingin%20membuat%20akun%20BencanaGO'>admin BPBD</a></p>
                 </form>
             </div>
         </div>
