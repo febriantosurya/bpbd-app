@@ -63,7 +63,7 @@ const Inventaris = () => {
                         confirmButtonText: 'Update Bulan'
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            updateMonth()
+                            updateMonth(token)
                             Swal.fire({ title: "Data Inventaris telah diubah ke bulan ini!", icon: "success" }).then(function () {
                                 window.location = "/inventaris?page=3"
                             })

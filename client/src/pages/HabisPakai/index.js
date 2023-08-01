@@ -61,9 +61,9 @@ const HabisPakai = () => {
                         confirmButtonText: 'Update Bulan'
                     }).then((result) => {
                         if (result.isConfirmed) {
-                            updateMonth()
+                            updateMonth(token)
                             Swal.fire({ title: "Data Barang Habis Pakai telah diubah ke bulan ini!", icon: "success" }).then(function () {
-                                window.location = "/inventaris?page=3"
+                                window.location = "/habispakai?page=3"
                             })
                         }
                     })
