@@ -23,6 +23,7 @@ import searchByType from '../../api/archiveInactive/searchByType'
 function Arsip() {
     const [id, setId] = useState(0)
     const token = localStorage.getItem("token")
+    const level = localStorage.getItem('level')
     const [data, setData] = useState([])
     const [selectedRow, setSelectedRow] = useState({})
     const [addedRow, setAddedRow] = useState({
@@ -76,9 +77,7 @@ function Arsip() {
     }
     
     // CHECKBOX
-    const [isChecked, setIsChecked] = useState(true)
     const handleCheckboxChange = (event, rowData) => {
-        setIsChecked(!(event.target.checked))
         if (event.target.checked) {
             setId(parseInt(rowData.id))
             setSelectedRow(rowData)
@@ -119,6 +118,10 @@ function Arsip() {
     // DELETE ROW
     const handleDeleteRows = async (e) => {
         e.preventDefault()
+        if (id === 0) {
+            Swal.fire({ title: "Pilih data yang ingin dihapus!", icon: "warning" })
+            return
+        }
         async function delRegRow() {
             await delArsip(token, id)
         }
@@ -145,7 +148,13 @@ function Arsip() {
     // EDIT ROW
     const [showEdit, setShowEdit] = useState(false)
     const handleCloseEdit = () => setShowEdit(false)
-    const handleShowEdit = () => setShowEdit(true)
+    const handleShowEdit = () => {
+        if (id === 0) {
+            Swal.fire({ title: "Pilih data yang ingin diubah!", icon: "warning" })
+            return
+        }
+        setShowEdit(true)
+    }
 
     function handleEditRows() {
         async function reqEdit() {
@@ -174,7 +183,7 @@ function Arsip() {
 
         return (
             <div>
-                <Button style={{ marginRight: "10px", fontSize: "small", fontFamily: "Poppins", borderRadius: "5px", height: "33px" }} disabled={isChecked} variant="warning" onClick={handleShowEdit}>Ubah</Button>
+                <Button style={{ marginRight: "10px", fontSize: "small", fontFamily: "Poppins", borderRadius: "5px", height: "33px" }} variant="warning" onClick={handleShowEdit}>Ubah</Button>
                 <Modal show={showEdit} onHide={handleCloseEdit}>
                     <Modal.Header closeButton>
                         <Modal.Title>Edit Data</Modal.Title>
@@ -253,8 +262,8 @@ function Arsip() {
                 cancelButtonText: 'Batal'
             }).then((result) => {
                 if (result.isConfirmed) {
+                    addArsipReq()
                     Swal.fire({ title: "Data berhasil ditambahkan!", icon: "success" }).then(function () {
-                        addArsipReq()
                         window.location = "/arsip-inaktif"
                     })
                 }
@@ -337,7 +346,7 @@ function Arsip() {
             {
                 header: "Kode Klasifikasi",
                 key: "kodeKlasifikasi",
-                width: 15,
+                width: 20,
             },
             {
                 header: "Jenis Arsip",
@@ -382,7 +391,7 @@ function Arsip() {
             {
                 header: "Kategori Arsip",
                 key: "kategoriArsip",
-                width: 15
+                width: 20
             }
         ]
 
@@ -510,15 +519,15 @@ function Arsip() {
                 <div className='nav2' style={{ display: "fixed", textAlign: "center" }}>
                     <h1 style={{ fontSize: "30px", paddingTop: "20px" }}>Daftar Arsip Inaktif</h1>
                     <div style={{ display: "flex", marginBottom: "10px" }}>
-                        {handleAddRows()}
+                        {level === "1" ? handleAddRows() : null}
                         <Button style={{ fontSize: "small", width: "auto", fontFamily: "Poppins", height: "75%", borderRadius: "5px", margin: "0px 10px", backgroundColor: "orange" }} onClick={e => handleExportXlsx(e)} >Unduh ke Excel</Button>
                         <Button style={{ fontSize: "small", width: "auto", fontFamily: "Poppins", height: "75%", borderRadius: "5px", marginRight: "10px", backgroundColor: "orange" }} onClick={e => window.location = "/arsip-aktif"} >Arsip Aktif</Button>
                         {modalSearch()}
                         {isFiltering ? <Button variant='danger' style={{ fontSize: "small", width: "auto", fontFamily: "Poppins"}} onClick={e=>window.location='/arsip-inaktif'} >Hapus Pencarian</Button> : null}
                     </div>
                     <div style={{ display: "flex", textAlign: "left" }}>
-                        {isChecked ? null : handleEditRows()}
-                        {isChecked ? null : <Button style={{ fontSize: "small", fontFamily: "Poppins", borderRadius: "5px", height: "33px" }} disabled={isChecked} variant="danger" onClick={(e) => handleDeleteRows(e)}>Hapus</Button>}
+                        {level === "1" ? handleEditRows() : null}
+                        {level === "1" ? <Button style={{ fontSize: "small", fontFamily: "Poppins", borderRadius: "5px", height: "33px" }} variant="danger" onClick={(e) => handleDeleteRows(e)}>Hapus</Button> : null}
                     </div>
                 </div>
 

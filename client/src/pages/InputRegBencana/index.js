@@ -139,7 +139,9 @@ function InputRegBencana() {
                 'Error',
                 'Form yang memiliki tanda * wajib diisi!',
                 'error'
-            )
+            ).then(()=>{
+                window.location = '/input-reg-bencana'
+            })
             return
         }
         formData.append("jenisBencana", selectedBencana);
